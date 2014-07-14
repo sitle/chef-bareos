@@ -1,0 +1,2 @@
+
+default["bareos"]["version"] = "latest"
