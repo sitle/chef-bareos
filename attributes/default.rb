@@ -11,8 +11,6 @@ default["bareos"]["dbname"] = "bareos"
 default["bareos"]["dbuser"] = "bareos"
 default["bareos"]["dbpassword"] = ""
 
-# Tape
-default["bareos"]["tape"] = "disable"
 
 # Director daemon
 default["bareos"]["dir_password"] = "director_password"
@@ -22,3 +20,9 @@ default["bareos"]["fd_password"] = "fd_password"
 
 # Storage daemon
 default["bareos"]["sd_password"] = "sd_password"
+
+# Monitor console password
+default["bareos"]["mon_password"] = "mon_password"
+
+# Tape
+default["bareos"]["tape"] = "disable"

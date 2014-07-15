@@ -1,16 +1,16 @@
 Storage {
-  Name = node1-sd
+  Name = <%= node[:hostname] %>-sd
   Maximum Concurrent Jobs = 20
 }
 
 Director {
-  Name = node1-dir
-  Password = "qDaBBdUeuYNxBJJ1WrD+cWb/oexWsPileOiIA8H7gbVn"
+  Name = <%= node[:hostname] %>-dir
+  Password = "<%= @sd_password %>"
 }
 
 Director {
-  Name = node1-mon
-  Password = "M3/WB18uKokNw7pGvNt9/03DBWSqSv3kBWL9OgHzkBSF"
+  Name = <%= node[:hostname] %>-mon
+  Password = "<%= @mon_password %>"
   Monitor = yes
 }
 
@@ -27,5 +27,5 @@ Device {
 
 Messages {
   Name = Standard
-  director = node1-dir = all
+  director = <%= node[:hostname] %>-dir = all
 }

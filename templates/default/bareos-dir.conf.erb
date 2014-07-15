@@ -1,5 +1,5 @@
 Director {
-  Name = node1-dir
+  Name = <%= node[:hostname] %>-dir
   QueryFile = "/usr/lib/bareos/scripts/query.sql"
   Maximum Concurrent Jobs = 1
   Password = "<%= @dir_password %>"
@@ -109,9 +109,9 @@ FileSet {
 }
 
 Client {
-  Name = node1-fd
-  Address = node1
-  Password = "Z1p+6uXNPuUWrevafEKsMsuzJmfR3WUn3KpfqcJGqyIE"          # password for FileDaemon
+  Name = <%= node[:hostname] %>-fd
+  Address = <%= node[:fqdn] %>
+  Password = "<%= @fd_password %>"          # password for FileDaemon
   File Retention = 30 days
   Job Retention = 6 months
   AutoPrune = no
@@ -119,19 +119,30 @@ Client {
 
 Storage {
   Name = File
-  Address = node1                # N.B. Use a fully qualified name here
-  Password = "LL7nWu7dbVgEltVlGAuATiPfUJfHaSSWtU6GBHsFIUwN"
+  Address = <%= node[:fqdn] %>                # N.B. Use a fully qualified name here
+  Password = "<%= @sd_password %>"
   Device = FileStorage
   Media Type = File
 }
 
 Catalog {
   Name = MyCatalog
-  dbdriver = "mysql"
-  dbname = "bareos"
-  dbuser = "bareos"
-  dbpassword = ""
+  dbdriver = "<%= @db_driver %>"
+  dbname = "<%= @db_name %>"
+  dbuser = "<%= @db_user %>"
+  dbpassword = "<%= @db_password %>"
 }
+
+Console {
+  Name = <%= node[:fqdn] %>-mon
+  Password = "<%= @mon_password %>"
+  CommandACL = status, .status
+}
+
+##
+## Clients
+##
+##@/etc/bareos/clients/*.conf
 
 Messages {
   Name = Standard
@@ -175,13 +186,3 @@ Pool {
   Pool Type = Backup
 }
 
-Console {
-  Name = node1-mon
-  Password = "xm0FHrAPRUKlRQn3Q5/L5xMzuoSuEk/zOEpL38SImbTD"
-  CommandACL = status, .status
-}
-
-##
-## Clients
-##
-@/etc/bareos/clients/*.conf

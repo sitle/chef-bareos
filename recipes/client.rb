@@ -13,11 +13,6 @@ package "bareos-filedaemon" do
     action :install
 end
 
-service "bareos-fd" do
-    supports :status => true, :restart => true, :reload => false
-    action [ :enable, :start ]
-end
-
 #director = search(node, "role:bareos-server")
 
 template "/etc/bareos/bareos-fd.conf" do
@@ -26,7 +21,14 @@ template "/etc/bareos/bareos-fd.conf" do
     group "bareos"
     mode "0640"
     variables(
-                :dir_password => node["bareos"]["dir_password"]
+                :fd_password => node["bareos"]["fd_password"],
+                :mon_password => node["bareos"]["mon_password"]
     )
     notifies :reload, "service[bareos-fd]", :immediately
 end
+
+service "bareos-fd" do
+    supports :status => true, :restart => true, :reload => false
+    action [ :enable, :start ]
+end
+

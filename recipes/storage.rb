@@ -19,11 +19,6 @@ if node["bareos"]["tape"] == "enable"
     end
 end
 
-service "bareos-sd" do
-    supports :status => true, :restart => true, :reload => false
-    action [ :enable, :start ]
-end
-
 #director = search(node, "role:bareos-server")
 
 template '/etc/bareos/bareos-sd.conf' do
@@ -32,7 +27,13 @@ template '/etc/bareos/bareos-sd.conf' do
     owner 'bareos'
     group 'bareos'
     variables(
-                :dir_password => node["bareos"]["dir_password"]
+                :sd_password => node["bareos"]["sd_password"],
+                :mon_password => node["bareos"]["mon_password"]
     )
     notifies :reload, "service[bareos-dir]", :immediately 
+end
+
+service "bareos-sd" do
+    supports :status => true, :restart => true, :reload => false
+    action [ :enable, :start ]
 end

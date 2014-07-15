@@ -1,20 +1,20 @@
 Director {
-  Name = node1-dir
-  Password = "<%= @dir_password %>"
+  Name = <%= node[:hostname] %>-dir
+  Password = "<%= @fd_password %>"
 }
 
 Director {
-  Name = node1-mon
-  Password = "nKFkW/TbID8A8IQvEMzBt22Ut9y3xD236TJPTvzQoG1J"
+  Name = <%= node[:hostname] %>-mon
+  Password = "<%= @mon_password %>"
   Monitor = yes
 }
 
 FileDaemon {
-  Name = node1-fd
+  Name = <%= node[:hostname] %>-fd
   Maximum Concurrent Jobs = 20
 }
 
 Messages {
   Name = Standard
-  director = node1-dir = all, !skipped, !restored
+  director = <%= node[:hostname] %>-dir = all, !skipped, !restored
 }
