@@ -1,23 +1,17 @@
-bareos Cookbook
+Bareos Cookbook
 ===============
-TODO: Enter the cookbook description here.
 
-e.g.
-This cookbook makes your favorite breakfast sandwich.
+This cookbook install and configurer backup based on bareos software (http://www.bareos.org/en/home.html)
 
 Requirements
 ------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
 
-e.g.
 #### packages
-- `toaster` - bareos needs toaster to brown your bagel.
+- `yum` - need yum packages to install bareos repos
 
 Attributes
 ----------
-TODO: List your cookbook attributes here.
 
-e.g.
 #### bareos::default
 <table>
   <tr>
@@ -27,35 +21,117 @@ e.g.
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['bareos']['bacon']</tt></td>
+    <td><tt>["bareos"]["yum_repository"]</tt></td>
+    <td>Boolean</td>
+    <td>whether to include bacon</td>
+    <td><tt>true</tt></td>
+  </tr>
+  <tr>
+    <td><tt>["bareos"]["description"]</tt></td>
+    <td>Boolean</td>
+    <td>whether to include bacon</td>
+    <td><tt>true</tt></td>
+  </tr>
+  <tr>
+    <td><tt>["bareos"]["baseurl"]</tt></td>
+    <td>Boolean</td>
+    <td>whether to include bacon</td>
+    <td><tt>true</tt></td>
+  </tr>
+  <tr>
+    <td><tt>["bareos"]["gpgkey"]</tt></td>
+    <td>Boolean</td>
+    <td>whether to include bacon</td>
+    <td><tt>true</tt></td>
+  </tr>
+  <tr>
+    <td><tt>["bareos"]["database_type"]</tt></td>
+    <td>Boolean</td>
+    <td>whether to include bacon</td>
+    <td><tt>true</tt></td>
+  </tr>
+  <tr>
+    <td><tt>["bareos"]["dbdriver"]</tt></td>
+    <td>Boolean</td>
+    <td>whether to include bacon</td>
+    <td><tt>true</tt></td>
+  </tr>
+  <tr>
+    <td><tt>["bareos"]["dbname"]</tt></td>
+    <td>Boolean</td>
+    <td>whether to include bacon</td>
+    <td><tt>true</tt></td>
+  </tr>
+  <tr>
+    <td><tt>["bareos"]["dbuser"]</tt></td>
+    <td>Boolean</td>
+    <td>whether to include bacon</td>
+    <td><tt>true</tt></td>
+  </tr>
+  <tr>
+    <td><tt>["bareos"]["dbpassword"]</tt></td>
+    <td>Boolean</td>
+    <td>whether to include bacon</td>
+    <td><tt>true</tt></td>
+  </tr>
+  <tr>
+    <td><tt>["bareos"]["tape"]</tt></td>
+    <td>Boolean</td>
+    <td>whether to include bacon</td>
+    <td><tt>true</tt></td>
+  </tr>
+  <tr>
+    <td><tt>["bareos"]["dir_password"]</tt></td>
+    <td>Boolean</td>
+    <td>whether to include bacon</td>
+    <td><tt>true</tt></td>
+  </tr>
+  <tr>
+    <td><tt>["bareos"]["fd_password"]</tt></td>
+    <td>Boolean</td>
+    <td>whether to include bacon</td>
+    <td><tt>true</tt></td>
+  </tr>
+  <tr>
+    <td><tt>["bareos"]["sd_password"]</tt></td>
     <td>Boolean</td>
     <td>whether to include bacon</td>
     <td><tt>true</tt></td>
   </tr>
 </table>
 
+
 Usage
 -----
-#### bareos::default
-TODO: Write usage instructions for each cookbook.
-
-e.g.
-Just include `bareos` in your node's `run_list`:
+#### bareos::default (install the bareos client backup by default)
 
 ```json
 {
   "name":"my_node",
   "run_list": [
-    "recipe[bareos]"
+    "recipe[bareos::default]"
+  ]
+}
+```
+
+#### bareos::server (install all in one server)
+
+```json
+{
+  "name":"my_node",
+  "run_list": [
+    "recipe[bareos::default]",
+    "recipe[bareos::database]",
+    "recipe[bareos::server]",
+    "recipe[bareos::storage]",
+    "recipe[bareos::workstation]"
   ]
 }
 ```
 
 Contributing
 ------------
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
 
-e.g.
 1. Fork the repository on Github
 2. Create a named feature branch (like `add_component_x`)
 3. Write your change
@@ -65,4 +141,6 @@ e.g.
 
 License and Authors
 -------------------
-Authors: TODO: List authors
+Authors: 
+
+* Léonard TAVAE
