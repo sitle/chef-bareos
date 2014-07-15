@@ -1,0 +1,31 @@
+Storage {
+  Name = node1-sd
+  Maximum Concurrent Jobs = 20
+}
+
+Director {
+  Name = node1-dir
+  Password = "qDaBBdUeuYNxBJJ1WrD+cWb/oexWsPileOiIA8H7gbVn"
+}
+
+Director {
+  Name = node1-mon
+  Password = "M3/WB18uKokNw7pGvNt9/03DBWSqSv3kBWL9OgHzkBSF"
+  Monitor = yes
+}
+
+Device {
+  Name = FileStorage
+  Media Type = File
+  Archive Device = /var/lib/bareos/storage
+  LabelMedia = yes;
+  Random Access = Yes;
+  AutomaticMount = yes;
+  RemovableMedia = no;
+  AlwaysOpen = no;
+}
+
+Messages {
+  Name = Standard
+  director = node1-dir = all
+}
