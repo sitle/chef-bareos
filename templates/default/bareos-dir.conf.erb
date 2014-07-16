@@ -10,7 +10,7 @@ JobDefs {
   Name = "DefaultJob"
   Type = Backup
   Level = Incremental
-  Client = node1-fd
+  Client = <%= node[:hostname] %>-fd
   FileSet = "Full Set"
   Schedule = "WeeklyCycle"
   Storage = File
@@ -40,7 +40,7 @@ Job {
 Job {
   Name = "RestoreFiles"
   Type = Restore
-  Client=node1-fd
+  Client=<%= node[:hostname] %>-fd
   FileSet="Full Set"
   Storage = File
   Pool = Default
