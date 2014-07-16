@@ -15,11 +15,19 @@ end
 
 database = node["bareos"]["database_type"]
 
-package "#{database}" do
+if platform_family?("rhel")
+    database_client_name = "#{database}"
+    database_server_name = "#{database}-server"
+else
+    database_client_name = "#{database}-client"
+    database_server_name = "#{database}"
+end
+
+package "#{database_client_name}" do
     action :install
 end
 
-package "#{database}-server" do
+package "#{database_server_name}" do
     action :install
 end
 
@@ -33,6 +41,7 @@ if database == "postgresql"
         command "su postgres -c 'initdb -D /var/lib/pgsql/data'"
         action :run
         not_if { ::File.exists?("/var/lib/pgsql/data/postgresql.conf")}
+        not_if { ::File.exist?("/etc/postgresql/9.1/main/postgresql.conf")}
     end
 
     service "postgresql" do
