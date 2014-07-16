@@ -13,6 +13,7 @@ default["bareos"]["dbpassword"] = ""
 
 
 # Director daemon
+default["bareos"]["dir_server"] = "node1"
 default["bareos"]["dir_password"] = "director_password"
 
 # File daemon
