@@ -6,6 +6,9 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
+node.set_unless['bareos']['sd_password'] = secure_password
+node.set_unless['bareos']['mon_password'] = secure_password
 
 # Installation du Storage daemon BAREOS
 
@@ -26,10 +29,6 @@ template '/etc/bareos/bareos-sd.conf' do
   mode 0640
   owner 'bareos'
   group 'bareos'
-  variables(
-    :sd_password => node['bareos']['sd_password'],
-    :mon_password => node['bareos']['mon_password']
-  )
   notifies :reload, 'service[bareos-dir]', :immediately
 end
 

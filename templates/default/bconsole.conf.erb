@@ -3,8 +3,8 @@
 #
 
 Director {
-  Name = <%= node[:hostname] %>-dir
+  Name = "<%= node[:hostname] %>-dir"
   DIRport = 9101
-  address = <%= node[:hostname] %>
-  Password = "<%= @dir_password %>"
+  address = "<%= node[:hostname] %>"
+  Password = "<%= node['bareos']['dir_password'] %>"
 }

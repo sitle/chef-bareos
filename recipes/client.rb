@@ -6,6 +6,11 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+include_recipe "openssl::default"
+
+::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
+node.set_unless['bareos']['fd_password'] = secure_password
+node.set_unless['bareos']['mon_password'] = secure_password
 
 # Installation du File daemon BAREOS
 
@@ -20,10 +25,6 @@ template '/etc/bareos/bareos-fd.conf' do
   owner 'root'
   group 'bareos'
   mode '0640'
-  variables(
-    :fd_password => node['bareos']['fd_password'],
-    :mon_password => node['bareos']['mon_password']
-  )
   notifies :reload, 'service[bareos-fd]', :immediately
 end
 

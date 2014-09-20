@@ -5,12 +5,12 @@ Storage {
 
 Director {
   Name = <%= node[:hostname] %>-dir
-  Password = "<%= @sd_password %>"
+  Password = "<%= node['bareos']['sd_password'] %>"
 }
 
 Director {
   Name = <%= node[:hostname] %>-mon
-  Password = "<%= @mon_password %>"
+  Password = "<%= node['bareos']['mon_password'] %>"
   Monitor = yes
 }
 

@@ -16,22 +16,22 @@ end
 database = node['bareos']['database_type']
 
 if platform_family?('rhel')
-  database_client_name = '#{database}'
-  database_server_name = '#{database}-server'
+  database_client_name = "#{database}"
+  database_server_name = "#{database}-server"
 else
-  database_client_name = '#{database}-client'
-  database_server_name = '#{database}'
+  database_client_name = "#{database}-client"
+  database_server_name = "#{database}"
 end
 
-package '#{database_client_name}' do
+package "#{database_client_name}" do
   action :install
 end
 
-package '#{database_server_name}' do
+package "#{database_server_name}" do
   action :install
 end
 
-package 'bareos-database-#{database}' do
+package "bareos-database-#{database}" do
   action :install
 end
 

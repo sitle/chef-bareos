@@ -14,16 +14,16 @@ default['bareos']['dbpassword'] = ''
 
 # Director daemon
 default['bareos']['dir_server'] = 'node1'
-default['bareos']['dir_password'] = 'director_password'
+default['bareos']['dir_password'] = nil
 
 # File daemon
-default['bareos']['fd_password'] = 'fd_password'
+default['bareos']['fd_password'] = nil
 
 # Storage daemon
-default['bareos']['sd_password'] = 'sd_password'
+default['bareos']['sd_password'] = nil
 
 # Monitor console password
-default['bareos']['mon_password'] = 'mon_password'
+default['bareos']['mon_password'] = nil
 
 # Tape
 default['bareos']['tape'] = 'disable'

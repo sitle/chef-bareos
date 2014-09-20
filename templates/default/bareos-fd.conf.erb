@@ -1,11 +1,11 @@
 Director {
   Name = <%= node[:hostname] %>-dir
-  Password = "<%= @fd_password %>"
+  Password = "<%= node['bareos']['fd_password'] %>"
 }
 
 Director {
   Name = <%= node[:hostname] %>-mon
-  Password = "<%= @mon_password %>"
+  Password = "<%= node['bareos']['mon_password'] %>"
   Monitor = yes
 }
 

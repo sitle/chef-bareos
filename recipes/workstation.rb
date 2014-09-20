@@ -6,6 +6,8 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
+node.set_unless['bareos']['dir_password'] = secure_password
 
 # Installation des services BAREOS
 
@@ -18,7 +20,4 @@ template '/etc/bareos/bconsole.conf' do
   mode 0640
   owner 'bareos'
   group 'bareos'
-  variables(
-    :dir_password => node['bareos']['dir_password'],
-  )
 end

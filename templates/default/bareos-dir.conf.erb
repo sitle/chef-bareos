@@ -2,7 +2,7 @@ Director {
   Name = <%= node[:hostname] %>-dir
   QueryFile = "/usr/lib/bareos/scripts/query.sql"
   Maximum Concurrent Jobs = 1
-  Password = "<%= @dir_password %>"
+  Password = "<%= node['bareos']['dir_password'] %>"
   Messages = Daemon
 }
 
@@ -111,7 +111,7 @@ FileSet {
 Client {
   Name = <%= node[:hostname] %>-fd
   Address = <%= node[:fqdn] %>
-  Password = "<%= @fd_password %>"          # password for FileDaemon
+  Password = "<%= node['bareos']['fd_password'] %>"          # password for FileDaemon
   File Retention = 30 days
   Job Retention = 6 months
   AutoPrune = no
@@ -120,7 +120,7 @@ Client {
 Storage {
   Name = File
   Address = <%= node[:fqdn] %>                # N.B. Use a fully qualified name here
-  Password = "<%= @sd_password %>"
+  Password = "<%= node['bareos']['sd_password'] %>"
   Device = FileStorage
   Media Type = File
 }
@@ -135,7 +135,7 @@ Catalog {
 
 Console {
   Name = <%= node[:fqdn] %>-mon
-  Password = "<%= @mon_password %>"
+  Password = "<%= node['bareos']['mon_password'] %>"
   CommandACL = status, .status
 }
 
