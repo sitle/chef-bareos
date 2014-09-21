@@ -18,9 +18,9 @@ if platform_family?('rhel')
   end
 else
   apt_repository 'bareos' do
-    uri 'http://download.bareos.org/bareos/release/latest/xUbuntu_12.04/'
+    uri node['bareos']['baseurl']
     components ['/']
-    key 'http://download.bareos.org/bareos/release/latest/xUbuntu_12.04/Release.key'
+    key node['bareos']['gpgkey']
   end
 end
 
