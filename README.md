@@ -1,13 +1,17 @@
 Bareos Cookbook
 ===============
 
-This cookbook install and configurer backup based on bareos software (http://www.bareos.org/en/home.html)
+This cookbook install and configure backup based on bareos software (http://www.bareos.org/en/home.html)
 
 Requirements
 ------------
 
 #### packages
-- `yum` - need yum packages to install bareos repos
+- `yum` - need yum packages to install bareos repos on rhel platform
+  family
+- `apt` - need apt packages to install bareos repos on Debian platform
+  family
+- `openssl` - need openssl packages to install bareos repos
 
 Attributes
 ----------
@@ -21,82 +25,34 @@ Attributes
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>["bareos"]["yum_repository"]</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["description"]</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["baseurl"]</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["gpgkey"]</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-  <tr>
     <td><tt>["bareos"]["database_type"]</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
+    <td>string</td>
+    <td>Specify the database type.</td>
+    <td><tt>postgresql</tt></td>
   </tr>
   <tr>
     <td><tt>["bareos"]["dbdriver"]</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
+    <td>string</td>
+    <td>Specify the database driver.</td>
+    <td><tt>postgresql</tt></td>
   </tr>
   <tr>
     <td><tt>["bareos"]["dbname"]</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
+    <td>string</td>
+    <td>Specify the database default name.</td>
+    <td><tt>bareos</tt></td>
   </tr>
   <tr>
     <td><tt>["bareos"]["dbuser"]</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
+    <td>string</td>
+    <td>Specify the db user name.</td>
+    <td><tt>bareos</tt></td>
   </tr>
   <tr>
     <td><tt>["bareos"]["dbpassword"]</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["tape"]</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["dir_password"]</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["fd_password"]</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["sd_password"]</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
+    <td>string</td>
+    <td>Specify the db password.</td>
+    <td><tt>none</tt></td>
   </tr>
 </table>
 
