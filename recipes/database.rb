@@ -50,18 +50,19 @@ if database == 'postgresql'
   end
 
   execute 'create_database' do
-    command 'su postgres -c "/usr/lib/bareos/scripts/create_postgresql_database"'
+    command 'su postgres -c "/usr/lib/bareos/scripts/create_bareos_database"'
+    creates '/tmp/something'
     action :run
   end
 
   execute 'create_tables' do
-    command 'su postgres -c "/usr/lib/bareos/scripts/make_postgresql_tables"'
+    command 'su postgres -c "/usr/lib/bareos/scripts/make_bareos_tables"'
     creates '/tmp/something'
     action :run
   end
 
   execute 'grant_privileges' do
-    command 'su postgres -c "/usr/lib/bareos/scripts/grant_postgresql_privileges"'
+    command 'su postgres -c "/usr/lib/bareos/scripts/grant_bareos_privileges"'
     creates '/tmp/something'
     action :run
   end
