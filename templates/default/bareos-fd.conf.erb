@@ -1,10 +1,10 @@
 Director {
-  Name = <%= node[:hostname] %>-dir
+  Name = backup-dir
   Password = "<%= node['bareos']['fd_password'] %>"
 }
 
 Director {
-  Name = <%= node[:hostname] %>-mon
+  Name = bareos-mon
   Password = "<%= node['bareos']['mon_password'] %>"
   Monitor = yes
 }
@@ -16,5 +16,5 @@ FileDaemon {
 
 Messages {
   Name = Standard
-  director = <%= node[:hostname] %>-dir = all, !skipped, !restored
+  director = backup-dir = all, !skipped, !restored
 }

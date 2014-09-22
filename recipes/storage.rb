@@ -6,9 +6,9 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 node.set_unless['bareos']['sd_password'] = secure_password
-node.set_unless['bareos']['mon_password'] = secure_password
+#node.set_unless['bareos']['mon_password'] = secure_password
+node.save
 
 # Installation du Storage daemon BAREOS
 
@@ -22,13 +22,16 @@ if node['bareos']['tape'] == 'enable'
   end
 end
 
-#director = search(node, "role:bareos-server")
+bareos_clients = search(:node, 'NOT role:backup-server')
 
 template '/etc/bareos/bareos-sd.conf' do
   source 'bareos-sd.conf.erb'
   mode 0640
   owner 'bareos'
   group 'bareos'
+  variables(
+    :bareos_clients => bareos_clients
+  )
   notifies :reload, 'service[bareos-dir]', :immediately
 end
 

@@ -6,8 +6,8 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
-node.set_unless['bareos']['dir_password'] = secure_password
+#node.set_unless['bareos']['dir_password'] = secure_password
+#node.save
 
 # Installation des services BAREOS
 

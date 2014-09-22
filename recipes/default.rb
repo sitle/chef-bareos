@@ -8,6 +8,9 @@
 #
 
 # Installation du dépôt BAREOS
+include_recipe "openssl::default"
+
+::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
 if platform_family?('rhel')
   yum_repository node['bareos']['yum_repository'] do

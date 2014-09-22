@@ -1,5 +1,5 @@
 Director {
-  Name = <%= node[:hostname] %>-dir
+  Name = backup-dir
   QueryFile = "/usr/lib/bareos/scripts/query.sql"
   Maximum Concurrent Jobs = 1
   Password = "<%= node['bareos']['dir_password'] %>"
@@ -10,7 +10,7 @@ JobDefs {
   Name = "DefaultJob"
   Type = Backup
   Level = Incremental
-  Client = <%= node[:hostname] %>-fd
+  Client = <%= node[:fqdn] %>
   FileSet = "Full Set"
   Schedule = "WeeklyCycle"
   Storage = File
@@ -21,12 +21,12 @@ JobDefs {
 }
 
 Job {
-  Name = "BackupClient1"
+  Name = "<%= node[:hostname] %>-save"
   JobDefs = "DefaultJob"
 }
 
 Job {
-  Name = "BackupCatalog"
+  Name = "<%= node[:hostname] %>-save-catalog"
   JobDefs = "DefaultJob"
   Level = Full
   FileSet="Catalog"
@@ -38,9 +38,9 @@ Job {
 }
 
 Job {
-  Name = "RestoreFiles"
+  Name = "<%= node[:hostname] %>-restore"
   Type = Restore
-  Client=<%= node[:hostname] %>-fd
+  Client = <%= node[:fqdn] %>
   FileSet="Full Set"
   Storage = File
   Pool = Default
@@ -54,7 +54,8 @@ FileSet {
     Options {
       signature = MD5
     }
-    File = /usr/sbin
+    File = /etc
+    File = /home
   }
 
   Exclude {
@@ -109,13 +110,55 @@ FileSet {
 }
 
 Client {
-  Name = <%= node[:hostname] %>-fd
+  Name = <%= node[:fqdn] %>
   Address = <%= node[:fqdn] %>
   Password = "<%= node['bareos']['fd_password'] %>"          # password for FileDaemon
   File Retention = 30 days
   Job Retention = 6 months
   AutoPrune = no
 }
+
+<% @bareos_clients.each do |client| %>
+Client {
+  Name = <%= client['fqdn'] %>
+  Address = <%= client['fqdn'] %>
+  Password = "<%= client['bareos']['fd_password'] %>"          # password for FileDaemon
+  File Retention = 30 days
+  Job Retention = 6 months
+  AutoPrune = no
+}
+
+JobDefs {
+  Name = "<%= client[:hostname] %>-job"
+  Type = Backup
+  Level = Incremental
+  Client = <%= client[:fqdn] %>
+  FileSet = "Full Set"
+  Schedule = "WeeklyCycle"
+  Storage = File
+  Messages = Standard
+  Pool = File
+  Priority = 10
+  Write Bootstrap = "/var/lib/bareos/%c.bsr"
+}
+
+Job {
+  Name = "<%= client[:hostname] %>-save"
+  JobDefs = "<%= client[:hostname] %>-job"
+}
+
+Job {
+  Name = "<%= client[:hostname] %>-restore"
+  Type = Restore
+  Client = <%= client[:fqdn] %>
+  FileSet="Full Set"
+  Storage = File
+  Pool = Default
+  Messages = Standard
+  Where = /tmp/bareos-restores
+}
+
+<% end %>
 
 Storage {
   Name = File
@@ -134,7 +177,7 @@ Catalog {
 }
 
 Console {
-  Name = <%= node[:fqdn] %>-mon
+  Name = backup-mon
   Password = "<%= node['bareos']['mon_password'] %>"
   CommandACL = status, .status
 }
