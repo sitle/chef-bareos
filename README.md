@@ -61,29 +61,54 @@ Usage
 -----
 #### bareos::default (install the bareos client backup by default)
 
-```json
+You need to create a role "base" like this :
+
+```
 {
-  "name":"my_node",
+  "name": "base",
+  "description": "",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
   "run_list": [
-    "recipe[bareos::default]"
-  ]
+    "recipe[bareos]"
+  ],
+  "env_run_lists": {
+  }
 }
 ```
+This "role base" has to be apply to all your nodes.
 
-#### bareos::server (install all in one server)
+#### role backup-server
 
-```json
+For the server you need a role named ```backup-server``` with for example :
+
+```
 {
-  "name":"my_node",
+  "name": "backup-server",
+  "description": "Backup server role",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
   "run_list": [
-    "recipe[bareos::default]",
+    "role[base]",
     "recipe[bareos::database]",
     "recipe[bareos::server]",
     "recipe[bareos::storage]",
     "recipe[bareos::workstation]"
-  ]
+  ],
+  "env_run_lists": {
+  }
 }
 ```
+
+You need to run chef-client on the backup server every time you add a new node. All job will be automatically create for you.
 
 Contributing
 ------------
