@@ -1,15 +1,21 @@
 #
 # Cookbook Name:: bareos
-# Recipe:: server
+# Recipe:: workstation
 #
-# Copyright 2014, DSI
+# Copyright (C) 2014 Leonard TAVAE
 #
-# All rights reserved - Do Not Redistribute
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-#node.set_unless['bareos']['dir_password'] = secure_password
-#node.save
-
-# Installation des services BAREOS
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 
 package 'bareos-bconsole' do
   action :install
