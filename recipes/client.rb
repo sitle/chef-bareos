@@ -19,15 +19,13 @@
 
 node.set_unless['bareos']['fd_password'] = secure_password
 node.set_unless['bareos']['mon_password'] = secure_password
-node.save
+node.save unless Chef::Config[:solo]
 
 # Installation du File daemon BAREOS
 
 package 'bareos-filedaemon' do
   action :install
 end
-
-#director = search(node, 'role:bareos-server')
 
 template '/etc/bareos/bareos-fd.conf' do
   source 'bareos-fd.conf.erb'
@@ -38,6 +36,6 @@ template '/etc/bareos/bareos-fd.conf' do
 end
 
 service 'bareos-fd' do
-  supports :status => true, :restart => true, :reload => false
+  supports status: true, restart: true, reload: false
   action [:enable, :start]
 end

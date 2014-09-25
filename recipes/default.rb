@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "openssl::default"
+include_recipe 'openssl::default'
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 

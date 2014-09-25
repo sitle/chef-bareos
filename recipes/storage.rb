@@ -18,7 +18,7 @@
 #
 
 node.set_unless['bareos']['sd_password'] = secure_password
-node.save
+node.save unless Chef::Config[:solo]
 
 # Installation du Storage daemon BAREOS
 
@@ -26,13 +26,17 @@ package 'bareos-storage' do
   action :install
 end
 
-if node['bareos']['tape'] == 'enable'
-  package "bareos-storage-tape" do
-    action :install
-  end
-end
+# if node['bareos']['tape'] == 'true'
+# package  "bareos-storage-tape" do
+#   action :install
+#  end
+# end
 
-bareos_clients = search(:node, 'NOT role:backup-server')
+if Chef::Config[:solo]
+  bareos_clients = node['bareos']['clients']
+else
+  bareos_clients = search(:node, 'NOT role:backup-server')
+end
 
 template '/etc/bareos/bareos-sd.conf' do
   source 'bareos-sd.conf.erb'
@@ -40,12 +44,12 @@ template '/etc/bareos/bareos-sd.conf' do
   owner 'bareos'
   group 'bareos'
   variables(
-    :bareos_clients => bareos_clients
+    bareos_clients: bareos_clients
   )
   notifies :reload, 'service[bareos-dir]', :immediately
 end
 
 service 'bareos-sd' do
-  supports :status => true, :restart => true, :reload => false
+  supports status: true, restart: true, reload: false
   action [:enable, :start]
 end

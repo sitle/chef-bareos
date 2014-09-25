@@ -1,4 +1,4 @@
-# Dépôt
+# Repository
 
 default['bareos']['url'] = 'http://download.bareos.org/bareos/release'
 default['bareos']['version'] = 'latest'
@@ -21,15 +21,14 @@ else
 end
 
 # Database
-default['bareos']['database_type'] = 'postgresql' # Peut-être mysql
+default['bareos']['database_type'] = 'postgresql' # postgresql/mysql
 default['bareos']['dbdriver'] = 'postgresql'
 default['bareos']['dbname'] = 'bareos'
 default['bareos']['dbuser'] = 'bareos'
 default['bareos']['dbpassword'] = ''
 
-
-# Director daemon
-default['bareos']['dir_server'] = 'node1'
+# Clients list
+default['bareos']['clients'] = []
 
 # Tape
-default['bareos']['tape'] = 'disable'
+default['bareos']['tape'] = false

@@ -10,7 +10,7 @@ Director {
 }
 
 FileDaemon {
-  Name = <%= node[:hostname] %>-fd
+  Name = <%= node['hostname'] %>-fd
   Maximum Concurrent Jobs = 20
 }
 
