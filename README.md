@@ -1,22 +1,13 @@
-Bareos Cookbook
-===============
+# Bareos Cookbook
 
-This cookbook install and configure backup based on bareos software (http://www.bareos.org/en/home.html)
+[![Build Status](https://travis-ci.org/sitle/chef-bareos.svg?branch=master)](https://travis-ci.org/sitle/chef-bareos)
 
-Requirements
-------------
+This cookbook install and configure backup based on [bareos software](http://www.bareos.org/en/home.html)
 
-#### packages
-- `yum` - need yum packages to install bareos repos on rhel platform
-  family
-- `apt` - need apt packages to install bareos repos on Debian platform
-  family
-- `openssl` - need openssl packages to install bareos repos
+### Requirements
 
-Attributes
-----------
+## Attributes
 
-#### bareos::default
 <table>
   <tr>
     <th>Key</th>
@@ -56,12 +47,11 @@ Attributes
   </tr>
 </table>
 
+## Usage
 
-Usage
------
-#### bareos::default (install the bareos client backup by default)
+### Base role (install the bareos client backup by default)
 
-You need to create a role "base" like this :
+You need to create a base role like this :
 
 ```
 {
@@ -80,9 +70,9 @@ You need to create a role "base" like this :
   }
 }
 ```
-This "role base" has to be apply to all your nodes.
+This role have to be applied to all your node so they can be backed up by this cookbook.
 
-#### role backup-server
+### backup-server role (install the bareos server backup)
 
 For the server you need a role named ```backup-server``` with for example :
 
@@ -110,8 +100,7 @@ For the server you need a role named ```backup-server``` with for example :
 
 You need to run chef-client on the backup server every time you add a new node. All job will be automatically create for you.
 
-Contributing
-------------
+## Contributing
 
 1. Fork the repository on Github
 2. Create a named feature branch (like `add_component_x`)
@@ -120,8 +109,26 @@ Contributing
 5. Run the tests, ensuring they all pass
 6. Submit a Pull Request using Github
 
-License and Authors
--------------------
-Authors: 
+## License and Authors
+
+### License 
+
+```
+Copyright 2014 Léonard TAVAE
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
+### Authors 
 
 * Léonard TAVAE
