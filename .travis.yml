@@ -1,12 +1,10 @@
 language: ruby
 rvm:
   - 2.1.2
-  - 1.9.3-p547
 
 script:
   - bundle exec rubocop
   - bundle exec foodcritic .
-  - bundle exec tailor
 
 notifications:
   email:
