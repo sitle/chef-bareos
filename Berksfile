@@ -1,7 +1,3 @@
-source "https://supermarket.getchef.com"
+source "https://supermarket.chef.io"
 
 metadata
-
-cookbook "yum"
-cookbook "apt"
-cookbook "openssl"

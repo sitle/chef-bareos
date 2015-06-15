@@ -14,17 +14,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.hostname = 'bareos-berkshelf'
 
   # Set the version of chef to install using the vagrant-omnibus plugin
-  # config.omnibus.chef_version = :latest
+  # NOTE: You will need to install the vagrant-omnibus plugin:
+  #
+  #   $ vagrant plugin install vagrant-omnibus
+  #
+  if Vagrant.has_plugin?("vagrant-omnibus")
+    config.omnibus.chef_version = 'latest'
+  end
 
   # Every Vagrant virtual environment requires a box to build off of.
   # If this value is a shorthand to a box in Vagrant Cloud then
   # config.vm.box_url doesn't need to be specified.
-  config.vm.box = 'centos-6-chef'
+  config.vm.box = 'chef/ubuntu-14.04'
 
-  # The url from where the 'config.vm.box' box will be fetched if it
-  # is not a Vagrant Cloud box and if it doesn't already exist on the
-  # user's system.
-  # config.vm.box_url = 'https://vagrantcloud.com/chef/ubuntu-14.04/version/1/provider/virtualbox.box'
 
   # Assign this VM to a host-only network IP, allowing you to access it
   # via the IP. Host-only networks can talk to the host machine as well as
@@ -34,13 +36,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
-  # accessing 'localhost:8080' will access port 80 on the guest machine.
+  # accessing "localhost:8080" will access port 80 on the guest machine.
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  # config.vm.synced_folder '../data', '/vagrant_data'
+  # config.vm.synced_folder "../data", "/vagrant_data"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -51,14 +53,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   vb.gui = true
   #
   #   # Use VBoxManage to customize the VM. For example to change memory:
-  #   vb.customize ['modifyvm', :id, '--memory', '1024']
+  #   vb.customize ["modifyvm", :id, "--memory", "1024"]
   # end
   #
   # View the documentation for the provider you're using for more
   # information on available options.
 
   # The path to the Berksfile to use with Vagrant Berkshelf
-  # config.berkshelf.berksfile_path = './Berksfile'
+  # config.berkshelf.berksfile_path = "./Berksfile"
 
   # Enabling the Berkshelf plugin. To enable this globally, add this configuration
   # option to your ~/.vagrant.d/Vagrantfile file
@@ -74,30 +76,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :chef_solo do |chef|
     chef.json = {
-      bareos: {
-        'dir_password' => 'testing1',
-        'fd_password' => 'testing1',
-        'sd_password' => 'testing1',
-        'mon_password' => 'testing1',
-        'clients' => [
-          'hostname' => 'bareos-berkshelf',
-          'fqdn' => 'bareos-berkshelf',
-          'bareos' => {
-            'dir_password' => 'testing1',
-            'fd_password' => 'testing1',
-            'sd_password' => 'testing1',
-            'mon_password' => 'testing1'
-          }
-        ]
+      mysql: {
+        server_root_password: 'rootpass',
+        server_debian_password: 'debpass',
+        server_repl_password: 'replpass'
       }
     }
 
     chef.run_list = [
-      'recipe[bareos::default]',
-      'recipe[bareos::database]',
-      'recipe[bareos::server]',
-      'recipe[bareos::storage]',
-      'recipe[bareos::workstation]'
+      'recipe[bareos::default]'
     ]
   end
 end
