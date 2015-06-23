@@ -7,15 +7,9 @@ provisioner:
   require_chef_omnibus: true
 
 platforms:
-  - name: debian-7
-    driver:
-      box: debian-7-chef
-  - name: ubuntu-12.04
-    driver:
-      box: ubuntu-12.04-chef
-  - name: centos-6
-    driver:
-      box: centos-6-chef
+  - name: debian-7.8
+  - name: ubuntu-14.04
+  - name: centos-6.6
 
 data_bags_path:    test/integration/data_bags/
 roles_path:        test/integration/roles/
@@ -24,7 +18,7 @@ environments_path: test/integration/environments
 suites:
   - name: server
     run_list:
-      - recipe[bareos::default]
+      - role[bareos_base]
       - recipe[bareos::database]
       - recipe[bareos::server]
       - recipe[bareos::storage]
