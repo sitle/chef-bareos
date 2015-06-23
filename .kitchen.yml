@@ -3,8 +3,8 @@ driver:
   name: vagrant
 
 provisioner:
-  name: chef_solo
-  require_chef_omnibus: false
+  name: chef_zero
+  require_chef_omnibus: true
 
 platforms:
   - name: debian-7
@@ -16,6 +16,10 @@ platforms:
   - name: centos-6
     driver:
       box: centos-6-chef
+
+data_bags_path:    test/integration/data_bags/
+roles_path:        test/integration/roles/
+environments_path: test/integration/environments
 
 suites:
   - name: server
