@@ -18,9 +18,5 @@ environments_path: test/integration/environments
 suites:
   - name: server
     run_list:
-      - role[bareos_base]
-      - recipe[bareos::database]
-      - recipe[bareos::server]
-      - recipe[bareos::storage]
-      - recipe[bareos::workstation]
+      - role[bareos_server]
     attributes:
