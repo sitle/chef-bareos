@@ -43,12 +43,24 @@ package "bareos-database-#{database}" do
   action :install
 end
 
+%w(postgresql postgresql-contrib).each do |psql_ubuntu|
+  package psql_ubuntu do
+    action :install
+    only_if { node['platform'] == 'ubuntu' && database == 'postgresql' }
+  end
+end
+
 if database == 'postgresql'
   execute 'initdb' do
-    command 'su postgres -c "initdb -D /var/lib/pgsql/data"'
+    case node['platform_family']
+    when 'debian'
+      command %(su postgres -c "usr/lib/postgresql/#{node['postgresql']['version']}/bin/initdb -D /var/lib/pgsql/data")
+    when 'rhel'
+      command 'su postgres -c "usr/bin/initdb -D /var/lib/pgsql/data"'
+    end
     action :run
     not_if { ::File.exist?('/var/lib/pgsql/data/postgresql.conf') }
-    not_if { ::File.exist?('/etc/postgresql/9.1/main/postgresql.conf') }
+    not_if { ::File.exist?("/etc/postgresql/#{node['postgresql']['version']}/main/postgresql.conf") }
   end
 
   service 'postgresql' do
