@@ -2,9 +2,11 @@ require 'serverspec'
 
 set :backend, :exec
 
+
 RSpec.configure do |c|
   c.before :all do
-    c.path = '/sbin:/usr/sbin:/usr/bin'
+   # c.path = '/sbin:/usr/sbin:/usr/bin'
+    set :path, '$PATH:/sbin:/usr/local/sbin'
   end
 
   if ENV['ASK_SUDO_PASSWORD']
