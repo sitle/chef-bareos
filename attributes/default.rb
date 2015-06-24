@@ -32,3 +32,9 @@ default['bareos']['clients'] = []
 
 # Tape
 default['bareos']['tape'] = false
+
+# Director
+default['bareos']['dir_port'] = 9101
+default['bareos']['dir_max_concurrent_jobs'] = 20
+default['bareos']['dir_subscription'] = nil
+default['bareos']['dir_subs'] = nil
