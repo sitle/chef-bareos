@@ -1,7 +1,5 @@
 require 'serverspec'
 
-#include SpecInfra::Helper::Exec
-
 set :backend, :exec
 
 RSpec.configure do |c|
