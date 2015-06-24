@@ -72,7 +72,7 @@ You need to create a base role called ``bareos_base`` like this:
 ```
 This role has to be applied to all your clients so they can be backed up by this cookbook.
 
-### backup-server role (install the bareos server backup)
+### bareos_server role (install the bareos server for backups)
 
 For the server, you need a role named ``bareos_server``, for example :
 
