@@ -8,8 +8,8 @@ version '0.1.2'
 
 supports 'centos', '>= 6.0'
 supports 'debian', '>= 7.0'
-supports 'ubuntu', '= 12.04'
+supports 'ubuntu'
 
-depends 'yum', '=3.3.2'
-depends 'apt', '=2.6.0'
-depends 'openssl', '=2.0.0'
+depends 'yum'
+depends 'apt'
+depends 'openssl'
