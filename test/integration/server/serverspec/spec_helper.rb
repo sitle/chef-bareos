@@ -2,7 +2,6 @@ require 'serverspec'
 
 set :backend, :exec
 
-
 RSpec.configure do |c|
   c.before :all do
     set :path, '$PATH:/sbin:/usr/local/sbin'
