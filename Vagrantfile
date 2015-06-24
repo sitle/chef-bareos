@@ -74,17 +74,32 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # to skip installing and copying to Vagrant's shelf.
   # config.berkshelf.except = []
 
-  config.vm.provision :chef_solo do |chef|
+  config.vm.provision :chef_zero do |chef|
     chef.json = {
-      mysql: {
-        server_root_password: 'rootpass',
-        server_debian_password: 'debpass',
-        server_repl_password: 'replpass'
+      bareos: {
+        'dir_password' => 'testing1',
+        'fd_password' => 'testing1',
+        'sd_password' => 'testing1',
+        'mon_password' => 'testing1',
+        'clients' => [
+          'hostname' => 'bareos-berkshelf',
+          'fqdn' => 'bareos-berkshelf',
+          'bareos' => {
+            'dir_password' => 'testing1',
+            'fd_password' => 'testing1',
+            'sd_password' => 'testing1',
+            'mon_password' => 'testing1'
+          }
+        ]
       }
     }
 
     chef.run_list = [
-      'recipe[bareos::default]'
+      'recipe[bareos::default]',
+      'recipe[bareos::database]',
+      'recipe[bareos::server]',
+      'recipe[bareos::storage]',
+      'recipe[bareos::workstation]'
     ]
   end
 end
