@@ -1,9 +1,14 @@
 Director {
   Name = backup-dir
+  DIRport = <%= node['bareos']['dir_port'] %>
   QueryFile = "/usr/lib/bareos/scripts/query.sql"
-  Maximum Concurrent Jobs = 1
+  Maximum Concurrent Jobs = <%= node['bareos']['dir_max_concurrent_jobs'] %>
   Password = "<%= node['bareos']['dir_password'] %>"
   Messages = Daemon
+  Heartbeat Interval = 600
+  <% if node['bareos']['dir_subscription'] == false %>
+    Subscriptions = <%= node['bareos']['dir_subs'] %>
+  <% end %>
 }
 
 Job {
