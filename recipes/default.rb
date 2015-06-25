@@ -1,4 +1,4 @@
-#
+# encoding: UTF-8
 # Cookbook Name:: bareos
 # Recipe:: default
 #
@@ -36,4 +36,4 @@ else
   end
 end
 
-include_recipe 'bareos::client'
+include_recipe 'chef-bareos::client'

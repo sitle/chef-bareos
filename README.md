@@ -1,8 +1,8 @@
-# Bareos Cookbook
+# Chef-Bareos Cookbook
 
 [![Build Status](https://travis-ci.org/sitle/chef-bareos.svg?branch=master)](https://travis-ci.org/sitle/chef-bareos)
 
-This cookbook install and configure backup based on [bareos software](http://www.bareos.org/en/home.html)
+This cookbook installs and configures backups based on [bareos software](http://www.bareos.org/en/home.html)
 
 ### Requirements
 
@@ -49,14 +49,14 @@ This cookbook install and configure backup based on [bareos software](http://www
 
 ## Usage
 
-### Base role (install the bareos client backup by default)
+### bareos_base role (install the bareos client backup by default)
 
-You need to create a base role like this :
+You need to create a base role called ``bareos_base`` like this:
 
 ```
 {
-  "name": "base",
-  "description": "",
+  "name": "bareos_base",
+  "description": "Base Role for chef-bareos Cookbook, used in searches, throws down sources for installs",
   "json_class": "Chef::Role",
   "default_attributes": {
   },
@@ -70,16 +70,16 @@ You need to create a base role like this :
   }
 }
 ```
-This role have to be applied to all your node so they can be backed up by this cookbook.
+This role has to be applied to all your clients so they can be backed up by this cookbook.
 
-### backup-server role (install the bareos server backup)
+### bareos_server role (install the bareos server for backups)
 
-For the server you need a role named ```backup-server``` with for example :
+For the server, you need a role named ``bareos_server``, for example :
 
 ```
 {
-  "name": "backup-server",
-  "description": "Backup server role",
+  "name": "bareos_server",
+  "description": "Bareos Server Role",
   "json_class": "Chef::Role",
   "default_attributes": {
   },
@@ -87,7 +87,7 @@ For the server you need a role named ```backup-server``` with for example :
   },
   "chef_type": "role",
   "run_list": [
-    "role[base]",
+    "role[bareos_base]",
     "recipe[bareos::database]",
     "recipe[bareos::server]",
     "recipe[bareos::storage]",

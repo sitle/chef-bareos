@@ -1,4 +1,4 @@
-#
+# encoding: UTF-8
 # Cookbook Name:: bareos
 # Recipe:: server
 #
@@ -34,7 +34,7 @@ end
 if Chef::Config[:solo]
   bareos_clients = node['bareos']['clients']
 else
-  bareos_clients = search(:node, 'roles:base')
+  bareos_clients = search(:node, 'roles:bareos_base')
 end
 
 template '/etc/bareos/bareos-dir.conf' do

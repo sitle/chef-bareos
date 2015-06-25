@@ -1,4 +1,4 @@
-#
+# encoding: UTF-8
 # Cookbook Name:: bareos
 # Recipe:: database
 #
@@ -43,12 +43,24 @@ package "bareos-database-#{database}" do
   action :install
 end
 
+%w(postgresql postgresql-contrib).each do |psql_ubuntu|
+  package psql_ubuntu do
+    action :install
+    only_if { node['platform'] == 'ubuntu' && database == 'postgresql' }
+  end
+end
+
 if database == 'postgresql'
   execute 'initdb' do
-    command 'su postgres -c "initdb -D /var/lib/pgsql/data"'
+    case node['platform_family']
+    when 'debian'
+      command %(su postgres -c "usr/lib/postgresql/#{node['postgresql']['version']}/bin/initdb -D /var/lib/pgsql/data")
+    when 'rhel'
+      command 'su postgres -c "usr/bin/initdb -D /var/lib/pgsql/data"'
+    end
     action :run
     not_if { ::File.exist?('/var/lib/pgsql/data/postgresql.conf') }
-    not_if { ::File.exist?('/etc/postgresql/9.1/main/postgresql.conf') }
+    not_if { ::File.exist?("/etc/postgresql/#{node['postgresql']['version']}/main/postgresql.conf") }
   end
 
   service 'postgresql' do
@@ -57,20 +69,20 @@ if database == 'postgresql'
   end
 
   execute 'create_database' do
-    command 'su postgres -c "/usr/lib/bareos/scripts/create_bareos_database"'
-    creates '/tmp/something'
+    command 'su postgres -c "/usr/lib/bareos/scripts/create_bareos_database" && touch /usr/lib/bareos/.dbcreated'
+    creates '/usr/lib/bareos/.dbcreated'
     action :run
   end
 
   execute 'create_tables' do
-    command 'su postgres -c "/usr/lib/bareos/scripts/make_bareos_tables"'
-    creates '/tmp/something'
+    command 'su postgres -c "/usr/lib/bareos/scripts/make_bareos_tables" && touch /usr/lib/bareos/.dbtablescreated'
+    creates '/usr/lib/bareos/.dbtablescreated'
     action :run
   end
 
   execute 'grant_privileges' do
-    command 'su postgres -c "/usr/lib/bareos/scripts/grant_bareos_privileges"'
-    creates '/tmp/something'
+    command 'su postgres -c "/usr/lib/bareos/scripts/grant_bareos_privileges" && touch /usr/lib/bareos/.dbprivgranted'
+    creates '/usr/lib/bareos/.dbprivgranted'
     action :run
   end
 end
