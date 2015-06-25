@@ -1,6 +1,6 @@
 # Chef-Bareos Cookbook
 
-[![Build Status](https://travis-ci.org/sitle/chef-bareos.svg?branch=master)](https://travis-ci.org/gitbytes/chef-bareos)
+[![Build Status](https://travis-ci.org/sitle/chef-bareos.svg?branch=master)](https://travis-ci.org/sitle/chef-bareos)
 
 This cookbook installs and configures backups based on [bareos software](http://www.bareos.org/en/home.html)
 
