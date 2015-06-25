@@ -36,4 +36,4 @@ else
   end
 end
 
-include_recipe 'bareos::client'
+include_recipe 'chef-bareos::client'
