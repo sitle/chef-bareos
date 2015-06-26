@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-node.set_unless['bareos']['fd_password'] = secure_password
-node.set_unless['bareos']['mon_password'] = secure_password
+node.set_unless['bareos']['fd_password'] = random_password(length: 30, mode: :base64)
+node.set_unless['bareos']['mon_password'] = random_password(length: 30, mode: :base64)
 node.save unless Chef::Config[:solo]
 
 # Installation du File daemon BAREOS
