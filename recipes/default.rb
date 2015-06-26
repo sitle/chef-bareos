@@ -18,7 +18,7 @@
 #
 
 # Randomly generate ssh passwords for Bareos Daemons
-::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
+::Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
 
 # Bring in necessary sources for Bareos
 if platform_family?('rhel')
