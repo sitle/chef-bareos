@@ -8,13 +8,43 @@ This cookbook installs and configures backups based on [bareos software](http://
 
 ## Attributes
 
+### Database
+
 Attribute        | Description |Type | Default
 -----------------|-------------|-----|--------
-["bareos"]["database_type"] | Specify the database type | string | postgresql
-["bareos"]["dbdriver"] | Specify the database driver | string | postgresql
-["bareos"]["dbname"] | Specify the database default name | string | bareos
-["bareos"]["dbuser"] | Specify the db user name | string | bareos
+["bareos"]["database_type"] | Specify the database type | string | 'postgresql'
+["bareos"]["dbdriver"] | Specify the database driver | string | 'postgresql'
+["bareos"]["dbname"] | Specify the database default name | string | 'bareos'
+["bareos"]["dbuser"] | Specify the db user name | string | 'bareos'
 ["bareos"]["dbpassword"] | Specify the db password | string | none/blank
+
+### General
+
+Attribute        | Description |Type | Default
+-----------------|-------------|-----|--------
+['bareos']['url'] | Base URL for Bareos Repository | string | 'http://download.bareos.org/bareos/release'
+['bareos']['version'] | Software Version | string | 'latest'
+
+### Storage Daemon
+
+Attribute        | Description |Type | Default
+-----------------|-------------|-----|--------
+['bareos']['clients'] | Monitor Clients | array | none/blank
+['bareos']['tape'] | Enable Tape Features | boolean | false
+
+### Director
+
+Attribute        | Description |Type | Default
+-----------------|-------------|-----|--------
+['bareos']['dir_port'] | Network Port for Director | number | 9101
+['bareos']['dir_max_concurrent_jobs'] | Max concurrent jobs for director | string | '20'
+
+### Subscription Management (Director)
+
+Attribute        | Description |Type | Default
+-----------------|-------------|-----|--------
+['bareos']['dir_subscription'] | Support Subscription Status | boolean | nil/False
+['bareos']['dir_subs'] | Subscription Level/Count | number | nil
 
 ## Usage
 
