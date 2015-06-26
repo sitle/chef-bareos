@@ -1,4 +1,5 @@
-# Chef-Bareos Cookbook
+Chef-Bareos Cookbook
+====================
 
 [![Build Status](https://travis-ci.org/sitle/chef-bareos.svg?branch=master)](https://travis-ci.org/sitle/chef-bareos)
 
@@ -8,9 +9,9 @@ This cookbook installs and configures backups based on [Bareos](https://www.bare
 
 This cookbook has been tested with RHEL, Debian, Ubuntu systems. It should work with Chef 11 and Chef 12 configurations, if not please file a bug report and it will be addressed. The chef-bareos cookbook is still undergoing some feature additions so it is recommended to watch for changes to the README.
 
-## Attributes
+# Attributes
 
-### Database
+## Database
 
 Attribute        | Description |Type | Default
 -----------------|-------------|-----|--------
@@ -20,39 +21,38 @@ Attribute        | Description |Type | Default
 ["bareos"]["dbuser"] | Specify the db user name | string | 'bareos'
 ["bareos"]["dbpassword"] | Specify the db password | string | none/blank
 
-### General
+## General
 
 Attribute        | Description |Type | Default
 -----------------|-------------|-----|--------
 ['bareos']['url'] | Base URL for Bareos Repository | string | 'http://download.bareos.org/bareos/release'
 ['bareos']['version'] | Software Version | string | 'latest'
 
-### Storage Daemon
+## Storage Daemon
 
 Attribute        | Description |Type | Default
 -----------------|-------------|-----|--------
 ['bareos']['clients'] | Monitor Clients | array | none/blank
 ['bareos']['tape'] | Enable Tape Features | boolean | false
 
-### Director
+## Director
 
 Attribute        | Description |Type | Default
 -----------------|-------------|-----|--------
 ['bareos']['dir_port'] | Network Port for Director | number | 9101
 ['bareos']['dir_max_concurrent_jobs'] | Max concurrent jobs for director | number | 20
 
-### Subscription Management (Director)
+## Subscription Management (Director)
 
 Attribute        | Description |Type | Default
 -----------------|-------------|-----|--------
 ['bareos']['dir_subscription'] | Support Subscription Status | boolean | nil/False
 ['bareos']['dir_subs'] | Subscription Level/Count | number | nil
 
-## Basic Usage
+# Basic Usage
 
+## Roles
 
-ROLES
-=====
 ### bareos_base role (install the bareos client backup by default)
 
 You need to create a base role called ``bareos_base`` like this:
@@ -104,7 +104,7 @@ For the server, you need a role named ``bareos_server``, for example :
 
 You need to run chef-client on the backup server every time you add a new node. All job will be automatically create for you.
 
-## Contributing
+# Contributing
 
 1. Fork the repository on Github
 2. Create a named feature branch (like `add_component_x`)
