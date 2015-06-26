@@ -19,7 +19,7 @@ Attribute        | Description |Type | Default
 ["bareos"]["dbdriver"] | Specify the database driver | string | 'postgresql'
 ["bareos"]["dbname"] | Specify the database default name | string | 'bareos'
 ["bareos"]["dbuser"] | Specify the db user name | string | 'bareos'
-["bareos"]["dbpassword"] | Specify the db password | string | none/blank
+["bareos"]["dbpassword"] | Specify the db password | string | ''
 
 ## General
 
@@ -32,7 +32,7 @@ Attribute        | Description |Type | Default
 
 Attribute        | Description |Type | Default
 -----------------|-------------|-----|--------
-['bareos']['clients'] | Monitor Clients | array | none/blank
+['bareos']['clients'] | Monitor Clients | array | []
 ['bareos']['tape'] | Enable Tape Features | boolean | false
 
 ## Director
