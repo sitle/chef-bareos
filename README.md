@@ -7,46 +7,15 @@ This cookbook installs and configures backups based on [bareos software](http://
 ### Requirements
 
 ## Attributes
-```html
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["database_type"]</tt></td>
-    <td>string</td>
-    <td>Specify the database type.</td>
-    <td><tt>postgresql</tt></td>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["dbdriver"]</tt></td>
-    <td>string</td>
-    <td>Specify the database driver.</td>
-    <td><tt>postgresql</tt></td>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["dbname"]</tt></td>
-    <td>string</td>
-    <td>Specify the database default name.</td>
-    <td><tt>bareos</tt></td>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["dbuser"]</tt></td>
-    <td>string</td>
-    <td>Specify the db user name.</td>
-    <td><tt>bareos</tt></td>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["dbpassword"]</tt></td>
-    <td>string</td>
-    <td>Specify the db password.</td>
-    <td><tt>none</tt></td>
-  </tr>
-</table>
-```
+
+Attribute        | Description |Type | Default
+-----------------|-------------|-----|--------
+["bareos"]["database_type"] | Specify the database type | string | postgresql
+["bareos"]["dbdriver"] | Specify the database driver | string | postgresql
+["bareos"]["dbname"] | Specify the database default name | string | bareos
+["bareos"]["dbuser"] | Specify the db user name | string | bareos
+["bareos"]["dbpassword"] | Specify the db password | string | none/blank
+
 ## Usage
 
 ### bareos_base role (install the bareos client backup by default)
