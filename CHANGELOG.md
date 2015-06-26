@@ -3,6 +3,15 @@ Bareos Cookbook CHANGELOG
 
 This file is used to list changes made in each version of the bareos cookbook.
 
+
+0.1.3
+-----
+- Ian smith
+
+  - Updating README
+  - Updating CHANGELOG
+  - Updating metadata file
+
 0.1.2
 -----
 - Léonard TAVAE
