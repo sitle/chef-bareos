@@ -7,7 +7,7 @@ This cookbook installs and configures backups based on [bareos software](http://
 ### Requirements
 
 ## Attributes
-
+```html
 <table>
   <tr>
     <th>Key</th>
@@ -46,7 +46,7 @@ This cookbook installs and configures backups based on [bareos software](http://
     <td><tt>none</tt></td>
   </tr>
 </table>
-
+```
 ## Usage
 
 ### bareos_base role (install the bareos client backup by default)
