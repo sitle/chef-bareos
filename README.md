@@ -2,9 +2,11 @@
 
 [![Build Status](https://travis-ci.org/sitle/chef-bareos.svg?branch=master)](https://travis-ci.org/sitle/chef-bareos)
 
-This cookbook installs and configures backups based on [Bareos](https://www.bareos.org/en/)
+This cookbook installs and configures backups based on [Bareos](https://www.bareos.org/en/).
 
-### Requirements
+# Requirements
+
+This cookbook has been tested with RHEL, Debian, Ubuntu systems. It should work with Chef 11 and Chef 12 configurations, if not please file a bug report and it will be addressed. The chef-bareos cookbook is still undergoing some feature additions so it is recommended to watch for changes to the README.
 
 ## Attributes
 
@@ -46,8 +48,11 @@ Attribute        | Description |Type | Default
 ['bareos']['dir_subscription'] | Support Subscription Status | boolean | nil/False
 ['bareos']['dir_subs'] | Subscription Level/Count | number | nil
 
-## Usage
+## Basic Usage
 
+
+ROLES
+=====
 ### bareos_base role (install the bareos client backup by default)
 
 You need to create a base role called ``bareos_base`` like this:
@@ -131,3 +136,4 @@ limitations under the License.
 ### Authors 
 
 * Léonard TAVAE
+* Ian Smith
