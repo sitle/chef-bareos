@@ -1,7 +1,11 @@
 # Repository
 
 default['bareos']['url'] = 'http://download.bareos.org/bareos/release'
-default['bareos']['version'] = 'latest'
+
+
+# Used to have 'latest' as default, had potential update dangers
+# default['bareos']['version'] = 'latest' <--- Could be dangerous, ***CAUTION***
+default['bareos']['version'] = '14.2' # <--- Latest version as of 6-26-15
 
 if platform_family?('rhel')
   default['bareos']['yum_repository'] = 'bareos'
@@ -15,7 +19,7 @@ when 'ubuntu'
 when 'centos'
   default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/CentOS_6/"
   default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/CentOS_6/repodata/repomd.xml.key"
-else
+when 'debian'
   default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Debian_7.0/"
   default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Debian_7.0/Release.key"
 end
