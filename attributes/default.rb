@@ -2,7 +2,6 @@
 
 default['bareos']['url'] = 'http://download.bareos.org/bareos/release'
 
-
 # Used to have 'latest' as default, had potential update dangers
 # default['bareos']['version'] = 'latest' <--- Could be dangerous, ***CAUTION***
 default['bareos']['version'] = '14.2' # <--- Latest version as of 6-26-15
