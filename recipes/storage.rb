@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-node.set_unless['bareos']['sd_password'] = secure_password
+node.set_unless['bareos']['sd_password'] = random_password(length: 30, mode: :base64)
 node.save unless Chef::Config[:solo]
 
 # Installation du Storage daemon BAREOS
