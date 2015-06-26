@@ -1,16 +1,20 @@
 language: ruby
 rvm:
-  - 2.1.2
+  - 2.0.0
+  - 2.1.5
+  - 2.2.0
 
 script:
+  - bundle exec rspec --color --format progress
+  - bundle exec foodcritic -f any --tags ~FC003 --tags ~FC015 --tags ~FC023 .
   - bundle exec rubocop
-  - bundle exec foodcritic .
 
 notifications:
   email:
     recipients:
       - leonard.tavae@gmail.com
       - sysadmin@informatique.gov.pf
+      - ian.smith@pnnl.gov
     on_success: always
   webhooks:
     urls:

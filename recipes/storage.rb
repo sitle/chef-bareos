@@ -1,4 +1,4 @@
-#
+# encoding: UTF-8
 # Cookbook Name:: bareos
 # Recipe:: storage
 #
@@ -35,7 +35,7 @@ end
 if Chef::Config[:solo]
   bareos_clients = node['bareos']['clients']
 else
-  bareos_clients = search(:node, 'NOT role:backup-server')
+  bareos_clients = search(:node, 'NOT role:bareos_server')
 end
 
 template '/etc/bareos/bareos-sd.conf' do
