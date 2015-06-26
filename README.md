@@ -37,7 +37,7 @@ Attribute        | Description |Type | Default
 Attribute        | Description |Type | Default
 -----------------|-------------|-----|--------
 ['bareos']['dir_port'] | Network Port for Director | number | 9101
-['bareos']['dir_max_concurrent_jobs'] | Max concurrent jobs for director | string | '20'
+['bareos']['dir_max_concurrent_jobs'] | Max concurrent jobs for director | number | 20
 
 ### Subscription Management (Director)
 
