@@ -39,7 +39,7 @@ default['bareos']['host_full_pool'] = 'test-pool-Full'
 default['bareos']['host_incremental_pool'] = 'test-pool-Inc'
 default['bareos']['host_differential_pool'] = 'test-pool-Diff'
 
-# Tape
+# Storage Daemon
 default['bareos']['tape'] = false
 
 # Director
