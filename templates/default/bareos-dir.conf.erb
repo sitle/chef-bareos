@@ -106,11 +106,6 @@ Console {
   CommandACL = status, .status
 }
 
-##
-## Clients
-##
-##@/etc/bareos/clients/*.conf
-
 Messages {
   Name = Standard
   mailcommand = "/usr/sbin/bsmtp -h localhost -f \"\(Bareos\) \<%r\>\" -s \"Bareos: %t %e of %c %l\" %r"
