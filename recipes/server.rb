@@ -47,10 +47,34 @@ template '/etc/bareos/bareos-dir.conf' do
     db_name: node['bareos']['dbname'],
     db_user: node['bareos']['dbuser'],
     db_password: node['bareos']['dbpassword'],
-    bareos_clients: bareos_clients
   )
-
   notifies :reload, 'service[bareos-dir]', :immediately
+end
+
+# Handle seperate host config files
+unless Chef::Config[:solo]
+
+  # Create hosts direcotry for host configs
+  directory '/etc/bareos/bareos-dir.d/hosts/' do
+    owner 'root'
+    group 'root'
+    mode '0755'
+    action :create
+  end
+
+  # Populate host config files based on hosts with bareos_base role in runlist
+  bareos_clients.each do
+    template "/etc/bareos/bareos-dir.d/hosts/#{node['hostname']}.conf" do
+      source 'host.conf.erb'
+      owner 'root'
+      group 'root'
+      mode '0644'
+      variables(
+        bareos_clients: bareos_clients
+      )
+      notifies :reload, 'service[bareos-dir]', :immediately
+    end
+  end
 end
 
 service 'bareos-dir' do
