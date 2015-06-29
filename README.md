@@ -34,6 +34,7 @@ Attribute        | Description |Type | Default
 -----------------|-------------|-----|--------
 ['bareos']['clients'] | Monitor Clients | array | []
 ['bareos']['tape'] | Enable Tape Features | boolean | false
+['bareos']['host_pools'] | Seperate Host Pools | boolean | false
 
 ## Director
 
