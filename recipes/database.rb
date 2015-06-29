@@ -23,51 +23,37 @@ end
 
 database = node['bareos']['database_type']
 
-if platform_family?('rhel')
-  database_client_name = database.to_s
-  database_server_name = "#{database}-server"
-else
-  database_client_name = "#{database}-client"
-  database_server_name = database.to_s
-end
+case database
+when 'postgresql'
+  include_recipe 'postgresql::server'
 
-package database_client_name.to_s do
-  action :install
-end
-
-package database_server_name.to_s do
-  action :install
-end
-
-package "bareos-database-#{database}" do
-  action :install
-end
-
-%w(postgresql postgresql-contrib).each do |psql_ubuntu|
-  package psql_ubuntu do
+  package "bareos-database-#{database}" do
     action :install
-    only_if { node['platform'] == 'ubuntu' && database == 'postgresql' }
+  end
+
+else
+  if platform_family?('rhel')
+    database_client_name = database.to_s
+    database_server_name = "#{database}-server"
+  else
+    database_client_name = "#{database}-client"
+    database_server_name = database.to_s
+  end
+  
+  package database_client_name.to_s do
+    action :install
+  end
+  
+  package database_server_name.to_s do
+    action :install
+  end
+  
+  package "bareos-database-#{database}" do
+    action :install
   end
 end
 
 if database == 'postgresql'
-  execute 'initdb' do
-    case node['platform_family']
-    when 'debian'
-      command %(su postgres -c "usr/lib/postgresql/#{node['postgresql']['version']}/bin/initdb -D /var/lib/pgsql/data")
-    when 'rhel'
-      command 'su postgres -c "usr/bin/initdb -D /var/lib/pgsql/data"'
-    end
-    action :run
-    not_if { ::File.exist?('/var/lib/pgsql/data/postgresql.conf') }
-    not_if { ::File.exist?("/etc/postgresql/#{node['postgresql']['version']}/main/postgresql.conf") }
-  end
-
-  service 'postgresql' do
-    supports status: true, restart: true, reload: true
-    action [:enable, :start]
-  end
-
   execute 'create_database' do
     command 'su postgres -c "/usr/lib/bareos/scripts/create_bareos_database" && touch /usr/lib/bareos/.dbcreated'
     creates '/usr/lib/bareos/.dbcreated'
