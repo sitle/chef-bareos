@@ -29,12 +29,21 @@ Attribute        | Description |Type | Default
 ['bareos']['version'] | Software Version | string | 'latest'
 
 ## Storage Daemon
+Attribute        | Description |Type | Default
+-----------------|-------------|-----|--------
+['bareos']['tape'] | Enable Tape Features | boolean | false
+
+## Clients/Hosts
 
 Attribute        | Description |Type | Default
 -----------------|-------------|-----|--------
 ['bareos']['clients'] | Monitor Clients | array | []
-['bareos']['tape'] | Enable Tape Features | boolean | false
+['bareos']['enable_vfulls'] | Activate basic Virtual Full Backups | boolean | false
 ['bareos']['host_pools'] | Seperate Host Pools | boolean | false
+['bareos']['custom_host_pools'] | Custom Host Pools | boolean | nil
+['bareos']['host_full_pool'] | Custom Full Pool | string | 'test-pool-Full'
+['bareos']['host_incremental_pool'] | Custom Incremental Pool | string | 'test-pool-Inc'
+['bareos']['host_differential_pool'] | Custom Differential Pool | string | 'test-pool-Diff'
 
 ## Director
 
