@@ -24,3 +24,11 @@ suites:
     run_list:
       - role[bareos_server]
     attributes:
+
+  - name: server-host-pools
+    run_list:
+      - role[bareos_server]
+    attributes:
+      bareos:
+        host_pools: true
+        custom_host_pools: true
