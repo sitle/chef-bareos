@@ -13,7 +13,7 @@ Director {
 
 Job {
   Name = "<%= node['hostname'] %>-save-catalog"
-  JobDefs = "<%= node['hostname'] %>-job"
+  JobDefs = "<%= node['hostname'] %>-Job"
   Level = Full
   FileSet="Catalog"
   Schedule = "WeeklyCycleAfterBackup"
@@ -84,48 +84,6 @@ FileSet {
   }
 }
 
-<% @bareos_clients.each do |client| %>
-Client {
-  Name = <%= client['fqdn'] %>
-  Address = <%= client['fqdn'] %>
-  Password = "<%= client['bareos']['fd_password'] %>"          # password for FileDaemon
-  File Retention = 30 days
-  Job Retention = 6 months
-  AutoPrune = no
-}
-
-JobDefs {
-  Name = "<%= client['hostname'] %>-job"
-  Type = Backup
-  Level = Incremental
-  Client = <%= client[:fqdn] %>
-  FileSet = "Full Set"
-  Schedule = "WeeklyCycle"
-  Storage = File
-  Messages = Standard
-  Pool = File
-  Priority = 10
-  Write Bootstrap = "/var/lib/bareos/%c.bsr"
-}
-
-Job {
-  Name = "<%= client['hostname'] %>-save"
-  JobDefs = "<%= client['hostname'] %>-job"
-}
-
-Job {
-  Name = "<%= client['hostname'] %>-restore"
-  Type = Restore
-  Client = <%= client['fqdn'] %>
-  FileSet="Full Set"
-  Storage = File
-  Pool = Default
-  Messages = Standard
-  Where = /
-}
-
-<% end %>
-
 Storage {
   Name = File
   Address = <%= node['fqdn'] %>                # N.B. Use a fully qualified name here
@@ -195,3 +153,9 @@ Pool {
   Pool Type = Backup
 }
 
+##########################################################################
+# Other Stuff
+##########################################################################
+
+#working####################
+@|"sh -c 'for f in /etc/bareos/bareos-dir.d/hosts/*.conf ; do echo @${f} ; done'"
