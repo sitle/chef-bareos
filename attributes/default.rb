@@ -32,6 +32,7 @@ default['bareos']['dbpassword'] = ''
 
 # Clients list
 default['bareos']['clients'] = []
+default['bareos']['host_pools'] = false
 
 # Tape
 default['bareos']['tape'] = false
