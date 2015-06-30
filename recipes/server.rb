@@ -46,7 +46,7 @@ template '/etc/bareos/bareos-dir.conf' do
     db_driver: node['bareos']['dbdriver'],
     db_name: node['bareos']['dbname'],
     db_user: node['bareos']['dbuser'],
-    db_password: node['bareos']['dbpassword'],
+    db_password: node['bareos']['dbpassword']
   )
   notifies :reload, 'service[bareos-dir]', :immediately
 end
