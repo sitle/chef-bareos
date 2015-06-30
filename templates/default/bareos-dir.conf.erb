@@ -3,7 +3,7 @@
 # Local modifications will be overwritten.
 
 Director {
-  Name = <%= client['hostname'] %>-dir
+  Name = <%= node['hostname'] %>-dir
   DIRport = <%= node['bareos']['dir_port'] %>
   QueryFile = "/usr/lib/bareos/scripts/query.sql"
   Maximum Concurrent Jobs = <%= node['bareos']['dir_max_concurrent_jobs'] %>
