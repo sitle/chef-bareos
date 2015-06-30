@@ -22,6 +22,7 @@ This file is used to list changes made in each version of the bareos cookbook.
     * Adding feature for host based custom pools based on true/false attribute
     * Adding ability to fill in a block for virtual-full backup logic (not complete yet)
   - Revamping storage.rb and storage template to what I am thinking was meant to happen originally
+  - Adding new kitchen suite and tests to verify host pools work
   - Bugfixes
 
 0.1.3
