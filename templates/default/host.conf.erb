@@ -25,19 +25,19 @@ JobDefs {
   Messages = Standard
   Pool = Scratch
   # Each client can have its own Pool to help with certain cases
-  <% if node['bareos']['host_pools'] == true && node['bareos']['custom_host_pools'] == true %>
+<% if node['bareos']['host_pools'] == true && node['bareos']['custom_host_pools'] == true %>
   FullBackupPool = <%= node['bareos']['host_full_pool'] %>
   IncrementalBackupPool = <%= node['bareos']['host_incremental_pool'] %>
   DifferentialBackupPool = <%= node['bareos']['host_differential_pool'] %>
-  <% elsif node['bareos']['host_pools'] == true %>
+<% elsif node['bareos']['host_pools'] == true %>
   FullBackupPool = <%= node['hostname'] %>-Full
   IncrementalBackupPool = <%= node['hostname'] %>-Inc
   DifferentialBackupPool = <%= node['hostname'] %>-Diff
-  <% else %>
+<% else %>
   # FullBackupPool = <%= node['bareos']['host_full_pool'] %>
   # IncrementalBackupPool = <%= node['bareos']['host_incremental_pool'] %>
   # DifferentialBackupPool = <%= node['bareos']['host_differential_pool'] %>
-  <% end %>
+<% end %>
   Priority = 10
   Write Bootstrap = "/var/lib/bareos/%c.bsr"
 }
@@ -55,29 +55,31 @@ Job {
   Client = <%= node['hostname'] %>-fd
   FileSet= "Full Set"
   Storage = File
-  <% if node['bareos']['host_pools'] == true && node['bareos']['custom_host_pools'] == true %>
+<% if node['bareos']['host_pools'] == true && node['bareos']['custom_host_pools'] == true %>
   Pool = <%= node['bareos']['host_full_pool'] %>
-  <% elsif node['bareos']['host_pools'] == true %>
+<% elsif node['bareos']['host_pools'] == true %>
   Pool = <%= node['hostname'] %>-Full
-  <% end %>
+<% else %>
+  Pool = Default
+<% end %>
   Messages = Standard
   Where = /tmp/<%= node['hostname'] %>_restored/
 }
 
-  <% if node['bareos']['enable_vfulls'] == true %>
+<% if node['bareos']['enable_vfulls'] == true %>
 # VirtualFull Job
   <%# Need some logic here to determine whether to use %>
   <%# VirtualFull backups or not %>
-  <% end %>
+<% end %>
 
-  <% if node['bareos']['host_pools'] == true %>
+<% if node['bareos']['host_pools'] == true %>
 # Individual host pools for better storage utilization
 Pool {
-    <% if node['bareos']['custom_host_pools'] == true %>
+  <% if node['bareos']['custom_host_pools'] == true %>
   Name = <%= node['bareos']['host_full_pool'] %>
-    <% else %>
+  <% else %>
   Name = <%= node['hostname'] %>-Full
-    <% end %>
+  <% end %>
   Pool Type = Backup
   Recycle = yes
   AutoPrune = yes
@@ -85,11 +87,11 @@ Pool {
 }
 
 Pool {
-    <% if node['bareos']['custom_host_pools'] == true %>
+  <% if node['bareos']['custom_host_pools'] == true %>
   Name = <%= node['bareos']['host_incremental_pool'] %>
-    <% else %>
+  <% else %>
   Name = <%= node['hostname'] %>-Inc
-    <% end %>
+  <% end %>
   Pool Type = Backup
   Recycle = yes
   AutoPrune = yes
@@ -97,15 +99,14 @@ Pool {
 }
 
 Pool {
-    <% if node['bareos']['custom_host_pools'] == true %>
+  <% if node['bareos']['custom_host_pools'] == true %>
   Name = <%= node['bareos']['host_differential_pool'] %>
-    <% else %>
+  <% else %>
   Name = <%= node['hostname'] %>-Diff
-    <% end %>
+  <% end %>
   Pool Type = Backup
   Recycle = yes
   AutoPrune = yes
   Volume Retention = 3 months
 }
-  <% end %>
 <% end %>
