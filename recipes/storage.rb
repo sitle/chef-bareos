@@ -33,9 +33,9 @@ end
 # end
 
 if Chef::Config[:solo]
-  bareos_clients = node['bareos']['clients']
+  bareos_server = node['bareos']['server']
 else
-  bareos_clients = search(:node, 'NOT role:bareos_server')
+  bareos_server = search(:node, 'role:bareos_server')
 end
 
 template '/etc/bareos/bareos-sd.conf' do
@@ -44,7 +44,7 @@ template '/etc/bareos/bareos-sd.conf' do
   owner 'bareos'
   group 'bareos'
   variables(
-    bareos_clients: bareos_clients
+    bareos_server: bareos_server
   )
   notifies :reload, 'service[bareos-dir]', :immediately
 end
