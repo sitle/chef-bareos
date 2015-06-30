@@ -39,15 +39,15 @@ else
     database_client_name = "#{database}-client"
     database_server_name = database.to_s
   end
-  
+
   package database_client_name.to_s do
     action :install
   end
-  
+
   package database_server_name.to_s do
     action :install
   end
-  
+
   package "bareos-database-#{database}" do
     action :install
   end
