@@ -32,9 +32,9 @@ default['bareos']['dbpassword'] = ''
 
 # Clients list
 default['bareos']['clients'] = []
-default['bareos']['enable_vfulls'] == false # Needs more work within host template
+default['bareos']['enable_vfulls'] = false # Needs more work within host template
 default['bareos']['host_pools'] = false
-default['bareos']['custom_host_pools'] = nil
+default['bareos']['custom_host_pools'] = false
 default['bareos']['host_full_pool'] = 'test-pool-Full'
 default['bareos']['host_incremental_pool'] = 'test-pool-Inc'
 default['bareos']['host_differential_pool'] = 'test-pool-Diff'
