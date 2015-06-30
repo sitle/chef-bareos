@@ -27,11 +27,20 @@ package 'bareos-filedaemon' do
   action :install
 end
 
+if Chef::Config[:solo]
+  bareos_server = node['bareos']['server']
+else
+  bareos_server = search(:node, 'role:bareos_server')
+end
+
 template '/etc/bareos/bareos-fd.conf' do
   source 'bareos-fd.conf.erb'
   owner 'root'
   group 'bareos'
   mode '0640'
+  variables(
+    bareos_server: bareos_server
+  )
   notifies :reload, 'service[bareos-fd]', :immediately
 end
 
