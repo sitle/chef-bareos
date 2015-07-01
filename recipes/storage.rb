@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-node.set_unless['bareos']['sd_password'] = secure_password
+node.set_unless['bareos']['sd_password'] = random_password(length: 30, mode: :base64)
 node.save unless Chef::Config[:solo]
 
 # Installation du Storage daemon BAREOS
@@ -33,9 +33,9 @@ end
 # end
 
 if Chef::Config[:solo]
-  bareos_clients = node['bareos']['clients']
+  bareos_server = node['bareos']['server']
 else
-  bareos_clients = search(:node, 'NOT role:bareos_server')
+  bareos_server = search(:node, 'role:bareos_server')
 end
 
 template '/etc/bareos/bareos-sd.conf' do
@@ -44,7 +44,7 @@ template '/etc/bareos/bareos-sd.conf' do
   owner 'bareos'
   group 'bareos'
   variables(
-    bareos_clients: bareos_clients
+    bareos_server: bareos_server
   )
   notifies :reload, 'service[bareos-dir]', :immediately
 end

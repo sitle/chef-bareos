@@ -17,10 +17,10 @@
 # limitations under the License.
 #
 
-include_recipe 'openssl::default'
+# Randomly generate ssh passwords for Bareos Daemons
+::Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
 
-::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
-
+# Bring in necessary sources for Bareos
 if platform_family?('rhel')
   yum_repository node['bareos']['yum_repository'] do
     description node['bareos']['description']

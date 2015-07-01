@@ -1,53 +1,67 @@
-# Chef-Bareos Cookbook
+Chef-Bareos Cookbook
+====================
 
 [![Build Status](https://travis-ci.org/sitle/chef-bareos.svg?branch=master)](https://travis-ci.org/sitle/chef-bareos)
 
-This cookbook installs and configures backups based on [bareos software](http://www.bareos.org/en/home.html)
+This cookbook installs and configures backups based on [Bareos](https://www.bareos.org/en/).
 
-### Requirements
+# Requirements
 
-## Attributes
+This cookbook has been tested with RHEL, Debian, Ubuntu systems. It should work with Chef 11 and Chef 12 configurations, if not please file a bug report and it will be addressed. The chef-bareos cookbook is still undergoing some feature additions so it is recommended to watch for changes to the README.
 
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["database_type"]</tt></td>
-    <td>string</td>
-    <td>Specify the database type.</td>
-    <td><tt>postgresql</tt></td>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["dbdriver"]</tt></td>
-    <td>string</td>
-    <td>Specify the database driver.</td>
-    <td><tt>postgresql</tt></td>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["dbname"]</tt></td>
-    <td>string</td>
-    <td>Specify the database default name.</td>
-    <td><tt>bareos</tt></td>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["dbuser"]</tt></td>
-    <td>string</td>
-    <td>Specify the db user name.</td>
-    <td><tt>bareos</tt></td>
-  </tr>
-  <tr>
-    <td><tt>["bareos"]["dbpassword"]</tt></td>
-    <td>string</td>
-    <td>Specify the db password.</td>
-    <td><tt>none</tt></td>
-  </tr>
-</table>
+# Attributes
 
-## Usage
+## Database
+
+Attribute        | Description |Type | Default
+-----------------|-------------|-----|--------
+["bareos"]["database_type"] | Specify the database type | string | 'postgresql'
+["bareos"]["dbdriver"] | Specify the database driver | string | 'postgresql'
+["bareos"]["dbname"] | Specify the database default name | string | 'bareos'
+["bareos"]["dbuser"] | Specify the db user name | string | 'bareos'
+["bareos"]["dbpassword"] | Specify the db password | string | ''
+
+## General
+
+Attribute        | Description |Type | Default
+-----------------|-------------|-----|--------
+['bareos']['url'] | Base URL for Bareos Repository | string | 'http://download.bareos.org/bareos/release'
+['bareos']['version'] | Software Version | string | 'latest'
+
+## Storage Daemon
+Attribute        | Description |Type | Default
+-----------------|-------------|-----|--------
+['bareos']['tape'] | Enable Tape Features | boolean | false
+
+## Clients/Hosts
+
+Attribute        | Description |Type | Default
+-----------------|-------------|-----|--------
+['bareos']['clients'] | Monitor Clients | array | []
+['bareos']['enable_vfulls'] | Activate basic Virtual Full Backups | boolean | false
+['bareos']['host_pools'] | Seperate Host Pools | boolean | false
+['bareos']['custom_host_pools'] | Custom Host Pools | boolean | nil
+['bareos']['host_full_pool'] | Custom Full Pool | string | 'test-pool-Full'
+['bareos']['host_incremental_pool'] | Custom Incremental Pool | string | 'test-pool-Inc'
+['bareos']['host_differential_pool'] | Custom Differential Pool | string | 'test-pool-Diff'
+
+## Director
+
+Attribute        | Description |Type | Default
+-----------------|-------------|-----|--------
+['bareos']['dir_port'] | Network Port for Director | number | 9101
+['bareos']['dir_max_concurrent_jobs'] | Max concurrent jobs for director | number | 20
+
+## Subscription Management (Director)
+
+Attribute        | Description |Type | Default
+-----------------|-------------|-----|--------
+['bareos']['dir_subscription'] | Support Subscription Status | boolean | nil/False
+['bareos']['dir_subs'] | Subscription Level/Count | number | nil
+
+# Basic Usage
+
+## Roles
 
 ### bareos_base role (install the bareos client backup by default)
 
@@ -100,7 +114,7 @@ For the server, you need a role named ``bareos_server``, for example :
 
 You need to run chef-client on the backup server every time you add a new node. All job will be automatically create for you.
 
-## Contributing
+# Contributing
 
 1. Fork the repository on Github
 2. Create a named feature branch (like `add_component_x`)
@@ -132,3 +146,4 @@ limitations under the License.
 ### Authors 
 
 * Léonard TAVAE
+* Ian Smith
