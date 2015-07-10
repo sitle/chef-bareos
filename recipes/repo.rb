@@ -1,6 +1,6 @@
 # encoding: UTF-8
 # Cookbook Name:: bareos
-# Recipe:: default
+# Recipe:: repo
 #
 # Copyright (C) 2014 Leonard TAVAE
 #
@@ -17,8 +17,17 @@
 # limitations under the License.
 #
 
-# Randomly generate ssh passwords for Bareos Daemons
-::Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
-
-include_recipe 'chef-bareos::repo'
-include_recipe 'chef-bareos::client'
+if platform_family?('rhel')
+  yum_repository node['bareos']['yum_repository'] do
+    description node['bareos']['description']
+    baseurl node['bareos']['baseurl']
+    gpgkey node['bareos']['gpgkey']
+    action :create
+  end
+else
+  apt_repository 'bareos' do
+    uri node['bareos']['baseurl']
+    components ['/']
+    key node['bareos']['gpgkey']
+  end
+end
