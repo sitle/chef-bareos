@@ -49,8 +49,8 @@ template '/etc/bareos/bareos-sd.conf' do
   notifies :run, 'execute[reload-dir]', :immediately
 end
 
-execute "reload-sd" do
-  command "bareos-sd -t -c /etc/bareos/bareos-sd.conf"
+execute 'reload-sd' do
+  command 'bareos-sd -t -c /etc/bareos/bareos-sd.conf'
   action :nothing
   notifies :reload, 'service[bareos-sd]', :delayed
 end

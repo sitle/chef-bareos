@@ -78,8 +78,8 @@ unless Chef::Config[:solo]
   end
 end
 
-execute "reload-dir" do
-  command "bareos-dir -t -c /etc/bareos/bareos-dir.conf"
+execute 'reload-dir' do
+  command 'bareos-dir -t -c /etc/bareos/bareos-dir.conf'
   action :nothing
   notifies :reload, 'service[bareos-dir]', :delayed
 end
