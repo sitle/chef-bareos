@@ -29,6 +29,7 @@ default['bareos']['dbdriver'] = 'postgresql'
 default['bareos']['dbname'] = 'bareos'
 default['bareos']['dbuser'] = 'bareos'
 default['bareos']['dbpassword'] = ''
+default['bareos']['dbaddress'] = '127.0.0.1'
 
 # Clients list
 default['bareos']['clients'] = []
