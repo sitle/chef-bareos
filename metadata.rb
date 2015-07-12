@@ -11,6 +11,7 @@ supports 'debian', '>= 7.0'
 supports 'ubuntu', '>= 12.04'
 
 depends 'apt'
+depends 'database'
 depends 'openssl'
 depends 'postgresql'
 depends 'yum'
