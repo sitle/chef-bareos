@@ -25,6 +25,8 @@ suites:
     run_list:
       - role[bareos_server]
     attributes:
+      bareos:
+        dbpassword: 'ChangeMe1234#'
 
   - name: server-host-pools
     run_list:
