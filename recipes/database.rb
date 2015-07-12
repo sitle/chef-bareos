@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-
 package 'bareos-database-tools' do
   action :install
 end
@@ -90,7 +89,7 @@ if database == 'postgresql'
   postgresql_database_user 'bareos' do
     connection postgresql_connection_info
     database_name 'bareos'
-    privileges [:all]    
+    privileges [:all]
     action :grant
   end
 
