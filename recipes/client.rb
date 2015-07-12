@@ -41,7 +41,13 @@ template '/etc/bareos/bareos-fd.conf' do
   variables(
     bareos_server: bareos_server
   )
-  notifies :reload, 'service[bareos-fd]', :immediately
+  notifies :run, 'execute[reload-fd]', :immediately
+end
+
+execute "reload-fd" do
+  command "bareos-fd -t -c /etc/bareos/bareos-fd.conf"
+  action :nothing
+  notifies :reload, 'service[bareos-fd]', :delayed
 end
 
 service 'bareos-fd' do
