@@ -55,42 +55,21 @@ end
 
 if database == 'postgresql'
 
-  include_recipe 'database::postgresql'
-
-  postgresql_connection_info = {
-    :host => '127.0.0.1',
-    :port => node['postgresql']['config']['port'],
-    :username => 'postgres',
-    :password => node['postgresql']['password']['postgres']
-  }
-
-  postgresql_database_user 'bareos' do
-    connection postgresql_connection_info
-    password node['bareos']['dbpassword']
-    action :create
-  end
-
-  postgresql_database 'bareos' do
-    connection postgresql_connection_info
-    template 'template0'
-    encoding 'SQL_ASCII'
-    collation 'C'
-    tablespace 'DEFAULT'
-    connection_limit '-1'
-    owner 'bareos'
-    action :create
-  end
-
-  postgresql_database_user 'bareos' do
-    connection postgresql_connection_info
-    database_name 'bareos'
-    privileges [:all]
-    action :grant
+  execute 'create_database' do
+    command 'su postgres -c "/usr/lib/bareos/scripts/create_bareos_database" && touch /usr/lib/bareos/.dbcreated'
+    creates '/usr/lib/bareos/.dbcreated'
+    action :run
   end
 
   execute 'create_tables' do
-    command 'su - bareos -s /bin/sh -c "/usr/lib/bareos/scripts/make_bareos_tables" && touch /usr/lib/bareos/.dbtablescreated'
+    command 'su postgres -s /bin/bash -c "/usr/lib/bareos/scripts/make_bareos_tables" && touch /usr/lib/bareos/.dbtablescreated'
     creates '/usr/lib/bareos/.dbtablescreated'
+    action :run
+  end
+
+  execute 'grant_privileges' do
+    command 'su postgres -s /bin/bash -c "/usr/lib/bareos/scripts/grant_bareos_privileges" && touch /usr/lib/bareos/.dbprivgranted'
+    creates '/usr/lib/bareos/.dbprivgranted'
     action :run
   end
 end
