@@ -55,11 +55,6 @@ end
 
 if database == 'postgresql'
 
-  user 'bareos' do
-    shell '/bin/sh'
-    action :modify
-  end
-
   include_recipe 'database::postgresql'
 
   postgresql_connection_info = {
@@ -94,7 +89,7 @@ if database == 'postgresql'
   end
 
   execute 'create_tables' do
-    command 'su bareos -c "/usr/lib/bareos/scripts/make_bareos_tables" && touch /usr/lib/bareos/.dbtablescreated'
+    command 'su - bareos -s /bin/sh -c "/usr/lib/bareos/scripts/make_bareos_tables" && touch /usr/lib/bareos/.dbtablescreated'
     creates '/usr/lib/bareos/.dbtablescreated'
     action :run
   end
