@@ -102,6 +102,9 @@ Catalog {
   dbname = "<%= @db_name %>"
   dbuser = "<%= @db_user %>"
   dbpassword = "<%= @db_password %>"
+<% if @db_address != nil %>
+  dbaddress = "<%= @db_address %>"
+<% end %>
 }
 
 Console {

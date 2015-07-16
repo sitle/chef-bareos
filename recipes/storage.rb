@@ -46,7 +46,13 @@ template '/etc/bareos/bareos-sd.conf' do
   variables(
     bareos_server: bareos_server
   )
-  notifies :reload, 'service[bareos-dir]', :immediately
+  notifies :run, 'execute[restart-sd]', :immediately
+end
+
+execute 'restart-sd' do
+  command 'bareos-sd -t -c /etc/bareos/bareos-sd.conf'
+  action :nothing
+  notifies :restart, 'service[bareos-sd]', :delayed
 end
 
 service 'bareos-sd' do
