@@ -21,6 +21,7 @@ Attribute        | Description |Type | Default
 ["bareos"]["dbuser"] | Specify the db user name | string | 'bareos'
 ["bareos"]["dbpassword"] | Specify the db password | string | ''
 ["bareos"]["dbaddress"] | Specify the db address | string | 
+
 ## General
 
 Attribute        | Description |Type | Default
