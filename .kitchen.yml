@@ -4,16 +4,21 @@ driver:
 
 provisioner:
   name: chef_zero
-  require_chef_omnibus: true
+  require_chef_omnibus: latest
 
 platforms:
   - name: debian-7.8
+
+  - name: ubuntu-12.04
     run_list:
       - recipe[apt]
+
   - name: ubuntu-14.04
     run_list:
       - recipe[apt]
-  - name: centos-6.6
+
+  - name: centos-6.7
+
   - name: centos-7.0
 
 data_bags_path:    test/integration/data_bags/
@@ -21,14 +26,12 @@ roles_path:        test/integration/roles/
 environments_path: test/integration/environments
 
 suites:
-  - name: server
+  - name: aio-server
     run_list:
       - role[bareos_server]
     attributes:
-#      bareos:
-#        dbpassword: 'ChangeMe1234#'
-#        dbaddress: '127.0.0.1'
-  - name: server-host-pools
+
+  - name: aio-server-pools
     run_list:
       - role[bareos_server]
     attributes:
