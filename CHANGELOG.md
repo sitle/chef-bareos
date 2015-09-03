@@ -25,6 +25,20 @@ This file is used to list changes made in each version of the bareos cookbook.
   - Adding new kitchen suite and tests to verify host pools work
   - Bugfixes
 
+0.1.4
+-----
+- Ian smith
+
+  - Updating README
+  - Revamping server.rb recipe to better utilize the bareos-dir.d directory
+    * Moving ALL host config files to the bareos-dir.d/hosts/ directory
+    * Revamping director config and moving host bits to seperate host.conf.erb template
+    * Adding feature for host based custom pools based on true/false attribute
+    * Adding ability to fill in a block for virtual-full backup logic (not complete yet)
+  - Revamping storage.rb and storage template to what I am thinking was meant to happen originally
+  - Adding new kitchen suite and tests to verify host pools work
+  - Bugfixes
+
 0.1.3
 -----
 - Ian smith
