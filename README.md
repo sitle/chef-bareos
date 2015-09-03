@@ -20,6 +20,7 @@ Attribute        | Description |Type | Default
 ["bareos"]["dbname"] | Specify the database default name | string | 'bareos'
 ["bareos"]["dbuser"] | Specify the db user name | string | 'bareos'
 ["bareos"]["dbpassword"] | Specify the db password | string | ''
+["bareos"]["dbaddress"] | Specify the db address | string | 
 
 ## General
 
@@ -102,8 +103,8 @@ For the server, you need a role named ``bareos_server``, for example :
   "chef_type": "role",
   "run_list": [
     "role[bareos_base]",
-    "recipe[bareos::database]",
     "recipe[bareos::server]",
+    "recipe[bareos::database]",
     "recipe[bareos::storage]",
     "recipe[bareos::workstation]"
   ],
@@ -147,3 +148,4 @@ limitations under the License.
 
 * Léonard TAVAE
 * Ian Smith
+* Gerhard Sulzberger

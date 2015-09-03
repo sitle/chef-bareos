@@ -46,9 +46,10 @@ template '/etc/bareos/bareos-dir.conf' do
     db_driver: node['bareos']['dbdriver'],
     db_name: node['bareos']['dbname'],
     db_user: node['bareos']['dbuser'],
-    db_password: node['bareos']['dbpassword']
+    db_password: node['bareos']['dbpassword'],
+    db_address: node['bareos']['dbaddress']
   )
-  notifies :reload, 'service[bareos-dir]', :immediately
+  notifies :run, 'execute[reload-dir]', :delayed
 end
 
 # Handle seperate host config files
@@ -66,15 +67,21 @@ unless Chef::Config[:solo]
   bareos_clients.each do
     template "/etc/bareos/bareos-dir.d/hosts/#{node['hostname']}.conf" do
       source 'host.conf.erb'
-      owner 'root'
-      group 'root'
-      mode '0644'
+      owner 'bareos'
+      group 'bareos'
+      mode '0640'
       variables(
         bareos_clients: bareos_clients
       )
-      notifies :reload, 'service[bareos-dir]', :immediately
+      notifies :run, 'execute[reload-dir]', :delayed
     end
   end
+end
+
+execute 'reload-dir' do
+  command 'su - bareos -s /bin/sh -c "/usr/sbin/bareos-dir -t -c /etc/bareos/bareos-dir.conf"'
+  action :nothing
+  notifies :reload, 'service[bareos-dir]', :delayed
 end
 
 service 'bareos-dir' do
