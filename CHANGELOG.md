@@ -3,6 +3,13 @@ Bareos Cookbook CHANGELOG
 
 This file is used to list changes made in each version of the bareos cookbook.
 
+0.1.4
+-----
+- Ian smith
+
+  - Updating Kitchen Tests and ChefSpec Configs to match for verifying
+    * Addressing race condition in ChefSpec tests where debian was taking
+      longer than expected to start the director
 
 0.1.3
 -----
