@@ -15,18 +15,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
+# Setup Storage Daemon Random Passwords
 node.set_unless['bareos']['sd_password'] = random_password(length: 30, mode: :base64)
 node.save unless Chef::Config[:solo]
 
-# Installation du Storage daemon BAREOS
-
+# Install BAREOS Storage Daemon Packages
 package 'bareos-storage' do
   action :install
 end
 
-# if node['bareos']['tape'] == 'true'
+# if node['bareos']['storage']['tape'] == 'true'
 # package  "bareos-storage-tape" do
 #   action :install
 #  end
@@ -46,7 +45,15 @@ template '/etc/bareos/bareos-sd.conf' do
   variables(
     bareos_server: bareos_server
   )
-  notifies :run, 'execute[restart-sd]', :immediately
+  notifies :run, 'execute[restart-sd]', :delayed
+end
+
+directory '/etc/bareos/bareos-sd.d' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+  notifies :run, 'execute[restart-sd]', :delayed
 end
 
 execute 'restart-sd' do
