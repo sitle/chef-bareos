@@ -36,5 +36,4 @@ suites:
       - role[bareos_server]
     attributes:
       bareos:
-        host_pools: true
-        custom_host_pools: true
+        host_pools: '1'
