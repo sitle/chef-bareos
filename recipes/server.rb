@@ -21,61 +21,102 @@ node.set_unless['bareos']['dir_password'] = random_password(length: 30, mode: :b
 node.set_unless['bareos']['mon_password'] = random_password(length: 30, mode: :base64)
 node.save unless Chef::Config[:solo]
 
-# Installation des services BAREOS
-
-package 'bareos-director' do
-  action :install
-end
-
-package 'bareos-tools' do
-  action :install
+# Install BAREOS Server Packages
+%w( bareos-director bareos-tools ).each do |server_pkgs|
+  package server_pkgs do
+    action :install
+  end
 end
 
 if Chef::Config[:solo]
   bareos_clients = node['bareos']['clients']
 else
-  bareos_clients = search(:node, 'roles:bareos_base')
+  bareos_clients = search(:node, 'roles:bareos_client')
 end
 
-template '/etc/bareos/bareos-dir.conf' do
-  source 'bareos-dir.conf.erb'
-  mode 0640
-  owner 'bareos'
-  group 'bareos'
-  variables(
-    db_driver: node['bareos']['dbdriver'],
-    db_name: node['bareos']['dbname'],
-    db_user: node['bareos']['dbuser'],
-    db_password: node['bareos']['dbpassword'],
-    db_address: node['bareos']['dbaddress']
-  )
-  notifies :run, 'execute[reload-dir]', :delayed
+# Create hosts direcotry for host configs
+directory '/etc/bareos/bareos-dir.d/clients/' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
 end
 
 # Handle seperate host config files
-unless Chef::Config[:solo]
-
-  # Create hosts direcotry for host configs
-  directory '/etc/bareos/bareos-dir.d/hosts/' do
-    owner 'root'
-    group 'root'
-    mode '0755'
-    action :create
-  end
-
-  # Populate host config files based on hosts with bareos_base role in runlist
-  bareos_clients.each do
-    template "/etc/bareos/bareos-dir.d/hosts/#{node['hostname']}.conf" do
-      source 'host.conf.erb'
+# Populate host config files based on:
+#  * with values from the default['bareos']['clients'] attribute
+#   - OR -
+#  * hosts with bareos_client role attached
+bareos_clients.each do |client|
+  if Chef::Config[:solo]
+    template '/etc/bareos/bareos-dir.conf' do
+      source 'bareos-dir.conf.erb'
       owner 'bareos'
       group 'bareos'
       mode '0640'
       variables(
-        bareos_clients: bareos_clients
+        db_driver: node['bareos']['dbdriver'],
+        db_name: node['bareos']['dbname'],
+        db_user: node['bareos']['dbuser'],
+        db_password: node['bareos']['dbpassword'],
+        db_address: node['bareos']['dbaddress'],
+        client_full_pool: "#{client}-Full-Pool",
+        client_inc_pool: "#{client}-Inc-Pool",
+        client_diff_pool: "#{client}-Diff-Pool"
       )
       notifies :run, 'execute[reload-dir]', :delayed
     end
+
+    template "/etc/bareos/bareos-dir.d/clients/#{client}.conf" do
+      source 'client.conf.erb'
+      owner 'bareos'
+      group 'bareos'
+      mode '0640'
+      variables(
+        bareos_client: client,
+        client_full_pool: "#{client}-Full-Pool",
+        client_inc_pool: "#{client}-Inc-Pool",
+        client_diff_pool: "#{client}-Diff-Pool"
+      )
+      notifies :run, 'execute[reload-dir]', :delayed
+    end
+
+  else
+
+    template '/etc/bareos/bareos-dir.conf' do
+      source 'bareos-dir.conf.erb'
+      owner 'bareos'
+      group 'bareos'
+      mode '0640'
+      variables(
+        db_driver: node['bareos']['dbdriver'],
+        db_name: node['bareos']['dbname'],
+        db_user: node['bareos']['dbuser'],
+        db_password: node['bareos']['dbpassword'],
+        db_address: node['bareos']['dbaddress'],
+        client_full_pool: "#{client['hostname']}-Full-Pool",
+        client_inc_pool: "#{client['hostname']}-Inc-Pool",
+        client_diff_pool: "#{client['hostname']}-Diff-Pool"
+      )
+      notifies :run, 'execute[reload-dir]', :delayed
+    end
+
+    template "/etc/bareos/bareos-dir.d/clients/#{client['hostname']}.conf" do
+      source 'client.conf.erb'
+      owner 'bareos'
+      group 'bareos'
+      mode '0640'
+      variables(
+        bareos_client: client['hostname'],
+        client_full_pool: "#{client['hostname']}-Full-Pool",
+        client_inc_pool: "#{client['hostname']}-Inc-Pool",
+        client_diff_pool: "#{client['hostname']}-Diff-Pool"
+      )
+      notifies :run, 'execute[reload-dir]', :delayed
+    end
+
   end
+
 end
 
 execute 'reload-dir' do
