@@ -25,22 +25,23 @@ end
 
 # Database
 default['bareos']['database_type'] = 'postgresql' # postgresql/mysql
-default['bareos']['dbdriver'] = 'postgresql'
+default['bareos']['dbdriver'] = 'postgresql' # postgresql/mysql
 default['bareos']['dbname'] = 'bareos'
 default['bareos']['dbuser'] = 'bareos'
 default['bareos']['dbpassword'] = ''
 
-# Clients list
-default['bareos']['clients'] = []
+# Clients
+default['bareos']['clients'] = %w()
+default['bareos']['host_pools'] = '0'   # Default is disabled, normal pools, see below
+default['bareos']['default_pool'] = 'Default'
+default['bareos']['full_pool'] = 'Full-Pool'
+default['bareos']['incremental_pool'] = 'Inc-Pool'
+default['bareos']['differential_pool'] = 'Diff-Pool'
 default['bareos']['enable_vfulls'] = false # Needs more work within host template
-default['bareos']['host_pools'] = false
-default['bareos']['custom_host_pools'] = false
-default['bareos']['host_full_pool'] = 'test-pool-Full'
-default['bareos']['host_incremental_pool'] = 'test-pool-Inc'
-default['bareos']['host_differential_pool'] = 'test-pool-Diff'
 
 # Storage Daemon
-default['bareos']['tape'] = false
+default['bareos']['storage']['tape'] = false # tape may have to be handled via custom wrapper cookbooks
+default['bareos']['storage']['server'] = node['hostname']
 
 # Director
 default['bareos']['dir_port'] = 9101
