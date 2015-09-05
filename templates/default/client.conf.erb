@@ -1,0 +1,95 @@
+<%# HOST TEMPLATE %>
+# Local modifications will be overwritten.
+# Bareos Host Config for <%= @bareos_client %>-fd
+
+Client {
+  Name = <%= @bareos_client %>-fd
+  Address = <%= @bareos_client %>
+  Password = "<%= node['bareos']['fd_password'] %>"          # password for FileDaemon
+  File Retention = 30 days
+  Job Retention = 6 months
+  AutoPrune = no
+}
+
+JobDefs {
+  Name = "<%= @bareos_client %>-JobDef"
+  Type = Backup
+  Level = Incremental
+  Client = <%= @bareos_client %>-fd
+  FileSet = "Full Set"
+  Schedule = "WeeklyCycle"
+  Storage = File
+  Messages = Standard
+  Pool = <%= node['bareos']['default_pool'] %>
+  # Each client can have its own Pool to help with certain cases
+<% if node['bareos']['host_pools'] == '1' %>
+  FullBackupPool = <%= @client_full_pool %>
+  IncrementalBackupPool = <%= @client_inc_pool %>
+  DifferentialBackupPool = <%= @client_diff_pool %>
+<% elsif node['bareos']['host_pools'] == '0' %>
+  FullBackupPool = <%= node['bareos']['full_pool'] %>
+  IncrementalBackupPool = <%= node['bareos']['incremental_pool'] %>
+  DifferentialBackupPool = <%= node['bareos']['differential_pool'] %>
+<% else %>
+  # FullBackupPool = <%= node['bareos']['full_pool'] %>
+  # IncrementalBackupPool = <%= node['bareos']['incremental_pool'] %>
+  # DifferentialBackupPool = <%= node['bareos']['differential_pool'] %>
+<% end %>
+  Priority = 10
+  Write Bootstrap = "/var/lib/bareos/%c.bsr"
+}
+
+# Default Job
+Job {
+  Name = "<%= @bareos_client %>-Job"
+  JobDefs = "<%= @bareos_client %>-JobDef"
+}
+
+# Restore Job
+Job {
+  Name = "<%= @bareos_client %>-Restore"
+  Type = Restore
+  Client = <%= @bareos_client %>-fd
+  FileSet= "Full Set"
+  Storage = File
+<% if node['bareos']['host_pools'] == '1' %>
+  Pool = <%= @client_full_pool %>
+<% else %>
+  Pool = <%= node['bareos']['full_pool'] %>
+<% end %>
+  Messages = Standard
+  Where = /tmp/<%= @bareos_client %>_restored/
+}
+
+<% if node['bareos']['enable_vfulls'] == '1' %>
+# VirtualFull Job
+  <%# Need some logic here to determine whether to use %>
+  <%# VirtualFull backups or not %>
+<% end %>
+
+<% if node['bareos']['host_pools'] == '1' %>
+# Individual host pools for better storage utilization
+Pool {
+  Name = <%= @client_full_pool %>
+  Pool Type = Backup
+  Recycle = yes
+  AutoPrune = yes
+  Volume Retention = 1 year
+}
+
+Pool {
+  Name = <%= @client_inc_pool %>
+  Pool Type = Backup
+  Recycle = yes
+  AutoPrune = yes
+  Volume Retention = 30 days
+}
+
+Pool {
+  Name = <%= @client_diff_pool %>
+  Pool Type = Backup
+  Recycle = yes
+  AutoPrune = yes
+  Volume Retention = 3 months
+}
+<% end %>
