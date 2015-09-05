@@ -8,6 +8,8 @@ provisioner:
 
 platforms:
   - name: debian-7.8
+    run_list:
+      - recipe[apt]
 
   - name: ubuntu-12.04
     run_list:
