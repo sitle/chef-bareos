@@ -3,9 +3,24 @@ Bareos Cookbook CHANGELOG
 
 This file is used to list changes made in each version of the bareos cookbook.
 
-0.1.4
+0.2.0
 -----
 - Ian smith
+
+  - Updating and validating Kitchen testing with new methods
+  - Adding ability to use custom Storage Daemon Configs via wrapper recipe
+  - Fixed a race condition that was likely to come up both in testing and production
+    * Was missing client config on fresh install so restart of dir would fail
+  - Limiting cookbook support for debian to ~>7.0 until we can test on 8+
+  - Refined storage recipe to correctly create client configs based on BOTH role search and solo instances, may need a bit more tuning but should work in most cases
+  - Creating basic Full, Inc, and Diff pools even if not used, just as a place holder (default)
+  - Minor fixes
+  - Larger version bump for version clarity
+  - Updated Docs
+
+0.1.4
+-----
+- Ian Smith
 
   - Updating README
   - Revamping server.rb recipe to better utilize the bareos-dir.d directory
@@ -22,7 +37,7 @@ This file is used to list changes made in each version of the bareos cookbook.
 
 0.1.3
 -----
-- Ian smith
+- Ian Smith
 
   - Updating README
   - Updating CHANGELOG
