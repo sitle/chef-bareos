@@ -20,31 +20,33 @@ Attribute        | Description |Type | Default
 ["bareos"]["dbname"] | Specify the database default name | string | 'bareos'
 ["bareos"]["dbuser"] | Specify the db user name | string | 'bareos'
 ["bareos"]["dbpassword"] | Specify the db password | string | ''
-["bareos"]["dbaddress"] | Specify the db address | string | 
+["bareos"]["dbaddress"] | Specify the db address | string | nil 
 
 ## General
 
 Attribute        | Description |Type | Default
 -----------------|-------------|-----|--------
 ['bareos']['url'] | Base URL for Bareos Repository | string | 'http://download.bareos.org/bareos/release'
-['bareos']['version'] | Software Version | string | 'latest'
+['bareos']['version'] | Software Version | string | '14.2'
 
 ## Storage Daemon
 Attribute        | Description |Type | Default
 -----------------|-------------|-----|--------
 ['bareos']['tape'] | Enable Tape Features | boolean | false
+['bareos']['storage']['server'] | Define name of SD server | string | node['hostname']
+['bareos']['storage']['custom_configs'] | Allows custom SD configs via wrapper | string | '0'
 
 ## Clients/Hosts
 
 Attribute        | Description |Type | Default
 -----------------|-------------|-----|--------
-['bareos']['clients'] | Monitor Clients | array | []
-['bareos']['enable_vfulls'] | Activate basic Virtual Full Backups | boolean | false
-['bareos']['host_pools'] | Seperate Host Pools | boolean | false
-['bareos']['custom_host_pools'] | Custom Host Pools | boolean | nil
-['bareos']['host_full_pool'] | Custom Full Pool | string | 'test-pool-Full'
-['bareos']['host_incremental_pool'] | Custom Incremental Pool | string | 'test-pool-Inc'
-['bareos']['host_differential_pool'] | Custom Differential Pool | string | 'test-pool-Diff'
+['bareos']['clients'] | Monitor Clients (Solo Mode only right now) | array | %w()
+['bareos']['host_pools'] | Seperate Host Pools | string | '0'
+['bareos']['default_pool'] |  Basic Default Pool | string | 'Default'
+['bareos']['full_pool'] | Basic Full Pool | string | 'Full-Pool'
+['bareos']['incremental_pool'] | Basic Incremental Pool | string | 'Inc-Pool'
+['bareos']['differential_pool'] | Basic Differential Pool | string | 'Diff-Pool'
+['bareos']['enable_vfulls'] | Activate basic Virtual Full Backups (Not currently used, on radar though) | boolean | false
 
 ## Director
 
@@ -66,12 +68,12 @@ Attribute        | Description |Type | Default
 
 ### bareos_base role (install the bareos client backup by default)
 
-You need to create a base role called ``bareos_base`` like this:
+You need to create a client role called ``bareos_client`` like this:
 
 ```
 {
-  "name": "bareos_base",
-  "description": "Base Role for chef-bareos Cookbook, used in searches, throws down sources for installs",
+  "name": "bareos_client",
+  "description": "Example Role for Bareos clients using the chef-bareos Cookbook, used in searches, throws down sources for installs",
   "json_class": "Chef::Role",
   "default_attributes": {
   },
@@ -87,14 +89,14 @@ You need to create a base role called ``bareos_base`` like this:
 ```
 This role has to be applied to all your clients so they can be backed up by this cookbook.
 
-### bareos_server role (install the bareos server for backups)
+### bareos_server role (install the bareos server for scheduling backups)
 
-For the server, you need a role named ``bareos_server``, for example :
+For the primary server, if not splitting out services, you need a role named ``bareos_server``, for example :
 
 ```
 {
   "name": "bareos_server",
-  "description": "Bareos Server Role",
+  "description": "Example Role for a Bareos server",
   "json_class": "Chef::Role",
   "default_attributes": {
   },
@@ -113,7 +115,10 @@ For the server, you need a role named ``bareos_server``, for example :
 }
 ```
 
-You need to run chef-client on the backup server every time you add a new node. All job will be automatically create for you.
+You'll need to run chef-client on the backup server every time you add a new node. Client jobs should be created for you automatically.
+
+Running the server recipe should work in chef-solo but you need to populate the ['bareos']['clients'] attribute with an array of clients.
+
 
 # Contributing
 
