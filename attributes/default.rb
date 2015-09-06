@@ -32,7 +32,7 @@ default['bareos']['dbpassword'] = ''
 
 # Clients
 default['bareos']['clients'] = %w()
-default['bareos']['host_pools'] = '0'   # Default is disabled, normal pools, see below
+default['bareos']['host_pools'] = '0' # Default is disabled, normal pools, see below
 default['bareos']['default_pool'] = 'Default'
 default['bareos']['full_pool'] = 'Full-Pool'
 default['bareos']['incremental_pool'] = 'Inc-Pool'
