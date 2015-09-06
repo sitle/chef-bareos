@@ -36,8 +36,10 @@ Messages {
   director = backup-dir = all
 }
 
+<% if node['bareos']['storage']['custom_configs'] == '1' %>
 ########################################
 # Custom Storage Daemon Config Locations
 ########################################
 
 @|"sh -c 'for f in /etc/bareos/bareos-sd.d/*.conf ; do echo @${f} ; done'"
+<% end %>
