@@ -42,6 +42,7 @@ default['bareos']['enable_vfulls'] = false # Needs more work within host templat
 # Storage Daemon
 default['bareos']['storage']['tape'] = false # tape may have to be handled via custom wrapper cookbooks
 default['bareos']['storage']['server'] = node['hostname']
+default['bareos']['storage']['custom_configs'] = '0'
 
 # Director
 default['bareos']['dir_port'] = 9101
