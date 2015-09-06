@@ -59,7 +59,7 @@ end
 execute 'restart-sd' do
   command 'bareos-sd -t -c /etc/bareos/bareos-sd.conf'
   action :nothing
-  notifies :restart, 'service[bareos-sd]', :delayed
+  notifies :restart, 'service[bareos-sd]', :immediately
 end
 
 service 'bareos-sd' do
