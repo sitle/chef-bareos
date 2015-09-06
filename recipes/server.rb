@@ -15,8 +15,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
+# Preparing Random Password for the director and mon
 node.set_unless['bareos']['dir_password'] = random_password(length: 30, mode: :base64)
 node.set_unless['bareos']['mon_password'] = random_password(length: 30, mode: :base64)
 node.save unless Chef::Config[:solo]
@@ -66,7 +66,6 @@ bareos_clients.each do |client|
       )
       notifies :run, 'execute[reload-dir]', :delayed
     end
-
     template "/etc/bareos/bareos-dir.d/clients/#{client}.conf" do
       source 'client.conf.erb'
       owner 'bareos'
@@ -80,9 +79,7 @@ bareos_clients.each do |client|
       )
       notifies :run, 'execute[reload-dir]', :delayed
     end
-
   else
-
     template '/etc/bareos/bareos-dir.conf' do
       source 'bareos-dir.conf.erb'
       owner 'bareos'
@@ -100,7 +97,6 @@ bareos_clients.each do |client|
       )
       notifies :run, 'execute[reload-dir]', :delayed
     end
-
     template "/etc/bareos/bareos-dir.d/clients/#{client['hostname']}.conf" do
       source 'client.conf.erb'
       owner 'bareos'
@@ -114,15 +110,13 @@ bareos_clients.each do |client|
       )
       notifies :run, 'execute[reload-dir]', :delayed
     end
-
   end
-
 end
 
 execute 'reload-dir' do
   command 'su - bareos -s /bin/sh -c "/usr/sbin/bareos-dir -t -c /etc/bareos/bareos-dir.conf"'
   action :nothing
-  notifies :reload, 'service[bareos-dir]', :delayed
+  notifies :restart, 'service[bareos-dir]', :delayed
 end
 
 service 'bareos-dir' do
