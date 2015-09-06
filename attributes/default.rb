@@ -47,5 +47,7 @@ default['bareos']['storage']['custom_configs'] = '0'
 # Director
 default['bareos']['dir_port'] = 9101
 default['bareos']['dir_max_concurrent_jobs'] = 20
+
+# Subscription Management (Director)
 default['bareos']['dir_subscription'] = nil
 default['bareos']['dir_subs'] = nil
