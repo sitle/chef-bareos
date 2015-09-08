@@ -5,7 +5,7 @@ This file is used to list changes made in each version of the bareos cookbook.
 
 0.2.0
 -----
-- Ian smith
+- Ian Smith
 
   - Updating and validating Kitchen testing with new methods
   - Adding ability to use custom Storage Daemon Configs via wrapper recipe
