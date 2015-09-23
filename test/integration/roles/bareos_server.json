@@ -9,8 +9,8 @@
   "chef_type": "role",
   "run_list": [
     "role[bareos_client]",
-    "recipe[chef-bareos::server]",
     "recipe[chef-bareos::database]",
+    "recipe[chef-bareos::server]",
     "recipe[chef-bareos::storage]",
     "recipe[chef-bareos::workstation]"
   ],
