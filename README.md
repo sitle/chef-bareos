@@ -61,9 +61,9 @@ Attribute        | Description | Type | Default
 ['bareos']['clients']['enable_vfulls'] | | | false
 
 ## Storage Daemon
+
 Attribute        | Description | Type | Default
 -----------------|-------------|------|---------
-
 ['bareos']['storage']['sd_port'] | | | 9103
 ['bareos']['storage']['tape'] | | | false
 ['bareos']['storage']['servers'] | | | {}
@@ -72,6 +72,7 @@ Attribute        | Description | Type | Default
 ['bareos']['storage']['max_concurrent_jobs'] | | | 20
 
 ## Director
+
 Attribute        | Description | Type | Default
 -----------------|-------------|------|---------
 ['bareos']['director']['dir_port'] | | | 9101
@@ -87,12 +88,14 @@ Attribute        | Description | Type | Default
 ['bareos']['dir_subs'] | Subscription Level/Count | number | nil
 
 ## Messages
+
 Attribute        | Description | Type | Default
 -----------------|-------------|------|---------
 ['bareos']['messages']['mail_to'] | | | "bareos@#{node['domain_name']}"
 ['bareos']['messages']['default_messages'] | | | 'Standard'
 
 ## Workstation
+
 Attribute        | Description | Type | Default
 -----------------|-------------|------|---------
 ['bareos']['workstation']['solo_mode'] | | | '0'
