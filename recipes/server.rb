@@ -16,7 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Preparing Random Password for the director and mon
+# By default here including both the repo and client recipes
+include_recipe 'chef-bareos'
+
+# Preparing Random Password for the director and mon, including OpenSSL library from client.rb
 node.set_unless['bareos']['dir_password'] = random_password(length: 30, mode: :base64)
 node.set_unless['bareos']['mon_password'] = random_password(length: 30, mode: :base64)
 node.save unless Chef::Config[:solo]
@@ -28,13 +31,7 @@ node.save unless Chef::Config[:solo]
   end
 end
 
-if Chef::Config[:solo]
-  bareos_clients = node['bareos']['clients']
-else
-  bareos_clients = search(:node, 'roles:bareos_client')
-end
-
-# Create hosts direcotry for host configs
+# Create hosts directory for host configs
 directory '/etc/bareos/bareos-dir.d/clients/' do
   owner 'root'
   group 'root'
@@ -42,83 +39,77 @@ directory '/etc/bareos/bareos-dir.d/clients/' do
   action :create
 end
 
+# Create a placeholder file so BAREOS doesn't throw error when none found
+file '/etc/bareos/bareos-dir.d/_recipe_complete.conf' do
+  content '# This is a base file so the recipe works with no additional help'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+# Create necessary bareos-dir config
+template '/etc/bareos/bareos-dir.conf' do
+  source 'bareos-dir.conf.erb'
+  owner 'bareos'
+  group 'bareos'
+  mode '0640'
+  variables(
+    db_driver: node['bareos']['database']['dbdriver'],
+    db_name: node['bareos']['database']['dbname'],
+    db_user: node['bareos']['database']['dbuser'],
+    db_password: node['bareos']['database']['dbpassword'],
+    db_address: node['bareos']['database']['dbaddress']
+  )
+  notifies :run, 'execute[reload-dir]', :delayed
+end
+
 # Handle seperate host config files
 # Populate host config files based on:
-#  * with values from the default['bareos']['clients'] attribute
+#  * the default['bareos']['clients']['client_list'] attribute
 #   - OR -
 #  * hosts with bareos_client role attached
+if Chef::Config[:solo]
+  bareos_clients = node['bareos']['clients']['client_list']
+else
+  bareos_clients = search(:node, 'roles:bareos_client')
+end
+
+# Account for any number of clients, setup the client config on the director machine
+# Also push out whether to do custom client pools in chef-solo or chef-client mode
 bareos_clients.each do |client|
-  if Chef::Config[:solo]
-    template '/etc/bareos/bareos-dir.conf' do
-      source 'bareos-dir.conf.erb'
-      owner 'bareos'
-      group 'bareos'
-      mode '0640'
-      variables(
-        db_driver: node['bareos']['dbdriver'],
-        db_name: node['bareos']['dbname'],
-        db_user: node['bareos']['dbuser'],
-        db_password: node['bareos']['dbpassword'],
-        db_address: node['bareos']['dbaddress'],
-        client_full_pool: "#{client}-Full-Pool",
-        client_inc_pool: "#{client}-Inc-Pool",
-        client_diff_pool: "#{client}-Diff-Pool"
-      )
-      notifies :run, 'execute[reload-dir]', :delayed
-    end
-    template "/etc/bareos/bareos-dir.d/clients/#{client}.conf" do
-      source 'client.conf.erb'
-      owner 'bareos'
-      group 'bareos'
-      mode '0640'
+  template "/etc/bareos/bareos-dir.d/clients/#{client}.conf" do
+    source 'client.conf.erb'
+    owner 'bareos'
+    group 'bareos'
+    mode '0640'
+    if Chef::Config[:solo]
       variables(
         bareos_client: client,
         client_full_pool: "#{client}-Full-Pool",
         client_inc_pool: "#{client}-Inc-Pool",
         client_diff_pool: "#{client}-Diff-Pool"
       )
-      notifies :run, 'execute[reload-dir]', :delayed
-    end
-  else
-    template '/etc/bareos/bareos-dir.conf' do
-      source 'bareos-dir.conf.erb'
-      owner 'bareos'
-      group 'bareos'
-      mode '0640'
+    else
       variables(
-        db_driver: node['bareos']['dbdriver'],
-        db_name: node['bareos']['dbname'],
-        db_user: node['bareos']['dbuser'],
-        db_password: node['bareos']['dbpassword'],
-        db_address: node['bareos']['dbaddress'],
-        client_full_pool: "#{client['hostname']}-Full-Pool",
-        client_inc_pool: "#{client['hostname']}-Inc-Pool",
-        client_diff_pool: "#{client['hostname']}-Diff-Pool"
+        bareos_client: client['fqdn'],
+        client_full_pool: "#{client['fqdn']}-Full-Pool",
+        client_inc_pool: "#{client['fqdn']}-Inc-Pool",
+        client_diff_pool: "#{client['fqdn']}-Diff-Pool"
       )
-      notifies :run, 'execute[reload-dir]', :delayed
     end
-    template "/etc/bareos/bareos-dir.d/clients/#{client['hostname']}.conf" do
-      source 'client.conf.erb'
-      owner 'bareos'
-      group 'bareos'
-      mode '0640'
-      variables(
-        bareos_client: client['hostname'],
-        client_full_pool: "#{client['hostname']}-Full-Pool",
-        client_inc_pool: "#{client['hostname']}-Inc-Pool",
-        client_diff_pool: "#{client['hostname']}-Diff-Pool"
-      )
-      notifies :run, 'execute[reload-dir]', :delayed
-    end
+    notifies :run, 'execute[reload-dir]', :delayed
   end
 end
 
+# Allow a restart of the director daemon if called with tests up front
 execute 'reload-dir' do
   command 'su - bareos -s /bin/sh -c "/usr/sbin/bareos-dir -t -c /etc/bareos/bareos-dir.conf"'
   action :nothing
   notifies :restart, 'service[bareos-dir]', :delayed
 end
 
+# Enable and start the bareos-dir service
 service 'bareos-dir' do
   supports status: true, restart: true, reload: false
   action [:enable, :start]
