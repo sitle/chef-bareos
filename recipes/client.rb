@@ -42,7 +42,7 @@ template '/etc/bareos/bareos-fd.conf' do
   variables(
     bareos_dir: bareos_dir
   )
-notifies :run, 'execute[restart-fd]', :immediately
+  notifies :run, 'execute[restart-fd]', :immediately
 end
 
 # Allow the restart of the File Daemon with tests upfront, if called
