@@ -15,19 +15,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-if platform_family?('rhel')
+# Add repos for supported platform families, else give fatal error during chef run
+case node['platform_family']
+when 'rhel', 'fedora'
   yum_repository node['bareos']['yum_repository'] do
     description node['bareos']['description']
     baseurl node['bareos']['baseurl']
     gpgkey node['bareos']['gpgkey']
     action :create
   end
-else
+when 'debian'
   apt_repository 'bareos' do
     uri node['bareos']['baseurl']
     components ['/']
     key node['bareos']['gpgkey']
   end
+else
+  Chef::Log.fatal('System is not in the currently supported OS list')
 end
