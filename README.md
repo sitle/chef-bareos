@@ -11,56 +11,92 @@ This cookbook has been tested with RHEL, Debian, Ubuntu systems. It should work 
 
 # Attributes
 
-## Database
+## Repository
 
-Attribute        | Description |Type | Default
------------------|-------------|-----|--------
-["bareos"]["database_type"] | Specify the database type | string | 'postgresql'
-["bareos"]["dbdriver"] | Specify the database driver | string | 'postgresql'
-["bareos"]["dbname"] | Specify the database default name | string | 'bareos'
-["bareos"]["dbuser"] | Specify the db user name | string | 'bareos'
-["bareos"]["dbpassword"] | Specify the db password | string | ''
-["bareos"]["dbaddress"] | Specify the db address | string | nil 
-
-## General
-
-Attribute        | Description |Type | Default
------------------|-------------|-----|--------
+Attribute        | Description | Type | Default
+-----------------|-------------|------|---------
 ['bareos']['url'] | Base URL for Bareos Repository | string | 'http://download.bareos.org/bareos/release'
 ['bareos']['version'] | Software Version | string | '14.2'
 
+OS Family     | Attribute | Default
+--------------|-----------|---------
+rhel/fedora |['bareos']['yum_repository'] | 'bareos'
+rhel/fedora |['bareos']['description'] | 'Description of repo string'
+varies | ['bareos']['baseurl'] | See attributes file
+varies | ['bareos']['gpgkey'] | See attributes file
+
+## Database
+
+Attribute        | Description | Type | Default
+-----------------|-------------|------|---------
+['bareos']['database']['catalog_name'] | Catalog Name | string | 'MyCatalog'
+['bareos']['database']['database_type'] | Database type | string | 'postgresql'
+['bareos']['database']['dbdriver'] | Database driver | string | 'postgresql'
+['bareos']['database']['dbname'] | Database default name | string | 'bareos'
+['bareos']['database']['dbuser'] | Database user name | string | 'bareos'
+['bareos']['database']['dbpassword'] | Database password | string | ''
+['bareos']['database']['dbaddress'] | Database address | string | nil 
+
+## Clients
+
+Attribute        | Description | Type | Default
+-----------------|-------------|------|---------
+['bareos']['clients']['fd_port'] | | | 9102
+['bareos']['clients']['max_concurrent_jobs'] | | | 20
+['bareos']['clients']['client_list'] | | | {}
+['bareos']['clients']['file_retention'] | | | '30 days'
+['bareos']['clients']['job_retention'] | | | '6 months'
+['bareos']['clients']['autoprune'] | | | 'no'
+['bareos']['clients']['heartbeat_interval'] | | | 600
+['bareos']['clients']['jobdef_default_runlevel'] | | | 10
+['bareos']['clients']['jobdef_default_storage'] | | | 'File'
+['bareos']['clients']['jobdef_default_messages'] | | | 'Standard'
+['bareos']['clients']['jobdef_default_fileset'] | | | 'Full Set'
+['bareos']['clients']['jobdef_default_schedule'] | | | 'WeeklyCycle'
+['bareos']['clients']['host_pools'] | | | '0'
+['bareos']['clients']['default_pool'] | | | 'Default'
+['bareos']['clients']['full_pool'] | | | 'Full-Pool'
+['bareos']['clients']['incremental_pool'] | | | 'Inc-Pool'
+['bareos']['clients']['differential_pool'] | | | 'Diff-Pool'
+['bareos']['clients']['enable_vfulls'] | | | false
+
 ## Storage Daemon
-Attribute        | Description |Type | Default
------------------|-------------|-----|--------
-['bareos']['tape'] | Enable Tape Features | boolean | false
-['bareos']['storage']['server'] | Define name of SD server | string | node['hostname']
-['bareos']['storage']['custom_configs'] | Allows custom SD configs via wrapper | string | '0'
+Attribute        | Description | Type | Default
+-----------------|-------------|------|---------
 
-## Clients/Hosts
-
-Attribute        | Description |Type | Default
------------------|-------------|-----|--------
-['bareos']['clients'] | Monitor Clients (Solo Mode only right now) | array | %w()
-['bareos']['host_pools'] | Seperate Host Pools | string | '0'
-['bareos']['default_pool'] |  Basic Default Pool | string | 'Default'
-['bareos']['full_pool'] | Basic Full Pool | string | 'Full-Pool'
-['bareos']['incremental_pool'] | Basic Incremental Pool | string | 'Inc-Pool'
-['bareos']['differential_pool'] | Basic Differential Pool | string | 'Diff-Pool'
-['bareos']['enable_vfulls'] | Activate basic Virtual Full Backups (Not currently used, on radar though) | boolean | false
+['bareos']['storage']['sd_port'] | | | 9103
+['bareos']['storage']['tape'] | | | false
+['bareos']['storage']['servers'] | | | {}
+['bareos']['storage']['custom_configs'] | | | '0'
+['bareos']['storage']['sd_mon_enable'] | | | 'yes'
+['bareos']['storage']['max_concurrent_jobs'] | | | 20
 
 ## Director
 
-Attribute        | Description |Type | Default
------------------|-------------|-----|--------
-['bareos']['dir_port'] | Network Port for Director | number | 9101
-['bareos']['dir_max_concurrent_jobs'] | Max concurrent jobs for director | number | 20
+Attribute        | Description | Type | Default
+-----------------|-------------|------|---------
+['bareos']['director']['dir_port'] | | | 9101
+['bareos']['director']['dir_max_concurrent_jobs'] | | | 20
+['bareos']['director']['custom_configs'] | | | '1'
+['bareos']['director']['servers'] | | | {}
 
 ## Subscription Management (Director)
 
-Attribute        | Description |Type | Default
------------------|-------------|-----|--------
+Attribute        | Description | Type | Default
+-----------------|-------------|------|---------
 ['bareos']['dir_subscription'] | Support Subscription Status | boolean | nil/False
 ['bareos']['dir_subs'] | Subscription Level/Count | number | nil
+
+## Messages
+Attribute        | Description | Type | Default
+-----------------|-------------|------|---------
+['bareos']['messages']['mail_to'] | | | "bareos@#{node['domain_name']}"
+['bareos']['messages']['default_messages'] | | | 'Standard'
+
+## Workstation
+Attribute        | Description | Type | Default
+-----------------|-------------|------|---------
+['bareos']['workstation']['solo_mode'] | | | '0'
 
 # Basic Usage
 
