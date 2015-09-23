@@ -16,6 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Include the OpenSSL library by itself so it isn't dependant on the client recipe
+::Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
+
+# Include the repo recipe by default here, should be ok under most circumstances
+include_recipe 'chef-bareos::repo'
+
 # Setup Storage Daemon Random Passwords
 node.set_unless['bareos']['sd_password'] = random_password(length: 30, mode: :base64)
 node.save unless Chef::Config[:solo]
@@ -25,43 +31,53 @@ package 'bareos-storage' do
   action :install
 end
 
+# Need more work on any Tape Integration
 # if node['bareos']['storage']['tape'] == 'true'
 # package  "bareos-storage-tape" do
 #   action :install
 #  end
 # end
 
+# Define both the bareos-sd and bareos-dir lists based on run_list searches
 if Chef::Config[:solo]
-  bareos_server = node['bareos']['server']
+  bareos_sd = node['bareos']['storage']['servers']
+  bareos_dir = node['bareos']['director']['servers']
 else
-  bareos_server = search(:node, 'role:bareos_server')
+  bareos_sd = search(:node, 'recipes:chef-bareos\:\:storage')
+  bareos_dir = search(:node, 'recipes:chef-bareos\:\:server')
 end
 
+# Setup the bareos-sd config
 template '/etc/bareos/bareos-sd.conf' do
   source 'bareos-sd.conf.erb'
   mode 0640
   owner 'bareos'
   group 'bareos'
   variables(
-    bareos_server: bareos_server
+    bareos_sd: bareos_sd,
+    bareos_dir: bareos_dir
   )
   notifies :run, 'execute[restart-sd]', :delayed
 end
 
+# Create the custom config directory
 directory '/etc/bareos/bareos-sd.d' do
   owner 'root'
   group 'root'
   mode '0755'
   action :create
   notifies :run, 'execute[restart-sd]', :delayed
+  only_if node['bareos']['storage']['custom_configs'] == '1'
 end
 
+# If called restart the bareos-sd confg(s) with a test first
 execute 'restart-sd' do
   command 'bareos-sd -t -c /etc/bareos/bareos-sd.conf'
   action :nothing
   notifies :restart, 'service[bareos-sd]', :immediately
 end
 
+# Start and enable the bareos-sd service and run if called elsewhere
 service 'bareos-sd' do
   supports status: true, restart: true, reload: false
   action [:enable, :start]
