@@ -3,11 +3,11 @@ Chef-Bareos Cookbook
 
 [![Build Status](https://travis-ci.org/sitle/chef-bareos.svg?branch=master)](https://travis-ci.org/sitle/chef-bareos)
 
-This cookbook installs and configures backups based on [Bareos](https://www.bareos.org/en/).
+This cookbook installs and configures backups based on [BAREOS](https://www.bareos.org/en/).
 
 # Requirements
 
-This cookbook has been tested with RHEL, Debian, Ubuntu systems. It should work with Chef 11 and Chef 12 configurations, if not please file a bug report and it will be addressed. The chef-bareos cookbook is still undergoing some feature additions so it is recommended to watch for changes to the README.
+This cookbook has been tested with CentOS, Fedora, Debian, Ubuntu systems. It should work with Chef 11 and Chef 12 configurations, if not please file a bug report and it will be addressed. The chef-bareos cookbook is still undergoing some feature additions so it is recommended to watch for changes to the README.
 
 # Attributes
 
