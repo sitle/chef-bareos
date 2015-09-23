@@ -15,22 +15,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-package 'bareos-database-tools' do
-  action :install
-end
+# Include the repo recipe, should be ok in most cases
+include_recipe 'chef-bareos::repo'
 
-database = node['bareos']['database_type']
+# Install the BAREOS database tools package
+package 'bareos-database-tools'
 
+# Define the type of database desired, mysql needs verified to be working
+database = node['bareos']['database']['database_type']
+
+# Depending on what database is used, include things
 case database
 when 'postgresql'
   include_recipe 'postgresql::server'
-
-  package "bareos-database-#{database}" do
-    action :install
-  end
-
+  package "bareos-database-#{database}"
 else
   if platform_family?('rhel')
     database_client_name = database.to_s
@@ -39,20 +38,12 @@ else
     database_client_name = "#{database}-client"
     database_server_name = database.to_s
   end
-
-  package database_client_name.to_s do
-    action :install
-  end
-
-  package database_server_name.to_s do
-    action :install
-  end
-
-  package "bareos-database-#{database}" do
-    action :install
-  end
+  package database_client_name.to_s
+  package database_server_name.to_s
+  package "bareos-database-#{database}"
 end
 
+# Need to add some mysql logic here to do the database setup for bareos, psql only right now, mysql is manual
 if database == 'postgresql'
 
   execute 'create_database' do
