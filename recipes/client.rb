@@ -15,41 +15,44 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
+
+# Include the OpenSSL library for generating random passwords
+::Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
 
 node.set_unless['bareos']['fd_password'] = random_password(length: 30, mode: :base64)
 node.set_unless['bareos']['mon_password'] = random_password(length: 30, mode: :base64)
 node.save unless Chef::Config[:solo]
 
-# Installation du File daemon BAREOS
+# Installation of the BAREOS File Daemon
+package 'bareos-filedaemon'
 
-package 'bareos-filedaemon' do
-  action :install
-end
-
+# Determine the list of BAREOS directors
 if Chef::Config[:solo]
-  bareos_server = node['bareos']['server']
+  bareos_dir = node['bareos']['director']['servers']
 else
-  bareos_server = search(:node, 'role:bareos_server')
+  bareos_dir = search(:node, 'recipes:chef-bareos\:\:server')
 end
 
+# Setup the configs for any local/remote File Daemons clients
 template '/etc/bareos/bareos-fd.conf' do
   source 'bareos-fd.conf.erb'
   owner 'root'
   group 'bareos'
   mode '0640'
   variables(
-    bareos_server: bareos_server
+    bareos_dir: bareos_dir
   )
-  notifies :run, 'execute[restart-fd]', :immediately
+notifies :run, 'execute[restart-fd]', :immediately
 end
 
+# Allow the restart of the File Daemon with tests upfront, if called
 execute 'restart-fd' do
   command 'bareos-fd -t -c /etc/bareos/bareos-fd.conf'
   action :nothing
   notifies :restart, 'service[bareos-fd]', :delayed
 end
 
+# Start and enable the BAREOS File Daemon
 service 'bareos-fd' do
   supports status: true, restart: true, reload: false
   action [:enable, :start]
