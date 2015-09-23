@@ -72,7 +72,6 @@ Attribute        | Description | Type | Default
 ['bareos']['storage']['max_concurrent_jobs'] | | | 20
 
 ## Director
-
 Attribute        | Description | Type | Default
 -----------------|-------------|------|---------
 ['bareos']['director']['dir_port'] | | | 9101
