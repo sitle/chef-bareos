@@ -15,10 +15,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-# Randomly generate ssh passwords for Bareos Daemons
-::Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
-
+# Include both the repo and client recipes for most cases
 include_recipe 'chef-bareos::repo'
 include_recipe 'chef-bareos::client'
