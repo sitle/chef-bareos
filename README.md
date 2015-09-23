@@ -66,7 +66,7 @@ Attribute        | Description |Type | Default
 
 ## Roles
 
-### bareos_base role (install the bareos client backup by default)
+### bareos_client role (install the bareos client backup by default)
 
 You need to create a client role called ``bareos_client`` like this:
 
@@ -81,7 +81,7 @@ You need to create a client role called ``bareos_client`` like this:
   },
   "chef_type": "role",
   "run_list": [
-    "recipe[bareos]"
+    "recipe[chef-bareos]"
   ],
   "env_run_lists": {
   }
@@ -104,11 +104,11 @@ For the primary server, if not splitting out services, you need a role named ``b
   },
   "chef_type": "role",
   "run_list": [
-    "role[bareos_base]",
-    "recipe[bareos::server]",
-    "recipe[bareos::database]",
-    "recipe[bareos::storage]",
-    "recipe[bareos::workstation]"
+    "role[bareos_client]",
+    "recipe[chef-bareos::server]",
+    "recipe[chef-bareos::database]",
+    "recipe[chef-bareos::storage]",
+    "recipe[chef-bareos::workstation]"
   ],
   "env_run_lists": {
   }
