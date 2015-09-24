@@ -33,15 +33,15 @@ Messages {
 
 <% end %>
 
-Device {
-  Name = FileStorage
-  Media Type = File
+Device {  
+  Name = FileStorage  
+  Media Type = File  
   Archive Device = /var/lib/bareos/storage
-  LabelMedia = yes;
-  Random Access = Yes;
-  AutomaticMount = yes;
-  RemovableMedia = no;
-  AlwaysOpen = no;
+  Random Access = Yes;  
+  AutomaticMount = yes;  
+  RemovableMedia = no;  
+  AlwaysOpen = no;  
+  LabelMedia = yes  
 }
 <% if node['bareos']['storage']['custom_configs'] == '1' %>
 
