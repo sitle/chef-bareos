@@ -3,7 +3,7 @@ Bareos Cookbook CHANGELOG
 
 This file is used to list changes made in each version of the bareos cookbook.
 
-0.2.0
+1.0.3
 -----
 - Ian Smith
 
@@ -17,6 +17,8 @@ This file is used to list changes made in each version of the bareos cookbook.
   - Minor fixes
   - Larger version bump for version clarity
   - Updated Docs
+  - Adding support for Fedora and RHEL 6/7
+  - Reworked the available repos to some better logic
 
 0.1.4
 -----
