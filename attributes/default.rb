@@ -11,25 +11,22 @@ if platform_family?('rhel', 'fedora')
   default['bareos']['description'] = 'Backup Archiving Recovery Open Sourced Current stable'
 end
 
-case node['platform']
-when 'ubuntu'
-  default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/xUbuntu_#{node['platform_version']}/"
-  default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/xUbuntu_#{node['platform_version']}/Release.key"
-when 'centos'
-  case node['platform_version'].to_i
-  when '6'
-    default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/CentOS_6/"
-    default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/CentOS_6/repodata/repomd.xml.key"
-  when '7'
-    default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/CentOS_7/"
-    default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/CentOS_7/repodata/repomd.xml.key"
+case node['platform_family']
+when 'debian'
+  case node['platform']
+  when 'debian'
+    default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Debian_#{node['platform_version']}/"
+    default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Debian_#{node['platform_version']}/Release.key"
+  when 'ubuntu'
+    default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/xUbuntu_#{node['platform_version']}/"
+    default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/xUbuntu_#{node['platform_version']}/Release.key"
   end
+when 'rhel'
+    default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/#{node['platform']}_#{node['platform_version'].to_i}/"
+    default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/#{node['platform']}_#{node['platform_version'].to_i}/repodata/repomd.xml.key"
 when 'fedora'
   default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Fedora_20/"
   default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Fedora_20/repodata/repomd.xml.key"
-when 'debian'
-  default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Debian_7.0/"
-  default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Debian_7.0/Release.key"
 else
   default['bareos']['baseurl'] = nil
   default['bareos']['gpgkey'] = nil
