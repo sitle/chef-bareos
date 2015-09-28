@@ -9,6 +9,12 @@ This cookbook installs and configures backups based on [BAREOS](https://www.bare
 
 This cookbook has been tested with CentOS, Fedora, Debian, Ubuntu systems. It should work with Chef 11 and Chef 12 configurations, if not please file a bug report and it will be addressed. The chef-bareos cookbook is still undergoing some feature additions so it is recommended to watch for changes to the README.
 
+# Supported Operating Systems:
+ * RHEL 6/7
+ * Fedora 19/20
+ * Debian 6/7
+ * Ubuntu 12.04 and higher
+
 # Attributes
 
 ## Repository
