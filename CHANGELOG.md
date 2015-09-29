@@ -3,7 +3,7 @@ Bareos Cookbook CHANGELOG
 
 This file is used to list changes made in each version of the bareos cookbook.
 
-1.0.3
+1.0.4
 -----
 - Ian Smith
 
