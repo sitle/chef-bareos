@@ -23,13 +23,13 @@ platforms:
 
   - name: centos-7.0
 
+  - name: fedora-19
+
   - name: fedora-20
 
   - name: fedora-21
 
-data_bags_path:    test/integration/data_bags/
 roles_path:        test/integration/roles/
-environments_path: test/integration/environments
 
 suites:
   - name: aio-server
