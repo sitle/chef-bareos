@@ -154,8 +154,8 @@ For the primary server, if not splitting out services, you need a role named ``b
   "chef_type": "role",
   "run_list": [
     "role[bareos_client]",
-    "recipe[chef-bareos::server]",
     "recipe[chef-bareos::database]",
+    "recipe[chef-bareos::server]",
     "recipe[chef-bareos::storage]",
     "recipe[chef-bareos::workstation]"
   ],
