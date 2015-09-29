@@ -22,8 +22,14 @@ when 'debian'
     default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/xUbuntu_#{node['platform_version']}/Release.key"
   end
 when 'rhel'
-  default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/#{node['platform']}_#{node['platform_version'].to_i}/"
-  default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/#{node['platform']}_#{node['platform_version'].to_i}/repodata/repomd.xml.key"
+  case node['platform']
+  when 'centos'
+  default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/CentOS_#{node['platform_version'].to_i}/"
+  default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/CentOS_#{node['platform_version'].to_i}/repodata/repomd.xml.key"
+  when 'redhat'
+  default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/#{node['platform_family'].upcase}_#{node['platform_version'].to_i}/"
+  default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/#{node['platform_family'].upcase}_#{node['platform_version'].to_i}/repodata/repomd.xml.key"
+  end
 when 'fedora'
   default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Fedora_20/"
   default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Fedora_20/repodata/repomd.xml.key"
