@@ -8,7 +8,7 @@ This cookbook installs and configures backups based on [BAREOS](https://www.bare
 [Official BAREOS Documentation](http://doc.bareos.org/master/html/bareos-manual-main-reference.html).
 
 # Requirements
-The chef-bareos cookbook is still undergoing some extensive feature additions so it is recommended to watch for changes to the README/CHANGELOG and version lock any dependancies in your wrapper cookbook metadata file. Testing of new versions is highly recommended until we can say we have a majority of the sane defaults configured. Progress is being made but it is taking time.
+The chef-bareos cookbook is still undergoing some extensive feature additions so it is recommended to watch for changes to the README/CHANGELOG and version lock any dependencies in your wrapper cookbook metadata file. Testing of new versions is highly recommended until we can say we have a majority of the sane defaults configured. Progress is being made but it is taking time.
 
 ## Supported Chef Versions:
  * Chef 11
