@@ -159,12 +159,27 @@ Messages {
 #################
 # Default Pools #
 #################
+
+# Pool {
+#   Name = File
+#   Pool Type = Backup
+#   Recycle = yes
+#   AutoPrune = yes
+#   Volume Retention = 1 year
+#   Maximum Volume Bytes = 10G
+#   Maximum Volumes = 100
+#   LabelFormat = "FileVol-"
+# }
+
 Pool {
   Name = Default
   Pool Type = Backup
   Recycle = yes
   AutoPrune = yes
   Volume Retention = 30 days
+  Maximum Volume Bytes = 10G
+  Maximum Volumes = 100
+  LabelFormat = "DefaultVol-"
 }
 
 Pool {
@@ -173,6 +188,9 @@ Pool {
   Recycle = yes
   AutoPrune = yes
   Volume Retention = 6 months
+  Maximum Volume Bytes = 10G
+  Maximum Volumes = 100
+  LabelFormat = "Full-"
 }
 
 Pool {
@@ -181,6 +199,9 @@ Pool {
   Recycle = yes
   AutoPrune = yes
   Volume Retention = 2 months
+  Maximum Volume Bytes = 10G
+  Maximum Volumes = 100
+  LabelFormat = "Inc-"
 }
 
 Pool {
@@ -189,16 +210,9 @@ Pool {
   Recycle = yes
   AutoPrune = yes
   Volume Retention = 4 months
-}
-
-Pool {
-  Name = File
-  Pool Type = Backup
-  Recycle = yes
-  AutoPrune = yes
-  Volume Retention = 1 year
-  Maximum Volume Bytes = 50G
+  Maximum Volume Bytes = 10G
   Maximum Volumes = 100
+  LabelFormat = "Diff-"
 }
 
 Pool {
