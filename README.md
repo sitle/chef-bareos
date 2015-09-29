@@ -168,6 +168,14 @@ You'll need to run chef-client on the backup server every time you add a new nod
 
 Running the server recipe should work in chef-solo but you need to populate the ['bareos']['clients'] attribute with an array of clients.
 
+## Recipes (More detail coming)
+ * client
+ * database
+ * default
+ * repo
+ * server
+ * storage
+ * workstation
 
 # Contributing
 
