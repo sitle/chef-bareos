@@ -34,12 +34,12 @@ roles_path:        test/integration/roles/
 suites:
   - name: aio-server
     run_list:
-      - role[bareos_server]
+      - role[bareos_director]
     attributes:
 
   - name: aio-server-pools
     run_list:
-      - role[bareos_server]
+      - role[bareos_director]
     attributes:
       bareos:
         host_pools: '1'
