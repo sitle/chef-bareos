@@ -116,9 +116,7 @@ Attribute        | Description | Type | Default
 ## Roles
 
 ### bareos_client role (install the bareos client backup by default)
-
-You need to create a client role called ``bareos_client`` like this:
-
+You'll need a searchable client role named ``bareos_client``, for example :
 ```
 {
   "name": "bareos_client",
@@ -138,14 +136,12 @@ You need to create a client role called ``bareos_client`` like this:
 ```
 This role has to be applied to all your clients so they can be backed up by this cookbook.
 
-### bareos_server role (install the bareos server for scheduling backups)
-
-For the primary server, if not splitting out services, you need a role named ``bareos_server``, for example :
-
+### bareos_director role (install the bareos director for scheduling backups)
+You'll need a searchable director role named ``bareos_director``, for example :
 ```
 {
-  "name": "bareos_server",
-  "description": "Example Role for a Bareos server",
+  "name": "bareos_director",
+  "description": "Example Role for a Bareos director",
   "json_class": "Chef::Role",
   "default_attributes": {
   },
@@ -156,17 +152,38 @@ For the primary server, if not splitting out services, you need a role named ``b
     "role[bareos_client]",
     "recipe[chef-bareos::database]",
     "recipe[chef-bareos::server]",
-    "recipe[chef-bareos::storage]",
     "recipe[chef-bareos::workstation]"
   ],
   "env_run_lists": {
   }
 }
 ```
+You can replace the ``chef-bareos`` with an encompasing wrapper if desired.
 
 You'll need to run chef-client on the backup server every time you add a new node. Client jobs should be created for you automatically.
 
 Running the server recipe should work in chef-solo but you need to populate the ['bareos']['clients'] attribute with an array of clients.
+
+### bareos_storage role (install the bareos storage daemon for data transfers)
+You'll need a searchable storage role named ``bareos_storage``, for example :
+```
+{
+  "name": "bareos_storage",
+  "description": "Example Role for a Bareos storage",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "recipe[chef-bareos::storage]"
+  ],
+  "env_run_lists": {
+  }
+}
+```
+You can replace the ``chef-bareos`` with a storage wrapper recipe.
 
 ## Recipes (More detail coming)
  * client
