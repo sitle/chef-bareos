@@ -18,3 +18,5 @@ SingleSpaceBeforeFirstArg:
   Enabled: false
 Metrics/LineLength:
   Max: 180
+Style/FileName:
+  Enabled: false
