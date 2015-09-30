@@ -1,6 +1,6 @@
 {
-  "name": "bareos_server",
-  "description": "Backup server role",
+  "name": "bareos_director",
+  "description": "Bareos Director Role",
   "json_class": "Chef::Role",
   "default_attributes": {
   },
@@ -11,7 +11,7 @@
     "role[bareos_client]",
     "recipe[chef-bareos::database]",
     "recipe[chef-bareos::server]",
-    "recipe[chef-bareos::storage]",
+    "role[bareos_storage]",
     "recipe[chef-bareos::workstation]"
   ],
   "env_run_lists": {
