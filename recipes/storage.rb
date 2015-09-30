@@ -43,8 +43,8 @@ if Chef::Config[:solo]
   bareos_sd = node['bareos']['storage']['servers']
   bareos_dir = node['bareos']['director']['servers']
 else
-  bareos_sd = search(:node, 'recipes:chef-bareos\:\:storage')
-  bareos_dir = search(:node, 'recipes:chef-bareos\:\:server')
+  bareos_sd = search(:node, 'roles:bareos_storage')
+  bareos_dir = search(:node, 'roles:bareos_director')
 end
 
 # Setup the bareos-sd config
