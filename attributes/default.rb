@@ -8,7 +8,7 @@ default['bareos']['version'] = '14.2' # <--- Latest version as of 6-26-15
 
 if platform_family?('rhel', 'fedora')
   default['bareos']['yum_repository'] = 'bareos'
-  default['bareos']['description'] = 'Backup Archiving Recovery Open Sourced Current stable'
+  default['bareos']['description'] = "Backup Archiving REcovery Open Sourced Current #{node['bareos']['version']}"
 end
 
 case node['platform_family']
@@ -86,7 +86,7 @@ default['bareos']['director']['dir_subscription'] = nil
 default['bareos']['director']['dir_subs'] = nil
 
 # Messages
-default['bareos']['messages']['mail_to'] = "bareos@#{node['domain_name']}"
+default['bareos']['messages']['mail_to'] = "bareos@#{node['domain']}"
 default['bareos']['messages']['default_messages'] = 'Standard'
 
 # Workstation
