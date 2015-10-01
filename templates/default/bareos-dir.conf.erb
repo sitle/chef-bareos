@@ -31,7 +31,7 @@ Job {
   Schedule = "WeeklyCycleAfterBackup"
   RunBeforeJob = "/usr/lib/bareos/scripts/make_catalog_backup.pl <%= node['bareos']['database']['catalog_name'] %>"
   RunAfterJob  = "/usr/lib/bareos/scripts/delete_catalog_backup"
-  Write Bootstrap = "|/usr/sbin/bsmtp -h localhost -f \"\(Bareos\) \" -s \"Bootstrap for Job %j\" root@localhost"
+  Write Bootstrap = "|/usr/sbin/bsmtp -h localhost -f \"\(Bareos\) \" -s \"Bootstrap for Job %j\" <%= node['bareos']['messages']['mail_to'] %>"
   Priority = 11                   # run after main backup
 }
 
