@@ -7,7 +7,6 @@
 require 'spec_helper'
 
 describe 'chef-bareos::default' do
-
   before do
     allow_any_instance_of(Chef::Recipe).to receive(:include_recipe).and_call_original
     allow_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('chef-bareos::client')
@@ -32,7 +31,6 @@ describe 'chef-bareos::default' do
     #   expect_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('openssl::default')
     #   chef_run
     # end
-
   end
 
   context 'on an ubuntu 12.04 box' do
@@ -54,7 +52,7 @@ describe 'chef-bareos::default' do
     let(:chef_run) do
       runner = ChefSpec::ServerRunner.new(platform: 'centos', version: '6.6') do |node|
         node.set['bareos']['yum_repository'] = 'bareos-repo-test'
-        node.set['bareos']['baseurl'] = "http://foo/bar"
+        node.set['bareos']['baseurl'] = 'http://foo/bar'
       end
       runner.converge(described_recipe)
     end
@@ -64,8 +62,7 @@ describe 'chef-bareos::default' do
     end
 
     it 'adds the yum repo' do
-      expect(chef_run).to create_yum_repository('bareos-repo-test').with( baseurl: "http://foo/bar"  )
+      expect(chef_run).to create_yum_repository('bareos-repo-test').with(baseurl: 'http://foo/bar')
     end
   end
-
 end
