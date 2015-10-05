@@ -64,11 +64,11 @@ default['bareos']['clients']['bootstrap_file'] = '/var/lib/bareos/%c.bsr'
 default['bareos']['clients']['spool_data'] = 'no'
 default['bareos']['clients']['jobdef_default_runlevel'] = 10
 default['bareos']['clients']['jobdef_default_schedule'] = 'WeeklyCycle'
-default['bareos']['clients']['jobdef_default_messages'] = "#{node['bareos']['messages']['default_messages']}"
+default['bareos']['clients']['jobdef_default_messages'] = node['bareos']['messages']['default_messages']
 default['bareos']['clients']['jobdef_default_storage'] = 'File'
-default['bareos']['clients']['jobdef_default_fileset'] ="#{node['fqdn']}-Fileset" 
-default['bareos']['clients']['storage'] = "#{node['bareos']['clients']['jobdef_default_storage']}"
-default['bareos']['clients']['fileset'] = "#{node['bareos']['clients']['jobdef_default_fileset']}"
+default['bareos']['clients']['jobdef_default_fileset'] = "#{node['fqdn']}-Fileset"
+default['bareos']['clients']['storage'] = node['bareos']['clients']['jobdef_default_storage']
+default['bareos']['clients']['fileset'] = node['bareos']['clients']['jobdef_default_fileset']
 default['bareos']['clients']['host_pools'] = false # Default is disabled, normal pools, see below
 case node['bareos']['clients']['host_pools']
 when true
