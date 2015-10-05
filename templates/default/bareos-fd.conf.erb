@@ -13,7 +13,7 @@ FileDaemon {
 
 <% @bareos_dir.each do |director| %>
 ##########
-# Director/Monitor Resources for <%= director['fqdn'] %> #
+# Director/Monitor Resources for <%= director['fqdn'] %>
 ##########
 Director {
   Name = <%= director['fqdn'] %>-dir
@@ -28,6 +28,6 @@ Director {
 
 Messages {
   Name = <%= node['bareos']['messages']['default_messages'] %>
-  director = <%= director['fqdn'] %>-dir = all
+  director = <%= director['fqdn'] %>-dir = <%= node['bareos']['messages']['default_admin_messages'] %>
 }
 <% end %>
