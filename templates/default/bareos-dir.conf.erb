@@ -14,7 +14,7 @@ Director {
   Maximum Concurrent Jobs = <%= node['bareos']['director']['dir_max_concurrent_jobs'] %>
   Password = "<%= node['bareos']['dir_password'] %>"
   Messages = Daemon
-  Heartbeat Interval = 600
+  Heartbeat Interval = <%= node['bareos']['director']['heartbeat_interval'] %>
   <% if node['bareos']['director']['dir_subscription'] == true %>
   Subscriptions = <%= node['bareos']['dir_subs'] %>
   <% end %>
@@ -27,34 +27,47 @@ Job {
   Name = "<%= node['fqdn'] %>-BackupCatalog"
   JobDefs = "<%= node['fqdn'] %>-JobDef"
   Level = Full
-  FileSet="Catalog"
+  FileSet = "Catalog"
   Schedule = "WeeklyCycleAfterBackup"
   RunBeforeJob = "/usr/lib/bareos/scripts/make_catalog_backup.pl <%= node['bareos']['database']['catalog_name'] %>"
   RunAfterJob  = "/usr/lib/bareos/scripts/delete_catalog_backup"
   Write Bootstrap = "|/usr/sbin/bsmtp -h localhost -f \"\(Bareos\) \" -s \"Bootstrap for Job %j\" <%= node['bareos']['messages']['mail_to'] %>"
-  Priority = 11                   # run after main backup
+  Priority = 11 # run after main backup
 }
 
-############
-# Filesets #
-############
+####################
+# Default Filesets #
+####################
 FileSet {
   Name = "Full Set"
   Include {
     Options {
       signature = MD5
     }
-    File = /etc
-    File = /home
+    File = /
+    Exclude Dir Containing = .bareos_ignore
   }
-
   Exclude {
     File = /var/lib/bareos
     File = /var/lib/bareos/storage
+    File = /var/lib/pgsql
+    File = /var/lib/mysql
     File = /proc
     File = /tmp
     File = /.journal
     File = /.fsck
+    File = /spool
+  }
+}
+
+FileSet {
+  Name = "Catalog"
+  Include {
+    Options {
+      signature = MD5
+    }
+    File = "/var/lib/bareos/bareos.sql" # database dump
+    File = "/etc/bareos"                # configuration
   }
 }
 
@@ -77,20 +90,9 @@ FileSet {
 #   }
 # }
 
-FileSet {
-  Name = "Catalog"
-  Include {
-    Options {
-      signature = MD5
-    }
-    File = "/var/lib/bareos/bareos.sql" # database dump
-    File = "/etc/bareos"                # configuration
-  }
-}
-
-#############
-# Schedules #
-#############
+#####################
+# Default Schedules #
+#####################
 Schedule {
   Name = "WeeklyCycle"
   Run = Full 1st sun at 23:05
@@ -103,20 +105,20 @@ Schedule {
   Run = Full sun-sat at 23:10
 }
 
-############
-# Storages #
-############
+###################
+# Default Storage #
+###################
 Storage {
   Name = File
-  Address = <%= node['fqdn'] %>                # N.B. Use a fully qualified name here
+  Address = <%= node['fqdn'] %> # N.B. Use a fully qualified name here
   Password = "<%= node['bareos']['sd_password'] %>"
   Device = FileStorage
   Media Type = File
 }
 
-############
-# Catalogs #
-############
+###################
+# Default Catalog #
+###################
 Catalog {
   Name = <%= node['bareos']['database']['catalog_name'] %>
   dbdriver = "<%= @db_driver %>"
@@ -134,92 +136,82 @@ Catalog {
 Console {
   Name = <%= node['fqdn'] %>-mon
   Password = "<%= node['bareos']['mon_password'] %>"
-  CommandACL = status, .status
+  CommandACL = <%= node['bareos']['director']['console_commandacl'] %>
 }
 
 Messages {
   Name = Standard
   mailcommand = "/usr/sbin/bsmtp -h localhost -f \"\(Bareos\) \<\%r\>\" -s \"Bareos: %t %e of %c %l\" %r"
   operatorcommand = "/usr/sbin/bsmtp -h localhost -f \"\(Bareos\) \<\%r\>\" -s \"Bareos: Intervention needed for %j\" %r"
-  mail = <%= node['bareos']['messages']['mail_to'] %> = all, !skipped
+  mail on error = <%= node['bareos']['messages']['mail_to'] %> = all, !skipped
   operator = <%= node['bareos']['messages']['mail_to'] %> = mount
   console = all, !skipped, !saved
-  append = "/var/log/bareos/bareos.log" = all, !skipped
+  append = "/var/log/bareos/bareos.log" = all, !skipped, !restored
   catalog = all
 }
 
 Messages {
   Name = Daemon
   mailcommand = "/usr/sbin/bsmtp -h localhost -f \"\(Bareos\) \<\%r\>\" -s \"Bareos daemon message\" %r"
-  mail = <%= node['bareos']['messages']['mail_to'] %> = all, !skipped
+  mail on error = <%= node['bareos']['messages']['mail_to'] %> = all, !skipped
   console = all, !skipped, !saved
   append = "/var/log/bareos/bareos.log" = all, !skipped
+  catalog = all
 }
 
 #################
 # Default Pools #
 #################
 
-# Pool {
-#   Name = File
-#   Pool Type = Backup
-#   Recycle = yes
-#   AutoPrune = yes
-#   Volume Retention = 1 year
-#   Maximum Volume Bytes = 10G
-#   Maximum Volumes = 100
-#   LabelFormat = "FileVol-"
-# }
-
 Pool {
-  Name = Default
+  Name = File-Default-Pool
   Pool Type = Backup
   Recycle = yes
   AutoPrune = yes
   Volume Retention = 30 days
   Maximum Volume Bytes = 10G
   Maximum Volumes = 100
-  LabelFormat = "DefaultVol-"
+  LabelFormat = "FileDefaultVol-"
 }
 
 Pool {
-  Name = Full-Pool
+  Name = File-Full-Pool
   Pool Type = Backup
   Recycle = yes
   AutoPrune = yes
   Volume Retention = 6 months
   Maximum Volume Bytes = 10G
   Maximum Volumes = 100
-  LabelFormat = "Full-"
+  LabelFormat = "FileFullVol-"
 }
 
 Pool {
-  Name = Inc-Pool
+  Name = File-Inc-Pool
   Pool Type = Backup
   Recycle = yes
   AutoPrune = yes
   Volume Retention = 2 months
   Maximum Volume Bytes = 10G
   Maximum Volumes = 100
-  LabelFormat = "Inc-"
+  LabelFormat = "FileIncVol-"
 }
 
 Pool {
-  Name = Diff-Pool
+  Name = File-Diff-Pool
   Pool Type = Backup
   Recycle = yes
   AutoPrune = yes
   Volume Retention = 4 months
   Maximum Volume Bytes = 10G
   Maximum Volumes = 100
-  LabelFormat = "Diff-"
+  LabelFormat = "FileDiffVol-"
 }
 
 Pool {
   Name = Scratch
   Pool Type = Backup
 }
-<% if node['bareos']['director']['custom_configs'] == '1' %>
+<% if node['bareos']['director']['custom_configs'] %>
 
 ###########################################
 # Custom Director Daemon Config Locations #
