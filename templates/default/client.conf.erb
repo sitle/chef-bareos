@@ -9,7 +9,7 @@ Client {
   Address = <%= @bareos_client %>
   FDPort = <%= node['bareos']['clients']['fd_port'] %>
   Catalog = <%= node['bareos']['database']['catalog_name'] %>
-  Password = "<%= node['bareos']['fd_password'] %>"          # password for FileDaemon
+  Password = "<%= node['bareos']['fd_password'] %>" # password for FileDaemon
   File Retention = <%= node['bareos']['clients']['file_retention'] %>
   Job Retention = <%= node['bareos']['clients']['job_retention'] %>
   AutoPrune = <%= node['bareos']['clients']['autoprune'] %>
@@ -26,22 +26,12 @@ JobDefs {
   Storage = <%= node['bareos']['clients']['jobdef_default_storage'] %>
   Messages = <%= node['bareos']['clients']['jobdef_default_messages'] %>
   Pool = <%= node['bareos']['clients']['default_pool'] %>
-  # Each client can have its own Pool to help with certain cases
-<% if node['bareos']['clients']['host_pools'] == '1' %>
-  FullBackupPool = <%= @client_full_pool %>
-  IncrementalBackupPool = <%= @client_inc_pool %>
-  DifferentialBackupPool = <%= @client_diff_pool %>
-<% elsif node['bareos']['clients']['host_pools'] == '0' %>
   FullBackupPool = <%= node['bareos']['clients']['full_pool'] %>
   IncrementalBackupPool = <%= node['bareos']['clients']['incremental_pool'] %>
   DifferentialBackupPool = <%= node['bareos']['clients']['differential_pool'] %>
-<% else %>
-  # FullBackupPool = <%= node['bareos']['clients']['full_pool'] %>
-  # IncrementalBackupPool = <%= node['bareos']['clients']['incremental_pool'] %>
-  # DifferentialBackupPool = <%= node['bareos']['clients']['differential_pool'] %>
-<% end %>
   Priority = <%= node['bareos']['clients']['jobdef_default_runlevel'] %>
   Write Bootstrap = "/var/lib/bareos/%c.bsr"
+  SpoolData = <%= node['bareos']['clients']['spool_data'] %>
 }
 
 # Default Job
@@ -55,27 +45,88 @@ Job {
   Name = "<%= @bareos_client %>-Restore"
   Type = Restore
   Client = <%= @bareos_client %>-fd
-  FileSet= "Full Set"
-  Storage = File
-<% if node['bareos']['clients']['host_pools'] == '1' %>
-  Pool = <%= @client_full_pool %>
-<% else %>
+  FileSet = <%= node['bareos']['clients']['fileset'] %> 
+  Storage = <%= node['bareos']['clients']['storage'] %>
   Pool = <%= node['bareos']['clients']['full_pool'] %>
-<% end %>
-  Messages = Standard
+  Messages = <%= node['bareos']['messages']['default_messages'] %>
   Where = /tmp/<%= @bareos_client %>_restored/
 }
-<% if node['bareos']['clients']['enable_vfulls'] == '1' %>
 
+FileSet { 
+  Name = <%= node['bareos']['clients']['fileset'] %>
+  Include {
+    Options {
+      signature = MD5
+    }
+    File = /
+    Exclude Dir Containing = .bareos_ignore
+  }
+  Exclude {
+    File = /var/lib/bareos
+    File = /var/lib/bareos/storage
+    File = /var/lib/pgsql
+    File = /var/lib/mysql
+    File = /proc
+    File = /tmp
+    File = /.journal
+    File = /.fsck
+    File = /spool
+  }
+}
+
+<% if node['bareos']['clients']['enable_vfulls'] %>
 # VirtualFull Job
-  <%# Need some logic here to determine whether to use %>
-  <%# VirtualFull backups or not %>
-<% end %>
-<% if node['bareos']['clients']['host_pools'] == '1' %>
+Job {
+  Name = "<%= @bareos_client %>-VFullJob"
+  Client = <%= @bareos_client %>-fd
+  JobDefs = "<%= @bareos_client %>-VFullJobDef"
+  FileSet = <%= node['bareos']['clients']['fileset'] %> 
+  Accurate = <%= node['bareos']['clients']['vfull_accurate'] %>
+}
 
+JobDefs {
+  Name = "<%= @bareos_client %>-VFullJobDef"
+  Type = Backup
+  Level = VirtualFull
+  Client = <%= @bareos_client %>-fd
+  FileSet = <%= node['bareos']['clients']['fileset'] %> 
+  Schedule = "<%= node['bareos']['clients']['vfull_schedule'] %>"
+  Storage = <%= node['bareos']['storage']['main_storage'] %>
+  Messages = <%= node['bareos']['messages']['default_messages'] %>
+  Pool = <%= node['bareos']['clients']['vfull_pool'] %>
+  IncrementalBackupPool = <%= node['bareos']['clients']['incremental_pool'] %>
+  DifferentialBackupPool = <%= node['bareos']['clients']['differential_pool'] %>
+  FullBackupPool = <%= node['bareos']['clients']['full_pool'] %>
+  Priority = <%= node['bareos']['clients']['vfull_priority'] %>
+  Write Bootstrap = "<%= node['bareos']['clients']['bootstrap_file'] %>"
+  SpoolData = <%= node['bareos']['clients']['vfull_spool'] %>
+  Maximum Concurrent Jobs = <%= node['bareos']['clients']['vfull_concurrent_jobs'] %>
+  Allow Duplicate Jobs = <%= node['bareos']['clients']['vfull_duplicate_jobs'] %>
+  Cancel Lower Level Duplicates = <%= node['bareos']['clients']['vfull_cancel_low_duplicates'] %>
+  Reschedule On Error = <%= node['bareos']['clients']['vfull_reschedule_on_fail'] %>
+  Reschedule Interval = <%= node['bareos']['clients']['vfull_reschedule_interval'] %>
+  Reschedule Times = <%= node['bareos']['clients']['vfull_reschedule_times'] %>
+  Accurate = <%= node['bareos']['clients']['vfull_accurate'] %>
+}
+
+Schedule {
+  Name = <%= node['bareos']['clients']['vfull_schedule'] %>
+  Run = Level=VirtualFull on 1 at 3:00
+}
+<% end %>
+
+<% if node['bareos']['clients']['host_pools'] -%>
 # Individual host pools for better tape library/storage utilization
 Pool {
-  Name = <%= @client_full_pool %>
+  Name = <%= node['bareos']['clients']['default_pool'] %>
+  Pool Type = Backup
+  Recycle = yes
+  AutoPrune = yes
+  Volume Retention = 7 days
+}
+
+Pool {
+  Name = <%= node['bareos']['clients']['full_pool'] %>
   Pool Type = Backup
   Recycle = yes
   AutoPrune = yes
@@ -83,7 +134,7 @@ Pool {
 }
 
 Pool {
-  Name = <%= @client_inc_pool %>
+  Name = <%= node['bareos']['clients']['incremental_pool'] %>
   Pool Type = Backup
   Recycle = yes
   AutoPrune = yes
@@ -91,7 +142,7 @@ Pool {
 }
 
 Pool {
-  Name = <%= @client_diff_pool %>
+  Name = <%= node['bareos']['clients']['differential_pool'] %>
   Pool Type = Backup
   Recycle = yes
   AutoPrune = yes
