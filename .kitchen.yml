@@ -46,4 +46,6 @@ suites:
       - role[bareos_director]
     attributes:
       bareos:
-        host_pools: '1'
+        clients:
+          host_pools: true
+          enable_vfulls: true
