@@ -78,23 +78,18 @@ end
 # Account for any number of clients, setup the client config on the director machine
 # Also push out whether to do custom client pools in chef-solo or chef-client mode
 bareos_clients.each do |client|
-  # Special logic to determine how to extract fqdn
   if Chef::Config[:solo]
     client_fqdn = client
   else
     client_fqdn = client['fqdn']
   end
-
   template "/etc/bareos/bareos-dir.d/clients/#{client_fqdn}.conf" do
     source 'client.conf.erb'
     owner 'bareos'
     group 'bareos'
     mode '0640'
     variables(
-      bareos_client: client_fqdn,
-      client_full_pool: "#{client_fqdn}-Full-Pool",
-      client_inc_pool: "#{client_fqdn}-Inc-Pool",
-      client_diff_pool: "#{client_fqdn}-Diff-Pool"
+      bareos_client: client_fqdn
     )
     notifies :run, 'execute[reload-dir]', :delayed
   end
