@@ -118,7 +118,7 @@ Schedule {
 <% if node['bareos']['clients']['host_pools'] -%>
 # Individual host pools for better tape library/storage utilization
 Pool {
-  Name = <%= node['bareos']['clients']['default_pool'] %>
+  Name = <%= @bareos_client['bareos']['clients']['default_pool'] %>
   Pool Type = Backup
   Recycle = yes
   AutoPrune = yes
@@ -126,7 +126,7 @@ Pool {
 }
 
 Pool {
-  Name = <%= node['bareos']['clients']['full_pool'] %>
+  Name = <%= @bareos_client['bareos']['clients']['full_pool'] %>
   Pool Type = Backup
   Recycle = yes
   AutoPrune = yes
@@ -134,7 +134,7 @@ Pool {
 }
 
 Pool {
-  Name = <%= node['bareos']['clients']['incremental_pool'] %>
+  Name = <%= @bareos_client['bareos']['clients']['incremental_pool'] %>
   Pool Type = Backup
   Recycle = yes
   AutoPrune = yes
@@ -142,7 +142,7 @@ Pool {
 }
 
 Pool {
-  Name = <%= node['bareos']['clients']['differential_pool'] %>
+  Name = <%= @bareos_client['bareos']['clients']['differential_pool'] %>
   Pool Type = Backup
   Recycle = yes
   AutoPrune = yes
