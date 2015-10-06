@@ -21,7 +21,7 @@ JobDefs {
   Type = Backup
   Level = Incremental
   Client = <%= @bareos_client %>-fd
-  FileSet = "<%= node['bareos']['clients']['jobdef_default_fileset'] %>"
+  FileSet = "<%= @bareos_client %>-Fileset"
   Schedule = "<%= node['bareos']['clients']['jobdef_default_schedule'] %>"
   Storage = <%= node['bareos']['clients']['jobdef_default_storage'] %>
   Messages = <%= node['bareos']['clients']['jobdef_default_messages'] %>
@@ -45,7 +45,7 @@ Job {
   Name = "<%= @bareos_client %>-Restore"
   Type = Restore
   Client = <%= @bareos_client %>-fd
-  FileSet = <%= node['bareos']['clients']['fileset'] %> 
+  FileSet = "<%= @bareos_client %>-Fileset"
   Storage = <%= node['bareos']['clients']['storage'] %>
   Pool = <%= node['bareos']['clients']['full_pool'] %>
   Messages = <%= node['bareos']['messages']['default_messages'] %>
@@ -53,7 +53,7 @@ Job {
 }
 
 FileSet { 
-  Name = <%= node['bareos']['clients']['fileset'] %>
+  Name = "<%= @bareos_client %>-Fileset"
   Include {
     Options {
       signature = MD5
@@ -80,7 +80,7 @@ Job {
   Name = "<%= @bareos_client %>-VFullJob"
   Client = <%= @bareos_client %>-fd
   JobDefs = "<%= @bareos_client %>-VFullJobDef"
-  FileSet = <%= node['bareos']['clients']['fileset'] %> 
+  FileSet = "<%= @bareos_client %>-Fileset"
   Accurate = <%= node['bareos']['clients']['vfull_accurate'] %>
 }
 
@@ -89,7 +89,7 @@ JobDefs {
   Type = Backup
   Level = VirtualFull
   Client = <%= @bareos_client %>-fd
-  FileSet = <%= node['bareos']['clients']['fileset'] %> 
+  FileSet = "<%= @bareos_client %>-Fileset"
   Schedule = "<%= node['bareos']['clients']['vfull_schedule'] %>"
   Storage = <%= node['bareos']['storage']['main_storage'] %>
   Messages = <%= node['bareos']['messages']['default_messages'] %>
