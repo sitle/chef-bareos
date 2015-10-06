@@ -55,7 +55,7 @@ default['bareos']['database']['dbaddress'] = nil
 # Clients
 default['bareos']['clients']['fd_port'] = 9102
 default['bareos']['clients']['max_concurrent_jobs'] = 20
-default['bareos']['clients']['client_list'] = {} # {'foo.bar.org','boo.ya.org'}
+default['bareos']['clients']['client_list'] = %w(node) # {'foo.bar.org','boo.ya.org'}
 default['bareos']['clients']['file_retention'] = '30 days'
 default['bareos']['clients']['job_retention'] = '6 months'
 default['bareos']['clients']['autoprune'] = 'yes'

@@ -5,11 +5,11 @@
 # Bareos Client Configuration File
 
 Client {
-  Name = <%= @bareos_client %>-fd
-  Address = <%= @bareos_client %>
+  Name = <%= @bareos_client['fqdn'] %>-fd
+  Address = <%= @bareos_client['fqdn'] %>
   FDPort = <%= node['bareos']['clients']['fd_port'] %>
   Catalog = <%= node['bareos']['database']['catalog_name'] %>
-  Password = "<%= node['bareos']['fd_password'] %>" # password for FileDaemon
+  Password = "<%= @bareos_client['bareos']['fd_password'] %>" # password for FileDaemon
   File Retention = <%= node['bareos']['clients']['file_retention'] %>
   Job Retention = <%= node['bareos']['clients']['job_retention'] %>
   AutoPrune = <%= node['bareos']['clients']['autoprune'] %>
@@ -17,11 +17,11 @@ Client {
 }
 
 JobDefs {
-  Name = "<%= @bareos_client %>-JobDef"
+  Name = "<%= @bareos_client['fqdn'] %>-JobDef"
   Type = Backup
   Level = Incremental
-  Client = <%= @bareos_client %>-fd
-  FileSet = "<%= @bareos_client %>-Fileset"
+  Client = <%= @bareos_client['fqdn'] %>-fd
+  FileSet = "<%= @bareos_client['fqdn'] %>-Fileset"
   Schedule = "<%= node['bareos']['clients']['jobdef_default_schedule'] %>"
   Storage = <%= node['bareos']['clients']['jobdef_default_storage'] %>
   Messages = <%= node['bareos']['clients']['jobdef_default_messages'] %>
@@ -36,24 +36,24 @@ JobDefs {
 
 # Default Job
 Job {
-  Name = "<%= @bareos_client %>-Job"
-  JobDefs = "<%= @bareos_client %>-JobDef"
+  Name = "<%= @bareos_client['fqdn'] %>-Job"
+  JobDefs = "<%= @bareos_client['fqdn'] %>-JobDef"
 }
 
 # Restore Job
 Job {
-  Name = "<%= @bareos_client %>-Restore"
+  Name = "<%= @bareos_client['fqdn'] %>-Restore"
   Type = Restore
-  Client = <%= @bareos_client %>-fd
-  FileSet = "<%= @bareos_client %>-Fileset"
+  Client = <%= @bareos_client['fqdn'] %>-fd
+  FileSet = "<%= @bareos_client['fqdn'] %>-Fileset"
   Storage = <%= node['bareos']['clients']['storage'] %>
   Pool = <%= node['bareos']['clients']['full_pool'] %>
   Messages = <%= node['bareos']['messages']['default_messages'] %>
-  Where = /tmp/<%= @bareos_client %>_restored/
+  Where = /tmp/<%= @bareos_client['fqdn'] %>_restored/
 }
 
 FileSet { 
-  Name = "<%= @bareos_client %>-Fileset"
+  Name = "<%= @bareos_client['fqdn'] %>-Fileset"
   Include {
     Options {
       signature = MD5
@@ -77,19 +77,19 @@ FileSet {
 <% if node['bareos']['clients']['enable_vfulls'] %>
 # VirtualFull Job
 Job {
-  Name = "<%= @bareos_client %>-VFullJob"
-  Client = <%= @bareos_client %>-fd
-  JobDefs = "<%= @bareos_client %>-VFullJobDef"
-  FileSet = "<%= @bareos_client %>-Fileset"
+  Name = "<%= @bareos_client['fqdn'] %>-VFullJob"
+  Client = <%= @bareos_client['fqdn'] %>-fd
+  JobDefs = "<%= @bareos_client['fqdn'] %>-VFullJobDef"
+  FileSet = "<%= @bareos_client['fqdn'] %>-Fileset"
   Accurate = <%= node['bareos']['clients']['vfull_accurate'] %>
 }
 
 JobDefs {
-  Name = "<%= @bareos_client %>-VFullJobDef"
+  Name = "<%= @bareos_client['fqdn'] %>-VFullJobDef"
   Type = Backup
   Level = VirtualFull
-  Client = <%= @bareos_client %>-fd
-  FileSet = "<%= @bareos_client %>-Fileset"
+  Client = <%= @bareos_client['fqdn'] %>-fd
+  FileSet = "<%= @bareos_client['fqdn'] %>-Fileset"
   Schedule = "<%= node['bareos']['clients']['vfull_schedule'] %>"
   Storage = <%= node['bareos']['storage']['main_storage'] %>
   Messages = <%= node['bareos']['messages']['default_messages'] %>
