@@ -70,13 +70,12 @@ default['bareos']['clients']['jobdef_default_fileset'] = "#{node['fqdn']}-Filese
 default['bareos']['clients']['storage'] = node['bareos']['clients']['jobdef_default_storage']
 default['bareos']['clients']['fileset'] = node['bareos']['clients']['jobdef_default_fileset']
 default['bareos']['clients']['host_pools'] = false # Default is disabled, normal pools, see below
-case node['bareos']['clients']['host_pools']
-when true
+if node['bareos']['clients']['host_pools'] == true
   default['bareos']['clients']['full_pool'] = "#{node['fqdn']}-Full-Pool"
   default['bareos']['clients']['incremental_pool'] = "#{node['fqdn']}-Inc-Pool"
   default['bareos']['clients']['differential_pool'] = "#{node['fqdn']}-Diff-Pool"
   default['bareos']['clients']['default_pool'] = "#{node['fqdn']}-Default-Pool"
-when false
+else
   default['bareos']['clients']['full_pool'] = 'File-Full-Pool'
   default['bareos']['clients']['incremental_pool'] = 'File-Inc-Pool'
   default['bareos']['clients']['differential_pool'] = 'File-Diff-Pool'
