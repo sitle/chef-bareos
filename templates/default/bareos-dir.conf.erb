@@ -159,9 +159,9 @@ Messages {
   catalog = all
 }
 
-#################
-# Default Pools #
-#################
+###########################
+# Default File-Based Pools #
+###########################
 
 Pool {
   Name = File-Default-Pool
@@ -170,7 +170,7 @@ Pool {
   AutoPrune = yes
   Volume Retention = 30 days
   Maximum Volume Bytes = 10G
-  Maximum Volumes = 100
+  Maximum Volumes = 25
   LabelFormat = "FileDefaultVol-"
 }
 
@@ -181,7 +181,7 @@ Pool {
   AutoPrune = yes
   Volume Retention = 6 months
   Maximum Volume Bytes = 10G
-  Maximum Volumes = 100
+  Maximum Volumes = 25
   LabelFormat = "FileFullVol-"
 }
 
@@ -192,7 +192,7 @@ Pool {
   AutoPrune = yes
   Volume Retention = 2 months
   Maximum Volume Bytes = 10G
-  Maximum Volumes = 100
+  Maximum Volumes = 25
   LabelFormat = "FileIncVol-"
 }
 
@@ -203,7 +203,7 @@ Pool {
   AutoPrune = yes
   Volume Retention = 4 months
   Maximum Volume Bytes = 10G
-  Maximum Volumes = 100
+  Maximum Volumes = 25
   LabelFormat = "FileDiffVol-"
 }
 

@@ -93,7 +93,7 @@ JobDefs {
   Schedule = "<%= @bareos_client['bareos']['clients']['vfull_schedule'] %>"
   Storage = <%= @bareos_client['bareos']['storage']['main_storage'] %>
   Messages = <%= node['bareos']['messages']['default_messages'] %>
-  Pool = <%= @bareos_client['bareos']['clients']['vfull_pool'] %>
+  Pool = <%= @bareos_client['bareos']['clients']['full_pool'] %>
   IncrementalBackupPool = <%= @bareos_client['bareos']['clients']['incremental_pool'] %>
   DifferentialBackupPool = <%= @bareos_client['bareos']['clients']['differential_pool'] %>
   FullBackupPool = <%= @bareos_client['bareos']['clients']['full_pool'] %>
@@ -113,6 +113,16 @@ Schedule {
   Name = <%= @bareos_client['bareos']['clients']['vfull_schedule'] %>
   Run = Level=VirtualFull on 1 at 3:00
 }
+
+Pool {
+  Name = <%= @bareos_client['bareos']['clients']['vfull_pool'] %>
+  Pool Type = Backup
+  Catalog Files = <%= @bareos_client['bareos']['clients']['catalog_files'] %>
+  AutoPrune = <%= @bareos_client['bareos']['clients']['autoprune'] %>
+  Storage = <%= @bareos_client['bareos']['clients']['vfull_storage'] %>
+  Next Pool = <%= @bareos_client['bareos']['clients']['full_pool'] %>
+  Volume Retention = <%= @bareos_client['bareos']['clients']['volume_retention'] %>
+} 
 <% end %>
 
 <% if @bareos_client['bareos']['clients']['host_pools'] %>

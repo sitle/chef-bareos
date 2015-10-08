@@ -58,6 +58,8 @@ default['bareos']['clients']['max_concurrent_jobs'] = 20
 default['bareos']['clients']['client_list'] = %w(node) # {'foo.bar.org','boo.ya.org'}
 default['bareos']['clients']['file_retention'] = '30 days'
 default['bareos']['clients']['job_retention'] = '6 months'
+default]'bareos']['clients']['volume_retention'] = '6 months'
+default]'bareos']['clients']['catalog_files'] = 'yes'
 default['bareos']['clients']['autoprune'] = 'yes'
 default['bareos']['clients']['heartbeat_interval'] = 600
 default['bareos']['clients']['bootstrap_file'] = '/var/lib/bareos/%c.bsr'
@@ -68,21 +70,25 @@ default['bareos']['clients']['jobdef_default_messages'] = node['bareos']['messag
 default['bareos']['clients']['jobdef_default_storage'] = 'File'
 default['bareos']['clients']['jobdef_default_fileset'] = "#{node['fqdn']}-Fileset"
 default['bareos']['clients']['storage'] = node['bareos']['clients']['jobdef_default_storage']
+default['bareos']['clients']['vfull_storage'] = node['bareos']['clients']['jobdef_default_storage']
 default['bareos']['clients']['fileset'] = node['bareos']['clients']['jobdef_default_fileset']
 default['bareos']['clients']['host_pools'] = false # Default is disabled, normal pools, see below
-if node['bareos']['clients']['host_pools'] == true
-  default['bareos']['clients']['full_pool'] = "#{node['fqdn']}-Full-Pool"
-  default['bareos']['clients']['incremental_pool'] = "#{node['fqdn']}-Inc-Pool"
-  default['bareos']['clients']['differential_pool'] = "#{node['fqdn']}-Diff-Pool"
-  default['bareos']['clients']['default_pool'] = "#{node['fqdn']}-Default-Pool"
-else
+
+case node['bareos']['clients']['host_pools']
+when false
   default['bareos']['clients']['full_pool'] = 'File-Full-Pool'
   default['bareos']['clients']['incremental_pool'] = 'File-Inc-Pool'
   default['bareos']['clients']['differential_pool'] = 'File-Diff-Pool'
   default['bareos']['clients']['default_pool'] = 'File-Default-Pool'
+when true
+  default['bareos']['clients']['full_pool'] = "#{node['fqdn']}-Full-Pool"
+  default['bareos']['clients']['incremental_pool'] = "#{node['fqdn']}-Inc-Pool"
+  default['bareos']['clients']['differential_pool'] = "#{node['fqdn']}-Diff-Pool"
+  default['bareos']['clients']['default_pool'] = "#{node['fqdn']}-Default-Pool"
 end
+
 default['bareos']['clients']['enable_vfulls'] = false
-default['bareos']['clients']['vfull_pool'] = node['bareos']['clients']['full_pool']
+default['bareos']['clients']['vfull_pool'] = "#{node['fqdn']}-VFull-Pool"
 default['bareos']['clients']['vfull_priority'] = 9
 default['bareos']['clients']['vfull_accurate'] = 'no' # More sane option is no, yes is preferred if possible
 default['bareos']['clients']['vfull_spool'] = 'no' # Not useful in most cases but available
