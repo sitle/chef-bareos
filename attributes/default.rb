@@ -76,10 +76,10 @@ default['bareos']['clients']['host_pools'] = false # Default is disabled, normal
 
 case node['bareos']['clients']['host_pools']
 when false
-  default['bareos']['clients']['full_pool'] = 'File-Full-Pool'
-  default['bareos']['clients']['incremental_pool'] = 'File-Inc-Pool'
-  default['bareos']['clients']['differential_pool'] = 'File-Diff-Pool'
-  default['bareos']['clients']['default_pool'] = 'File-Default-Pool'
+  default['bareos']['clients']['full_pool'] = 'Full-Pool'
+  default['bareos']['clients']['incremental_pool'] = 'Inc-Pool'
+  default['bareos']['clients']['differential_pool'] = 'Diff-Pool'
+  default['bareos']['clients']['default_pool'] = 'Default-Pool'
 when true
   default['bareos']['clients']['full_pool'] = "#{node['fqdn']}-Full-Pool"
   default['bareos']['clients']['incremental_pool'] = "#{node['fqdn']}-Inc-Pool"
