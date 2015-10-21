@@ -72,8 +72,8 @@ default['bareos']['clients']['jobdef_default_fileset'] = "#{node['fqdn']}-Filese
 default['bareos']['clients']['storage'] = node['bareos']['clients']['jobdef_default_storage']
 default['bareos']['clients']['vfull_storage'] = node['bareos']['clients']['jobdef_default_storage']
 default['bareos']['clients']['fileset'] = node['bareos']['clients']['jobdef_default_fileset']
-default['bareos']['clients']['host_pools'] = false # Default is disabled, normal pools, see below
 
+default['bareos']['clients']['host_pools'] = false # Default is disabled, normal pools, see below
 case node['bareos']['clients']['host_pools']
 when false
   default['bareos']['clients']['full_pool'] = 'Full-Pool'

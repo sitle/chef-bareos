@@ -71,25 +71,6 @@ FileSet {
   }
 }
 
-# Example for windows machine filesets #
-# FileSet {
-#   Name = "Windows All Drives"
-#   Enable VSS = yes
-#   Include {
-#     Options {
-#       Signature = MD5
-#       Drive Type = fixed
-#       IgnoreCase = yes
-#       WildFile = "[A-Z]:/pagefile.sys"
-#       WildDir = "[A-Z]:/RECYCLER"
-#       WildDir = "[A-Z]:/$RECYCLE.BIN"
-#       WildDir = "[A-Z]:/System Volume Information"
-#       Exclude = yes
-#     }
-#     File = /
-#   }
-# }
-
 #####################
 # Default Schedules #
 #####################
@@ -159,67 +140,9 @@ Messages {
   catalog = all
 }
 
-###########################
-# Default File-Based Pools #
-###########################
-
-Pool {
-  Name = Default-Pool
-  Pool Type = Backup
-  Recycle = yes
-  AutoPrune = yes
-  Volume Retention = 30 days
-  Maximum Volume Bytes = 10G
-  Maximum Volumes = 25
-  LabelFormat = "DefaultVol-"
-}
-
-Pool {
-  Name = Full-Pool
-  Pool Type = Backup
-  Recycle = yes
-  AutoPrune = yes
-  Volume Retention = 6 months
-  Maximum Volume Bytes = 10G
-  Maximum Volumes = 25
-  LabelFormat = "FullVol-"
-}
-
-Pool {
-  Name = Inc-Pool
-  Pool Type = Backup
-  Recycle = yes
-  AutoPrune = yes
-  Volume Retention = 2 months
-  Maximum Volume Bytes = 10G
-  Maximum Volumes = 25
-  LabelFormat = "IncVol-"
-}
-
-Pool {
-  Name = Diff-Pool
-  Pool Type = Backup
-  Recycle = yes
-  AutoPrune = yes
-  Volume Retention = 4 months
-  Maximum Volume Bytes = 10G
-  Maximum Volumes = 25
-  LabelFormat = "DiffVol-"
-}
-
-Pool {
-  Name = Scratch
-  Pool Type = Backup
-}
-<% if node['bareos']['director']['custom_configs'] %>
-
 ###########################################
 # Custom Director Daemon Config Locations #
 ###########################################
 
 # General
 @|"sh -c 'for conf in /etc/bareos/bareos-dir.d/*.conf ; do echo @${conf} ; done'"
-
-# Clients
-@|"sh -c 'for clients in /etc/bareos/bareos-dir.d/clients/*.conf ; do echo @${clients} ; done'"
-<% end %>

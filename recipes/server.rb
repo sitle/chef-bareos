@@ -31,16 +31,8 @@ node.save unless Chef::Config[:solo]
   end
 end
 
-# Create hosts directory for host configs
-directory '/etc/bareos/bareos-dir.d/clients/' do
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
-end
-
 # Create a placeholder file so BAREOS doesn't throw error when none found
-file '/etc/bareos/bareos-dir.d/_recipe_complete.conf' do
+file '/etc/bareos/bareos-dir.d/.conf' do
   content '# This is a base file so the recipe works with no additional help'
   owner 'root'
   group 'root'
@@ -75,19 +67,27 @@ else
   bareos_clients = search(:node, 'roles:bareos_client')
 end
 
-# Account for any number of clients, setup the client config on the director machine
-# Also push out whether to do custom client pools in chef-solo or chef-client mode
-bareos_clients.each do |client|
-  template "/etc/bareos/bareos-dir.d/clients/#{client['fqdn']}.conf" do
-    source 'client.conf.erb'
-    owner 'bareos'
-    group 'bareos'
-    mode '0640'
-    variables(
-      bareos_client: client
-    )
-    notifies :run, 'execute[reload-dir]', :delayed
-  end
+template "/etc/bareos/bareos-dir.d/clients.conf" do
+  source 'clients.conf.erb'
+  owner 'bareos'
+  group 'bareos'
+  mode '0640'
+  variables(
+    bareos_client: bareos_clients,
+  )
+  notifies :run, 'execute[reload-dir]', :delayed
+end
+
+# Populate pools config based on sets of hashes, see attributes file for example
+template '/etc/bareos/bareos-dir.d/pools.conf' do
+  source 'pools.conf.erb'
+  owner 'bareos'
+  group 'bareos'
+  mode '0640'
+  variables(
+    client_pools: node['bareos']['clients']['pools']
+  )
+  notifies :run, 'execute[reload-dir]', :delayed
 end
 
 # Allow a restart of the director daemon if called with tests up front

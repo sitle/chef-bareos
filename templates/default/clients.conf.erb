@@ -3,7 +3,7 @@
 # Local modifications will be overwritten.
 #
 # Bareos Client Configuration File
-<% @bareos_client.each do |client| %>
+
 Client {
   Name = <%= @bareos_client['fqdn'] %>-fd
   Address = <%= @bareos_client['fqdn'] %>
@@ -76,9 +76,8 @@ FileSet {
 
 <% if @bareos_client['bareos']['clients']['enable_vfulls'] %>
 # VirtualFull Job
-<% @client_vfulljob.each do |vjob_name, vjob| %>
 Job {
-  Name = "<%= vjob_name %>"
+  Name = "<%= @bareos_client['fqdn'] %>-VFullJob"
   Client = <%= @bareos_client['fqdn'] %>-fd
   JobDefs = "<%= @bareos_client['fqdn'] %>-VFullJobDef"
   FileSet = "<%= @bareos_client['fqdn'] %>-Fileset"
