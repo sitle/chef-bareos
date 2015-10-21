@@ -73,22 +73,8 @@ default['bareos']['clients']['storage'] = node['bareos']['clients']['jobdef_defa
 default['bareos']['clients']['vfull_storage'] = node['bareos']['clients']['jobdef_default_storage']
 default['bareos']['clients']['fileset'] = node['bareos']['clients']['jobdef_default_fileset']
 
-default['bareos']['clients']['host_pools'] = false # Default is disabled, normal pools, see below
-case node['bareos']['clients']['host_pools']
-when false
-  default['bareos']['clients']['full_pool'] = 'Full-Pool'
-  default['bareos']['clients']['incremental_pool'] = 'Inc-Pool'
-  default['bareos']['clients']['differential_pool'] = 'Diff-Pool'
-  default['bareos']['clients']['default_pool'] = 'Default-Pool'
-when true
-  default['bareos']['clients']['full_pool'] = "#{node['fqdn']}-Full-Pool"
-  default['bareos']['clients']['incremental_pool'] = "#{node['fqdn']}-Inc-Pool"
-  default['bareos']['clients']['differential_pool'] = "#{node['fqdn']}-Diff-Pool"
-  default['bareos']['clients']['default_pool'] = "#{node['fqdn']}-Default-Pool"
-end
 
 default['bareos']['clients']['enable_vfulls'] = false
-default['bareos']['clients']['vfull_pool'] = "#{node['fqdn']}-VFull-Pool"
 default['bareos']['clients']['vfull_priority'] = 9
 default['bareos']['clients']['vfull_accurate'] = 'no' # More sane option is no, yes is preferred if possible
 default['bareos']['clients']['vfull_spool'] = 'no' # Not useful in most cases but available
@@ -100,15 +86,25 @@ default['bareos']['clients']['vfull_reschedule_on_fail'] = 'yes'
 default['bareos']['clients']['vfull_reschedule_interval'] = '30 minutes'
 default['bareos']['clients']['vfull_reschedule_times'] = 1
 
+default['bareos']['clients']['vfull']["#{}"] = {
+  '' => '',
+  '' => ''
+}
+
+# Pools - You have the power, here is an example for default pool only
+default['bareos']['clients']['pools']['default'] = {
+  'Pool Type' => 'Backup',
+  'Recycle' => 'yes',
+  'Volume Retention' => '30 days',
+  'Maximum Volume Bytes' => '10G',
+  'Maximum Volumes' => '25'
+  'LabelFormat' => 'FileVolume-'
+}
+
 # Storage Daemon
 default['bareos']['storage']['sd_port'] = 9103
 default['bareos']['storage']['tape'] = false # Tape may have to be handled via custom wrapper cookbooks
-case node['bareos']['storage']['tape']
-when true
-  default['bareos']['storage']['main_storage'] = 'TapeLibrary' # When enabled change to appropriate label in wrapper
-when false
-  default['bareos']['storage']['main_storage'] = 'File'
-end
+default['bareos']['storage']['main_storage'] = 'File'
 default['bareos']['storage']['servers'] = {} # Use FQDN of each server for consistancy in solo mode
 default['bareos']['storage']['custom_configs'] = '0'
 default['bareos']['storage']['sd_mon_enable'] = 'yes'
