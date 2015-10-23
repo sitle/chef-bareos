@@ -53,9 +53,10 @@ default['bareos']['database']['dbpassword'] = ''
 default['bareos']['database']['dbaddress'] = nil
 
 # Clients
+default['bareos']['clients']['client_search_query'] = 'roles:bareos_client'
 default['bareos']['clients']['fd_port'] = 9102
 default['bareos']['clients']['max_concurrent_jobs'] = 20
-default['bareos']['clients']['client_list'] = %w(node) # {'foo.bar.org','boo.ya.org'}
+default['bareos']['clients']['client_list'] = %w(node)
 default['bareos']['clients']['file_retention'] = '30 days'
 default['bareos']['clients']['job_retention'] = '6 months'
 default['bareos']['clients']['volume_retention'] = '6 months'
@@ -91,6 +92,46 @@ default['bareos']['clients']['vfull']["#{}"] = {
   '' => ''
 }
 
+# Clients Definitions - You have the power, here is an example for a default definition
+default['bareos']['clients']['pools']['default'] = {
+  'Pool Type' => 'Backup',
+  'Recycle' => 'yes',
+  'Volume Retention' => '30 days',
+  'Maximum Volume Bytes' => '10G',
+  'Maximum Volumes' => '25'
+  'LabelFormat' => 'FileVolume-'
+}
+
+# Job Definitions - You have the power, here is an example for a default definition
+default['bareos']['clients']['job_definitions']['default'] = {
+  'Pool Type' => 'Backup',
+  'Recycle' => 'yes',
+  'Volume Retention' => '30 days',
+  'Maximum Volume Bytes' => '10G',
+  'Maximum Volumes' => '25'
+  'LabelFormat' => 'FileVolume-'
+}
+
+# Job Definitions - You have the power, here is an example for a default definition
+default['bareos']['clients']['pools']['default'] = {
+  'Pool Type' => 'Backup',
+  'Recycle' => 'yes',
+  'Volume Retention' => '30 days',
+  'Maximum Volume Bytes' => '10G',
+  'Maximum Volumes' => '25'
+  'LabelFormat' => 'FileVolume-'
+}
+
+# Filesets - You have the power, here is an example for a default definition
+default['bareos']['clients']['pools']['default'] = {
+  'Pool Type' => 'Backup',
+  'Recycle' => 'yes',
+  'Volume Retention' => '30 days',
+  'Maximum Volume Bytes' => '10G',
+  'Maximum Volumes' => '25'
+  'LabelFormat' => 'FileVolume-'
+}
+
 # Pools - You have the power, here is an example for default pool only
 default['bareos']['clients']['pools']['default'] = {
   'Pool Type' => 'Backup',
@@ -101,26 +142,43 @@ default['bareos']['clients']['pools']['default'] = {
   'LabelFormat' => 'FileVolume-'
 }
 
+# Schedules - You have the power, here is an example for a default definition
+default['bareos']['clients']['pools']['default'] = {
+  'Pool Type' => 'Backup',
+  'Recycle' => 'yes',
+  'Volume Retention' => '30 days',
+  'Maximum Volume Bytes' => '10G',
+  'Maximum Volumes' => '25'
+  'LabelFormat' => 'FileVolume-'
+}
+
+# Storages - You have the power, here is an example for a default definition
+default['bareos']['clients']['pools']['default'] = {
+  'Pool Type' => 'Backup',
+  'Recycle' => 'yes',
+  'Volume Retention' => '30 days',
+  'Maximum Volume Bytes' => '10G',
+  'Maximum Volumes' => '25'
+  'LabelFormat' => 'FileVolume-'
+}
+
 # Storage Daemon
+default['bareos']['storage']['storage_search_query'] = 'roles:bareos_storage'
 default['bareos']['storage']['sd_port'] = 9103
 default['bareos']['storage']['tape'] = false # Tape may have to be handled via custom wrapper cookbooks
 default['bareos']['storage']['main_storage'] = 'File'
-default['bareos']['storage']['servers'] = {} # Use FQDN of each server for consistancy in solo mode
-default['bareos']['storage']['custom_configs'] = '0'
+default['bareos']['storage']['servers'] = %w(node)
 default['bareos']['storage']['sd_mon_enable'] = 'yes'
 default['bareos']['storage']['max_concurrent_jobs'] = 20
 
 # Director
+default['bareos']['director']['dir_search_query'] = 'role:bareos_server'
 default['bareos']['director']['dir_port'] = 9101
 default['bareos']['director']['dir_max_concurrent_jobs'] = 20
-default['bareos']['director']['custom_configs'] = true
-default['bareos']['director']['servers'] = {} # Use FQDN of each server for consistancy in solo mode
+default['bareos']['director']['servers'] = %w(node)
 default['bareos']['director']['console_commandacl'] = 'status, .status'
 default['bareos']['director']['heartbeat_interval'] = 600
 
 # Subscription Management (Director)
 default['bareos']['director']['dir_subscription'] = nil
 default['bareos']['director']['dir_subs'] = nil
-
-# Workstation
-default['bareos']['workstation']['solo_mode'] = '0'

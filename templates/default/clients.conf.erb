@@ -16,111 +16,12 @@ Client {
   Maximum Concurrent Jobs = <%= @bareos_client['bareos']['clients']['max_concurrent_jobs'] %>
 }
 
-JobDefs {
-  Name = "<%= @bareos_client['fqdn'] %>-JobDef"
-  Type = Backup
-  Level = Incremental
-  Client = <%= @bareos_client['fqdn'] %>-fd
-  FileSet = "<%= @bareos_client['fqdn'] %>-Fileset"
-  Schedule = "<%= @bareos_client['bareos']['clients']['jobdef_default_schedule'] %>"
-  Storage = <%= @bareos_client['bareos']['clients']['jobdef_default_storage'] %>
-  Messages = <%= node['bareos']['clients']['jobdef_default_messages'] %>
-  Pool = <%= @bareos_client['bareos']['clients']['default_pool'] %>
-  FullBackupPool = <%= @bareos_client['bareos']['clients']['full_pool'] %>
-  IncrementalBackupPool = <%= @bareos_client['bareos']['clients']['incremental_pool'] %>
-  DifferentialBackupPool = <%= @bareos_client['bareos']['clients']['differential_pool'] %>
-  Priority = <%= @bareos_client['bareos']['clients']['jobdef_default_runlevel'] %>
-  Write Bootstrap = "/var/lib/bareos/%c.bsr"
-  SpoolData = <%= @bareos_client['bareos']['clients']['spool_data'] %>
+<% @bareos_clients.each do |client| %>
+Client {
+<% @client_config.each do |
+  Name = <%= client_name %>
+<% client.each do |key,value| %>
+<%= key %> = <%= value %>
+<% end %>
 }
-
-# Default Job
-Job {
-  Name = "<%= @bareos_client['fqdn'] %>-Job"
-  JobDefs = "<%= @bareos_client['fqdn'] %>-JobDef"
-}
-
-# Restore Job
-Job {
-  Name = "<%= @bareos_client['fqdn'] %>-Restore"
-  Type = Restore
-  Client = <%= @bareos_client['fqdn'] %>-fd
-  FileSet = "<%= @bareos_client['fqdn'] %>-Fileset"
-  Storage = <%= @bareos_client['bareos']['clients']['storage'] %>
-  Pool = <%= @bareos_client['bareos']['clients']['full_pool'] %>
-  Messages = <%= node['bareos']['messages']['default_messages'] %>
-  Where = /tmp/<%= @bareos_client['fqdn'] %>_restored/
-}
-
-FileSet { 
-  Name = "<%= @bareos_client['fqdn'] %>-Fileset"
-  Include {
-    Options {
-      signature = MD5
-    }
-    File = /
-    Exclude Dir Containing = .bareos_ignore
-  }
-  Exclude {
-    File = /var/lib/bareos
-    File = /var/lib/bareos/storage
-    File = /var/lib/pgsql
-    File = /var/lib/mysql
-    File = /proc
-    File = /tmp
-    File = /.journal
-    File = /.fsck
-    File = /spool
-  }
-}
-
-<% if @bareos_client['bareos']['clients']['enable_vfulls'] %>
-# VirtualFull Job
-Job {
-  Name = "<%= @bareos_client['fqdn'] %>-VFullJob"
-  Client = <%= @bareos_client['fqdn'] %>-fd
-  JobDefs = "<%= @bareos_client['fqdn'] %>-VFullJobDef"
-  FileSet = "<%= @bareos_client['fqdn'] %>-Fileset"
-  Accurate = <%= @bareos_client['bareos']['clients']['vfull_accurate'] %>
-}
-
-JobDefs {
-  Name = "<%= @bareos_client['fqdn'] %>-VFullJobDef"
-  Type = Backup
-  Level = VirtualFull
-  Client = <%= @bareos_client['fqdn'] %>-fd
-  FileSet = "<%= @bareos_client['fqdn'] %>-Fileset"
-  Schedule = "<%= @bareos_client['bareos']['clients']['vfull_schedule'] %>"
-  Storage = <%= @bareos_client['bareos']['storage']['main_storage'] %>
-  Messages = <%= node['bareos']['messages']['default_messages'] %>
-  Pool = <%= @bareos_client['bareos']['clients']['full_pool'] %>
-  IncrementalBackupPool = <%= @bareos_client['bareos']['clients']['incremental_pool'] %>
-  DifferentialBackupPool = <%= @bareos_client['bareos']['clients']['differential_pool'] %>
-  FullBackupPool = <%= @bareos_client['bareos']['clients']['full_pool'] %>
-  Priority = <%= node['bareos']['clients']['vfull_priority'] %>
-  Write Bootstrap = "<%= node['bareos']['clients']['bootstrap_file'] %>"
-  SpoolData = <%= @bareos_client['bareos']['clients']['vfull_spool'] %>
-  Maximum Concurrent Jobs = <%= node['bareos']['clients']['vfull_concurrent_jobs'] %>
-  Allow Duplicate Jobs = <%= node['bareos']['clients']['vfull_duplicate_jobs'] %>
-  Cancel Lower Level Duplicates = <%= node['bareos']['clients']['vfull_cancel_low_duplicates'] %>
-  Reschedule On Error = <%= node['bareos']['clients']['vfull_reschedule_on_fail'] %>
-  Reschedule Interval = <%= node['bareos']['clients']['vfull_reschedule_interval'] %>
-  Reschedule Times = <%= node['bareos']['clients']['vfull_reschedule_times'] %>
-  Accurate = <%= @bareos_client['bareos']['clients']['vfull_accurate'] %>
-}
-
-Schedule {
-  Name = <%= @bareos_client['bareos']['clients']['vfull_schedule'] %>
-  Run = Level=VirtualFull on 1 at 3:00
-}
-
-Pool {
-  Name = <%= @bareos_client['bareos']['clients']['vfull_pool'] %>
-  Pool Type = Backup
-  Catalog Files = <%= @bareos_client['bareos']['clients']['catalog_files'] %>
-  AutoPrune = <%= @bareos_client['bareos']['clients']['autoprune'] %>
-  Storage = <%= @bareos_client['bareos']['clients']['vfull_storage'] %>
-  Next Pool = <%= @bareos_client['bareos']['clients']['full_pool'] %>
-  Volume Retention = <%= @bareos_client['bareos']['clients']['volume_retention'] %>
-} 
 <% end %>

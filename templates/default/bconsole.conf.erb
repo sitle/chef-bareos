@@ -4,23 +4,11 @@
 #
 # Bareos User Agent (or Console) Configuration File
 
-<% if @solo_mode == '1' %>
-  <% @bareos_dir.each do |director| %>
-Director {
-  Name = <%= director %>-dir
-  DIRport = <%= node['bareos']['director']['dir_port'] %>
-  address = <%= director %>
-  Password = "<%= node['bareos']['dir_password'] %>"
-}
-  <% end %>
-<% else %>
-  <%# @bareos_dir_hostname.zip(@bareos_dir_fqdn).each do |hostname, fqdn| %>
-  <% @bareos_dir.each do |director| %>
+<% @bareos_dir.each do |director| %>
 Director {
   Name = <%= director['fqdn'] %>-dir
   DIRport = <%= node['bareos']['director']['dir_port'] %>
   address = <%= director['fqdn'] %>
   Password = "<%= node['bareos']['dir_password'] %>"
 }
-  <% end %>
 <% end %>

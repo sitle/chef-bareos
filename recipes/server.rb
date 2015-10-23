@@ -31,16 +31,14 @@ node.save unless Chef::Config[:solo]
   end
 end
 
-# Create a placeholder file so BAREOS doesn't throw error when none found
-file '/etc/bareos/bareos-dir.d/.conf' do
-  content '# This is a base file so the recipe works with no additional help'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
+# Create a blank placeholder for d directory
+execute 'director_conf_holder' do
+  command 'touch /etc/bareos/bareos-dir.d/.conf'
+  creates '/etc/bareos/bareos-dir.d/.conf'
+  action :run
 end
 
-# Create necessary bareos-dir config
+# Create the base config for the Bareos Director
 template '/etc/bareos/bareos-dir.conf' do
   source 'bareos-dir.conf.erb'
   owner 'bareos'
@@ -56,36 +54,100 @@ template '/etc/bareos/bareos-dir.conf' do
   notifies :run, 'execute[reload-dir]', :delayed
 end
 
-# Handle seperate host config files
-# Populate host config files based on:
-#  * the default['bareos']['clients']['client_list'] attribute
-#   - OR -
-#  * hosts with bareos_client role attached
+# Create clients config based on sets of hashes, see attributes file for example
 if Chef::Config[:solo]
   bareos_clients = node['bareos']['clients']['client_list']
 else
-  bareos_clients = search(:node, 'roles:bareos_client')
+  bareos_clients = search(:node, "#{node['bareos']['clients']['client_search_query']}")
 end
 
-template "/etc/bareos/bareos-dir.d/clients.conf" do
+template '/etc/bareos/bareos-dir.d/clients.conf' do
   source 'clients.conf.erb'
   owner 'bareos'
   group 'bareos'
   mode '0640'
   variables(
     bareos_client: bareos_clients,
+    client_pools: node['bareos']['clients']['definition'] 
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
 
-# Populate pools config based on sets of hashes, see attributes file for example
+# Create jobs config based on sets of hashes, see attributes file for example
+template '/etc/bareos/bareos-dir.d/jobs.conf' do
+  source 'jobs.conf.erb'
+  owner 'bareos'
+  group 'bareos'
+  mode '0640'
+  variables(
+    bareos_client: bareos_clients,
+    client_jobs: node['bareos']['clients']['jobs']
+  )
+  notifies :run, 'execute[reload-dir]', :delayed
+end
+
+# Create job definitions config based on sets of hashes, see attributes file for example
+template '/etc/bareos/bareos-dir.d/job_definitions.conf' do
+  source 'job_definitions.conf.erb'
+  owner 'bareos'
+  group 'bareos'
+  mode '0640'
+  variables(
+    bareos_client: bareos_clients,
+    job_definitions: node['bareos']['clients']['job_definitions']
+  )
+  notifies :run, 'execute[reload-dir]', :delayed
+end
+
+# Create filesets config based on sets of hashes, see attributes file for example
+template '/etc/bareos/bareos-dir.d/filesets.conf' do
+  source 'filesets.conf.erb'
+  owner 'bareos'
+  group 'bareos'
+  mode '0640'
+  variables(
+    bareos_client: bareos_clients,
+    fileset_options: node['baroes']['clients']['filesets']['options'],
+    fileset_include_files: node['bareos']['clients']['filesets']['include'],
+    fileset_exclude_files: node['bareos']['clients']['filesets']['exclude']
+  )
+  notifies :run, 'execute[reload-dir]', :delayed
+end
+
+# Create pools config based on sets of hashes, see attributes file for example
 template '/etc/bareos/bareos-dir.d/pools.conf' do
   source 'pools.conf.erb'
   owner 'bareos'
   group 'bareos'
   mode '0640'
   variables(
+    bareos_client: bareos_clients,
     client_pools: node['bareos']['clients']['pools']
+  )
+  notifies :run, 'execute[reload-dir]', :delayed
+end
+
+# Create schedules config based on sets of hashes, see attributes file for example
+template '/etc/bareos/bareos-dir.d/schedules.conf' do
+  source 'filesets.conf.erb'
+  owner 'bareos'
+  group 'bareos'
+  mode '0640'
+  variables(
+    bareos_client: bareos_clients,
+    client_schedules: node['bareos']['clients']['schedules']
+  )
+  notifies :run, 'execute[reload-dir]', :delayed
+end
+
+# Create storages config based on sets of hashes, see attributes file for example
+template '/etc/bareos/bareos-dir.d/storages.conf' do
+  source 'storages.conf.erb'
+  owner 'bareos'
+  group 'bareos'
+  mode '0640'
+  variables(
+    director_storages: node['bareos']['director']['storages']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
