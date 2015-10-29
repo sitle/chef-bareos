@@ -58,7 +58,7 @@ end
 if Chef::Config[:solo]
   bareos_clients = node['bareos']['clients']['client_list']
 else
-  bareos_clients = search(:node, "#{node['bareos']['clients']['client_search_query']}")
+  bareos_clients = search(:node, node['bareos']['clients']['client_search_query'])
 end
 
 template '/etc/bareos/bareos-dir.d/clients.conf' do
@@ -67,7 +67,7 @@ template '/etc/bareos/bareos-dir.d/clients.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    bareos_client: bareos_clients
+    bareos_client: bareos_clients,
     clients: bareos_clients
   )
   notifies :run, 'execute[reload-dir]', :delayed

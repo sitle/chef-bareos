@@ -28,7 +28,7 @@ end
 if Chef::Config[:solo]
   bareos_dir = node['bareos']['director']['servers']
 else
-  bareos_dir = search(:node, "#{node['bareos']['director']['dir_search_query']}")
+  bareos_dir = search(:node, node['bareos']['director']['dir_search_query'])
 end
 
 # Setup the bconsole config, pushes out list of bareos-dirs and if solo mode
