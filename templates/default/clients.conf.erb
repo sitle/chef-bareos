@@ -4,24 +4,21 @@
 #
 # Bareos Client Configuration File
 
+# Borrowed some logic from the Nagios Cookbook
+<% @clients.each do |client| %>
 Client {
-  Name = <%= @bareos_client['fqdn'] %>-fd
-  Address = <%= @bareos_client['fqdn'] %>
-  FDPort = <%= @bareos_client['bareos']['clients']['fd_port'] %>
-  Catalog = <%= node['bareos']['database']['catalog_name'] %>
-  Password = "<%= @bareos_client['bareos']['fd_password'] %>" # password for FileDaemon
-  File Retention = <%= @bareos_client['bareos']['clients']['file_retention'] %>
-  Job Retention = <%= @bareos_client['bareos']['clients']['job_retention'] %>
-  AutoPrune = <%= @bareos_client['bareos']['clients']['autoprune'] %>
-  Maximum Concurrent Jobs = <%= @bareos_client['bareos']['clients']['max_concurrent_jobs'] %>
-}
-
-<% @bareos_clients.each do |client| %>
-Client {
-<% @client_config.each do |
-  Name = <%= client_name %>
-<% client.each do |key,value| %>
-<%= key %> = <%= value %>
-<% end %>
+  Name = <%= client['bareos']['clients']['name'] %>
+  <% @client.each do |key,items| %>
+    <% case items %>
+    <% when String %>
+<%= key + '=' + items %>
+    <% when Fixnum %>
+<%= key + '=' + items.to_s %>
+    <% when Array %>
+      <% items.each do |item| %>
+<%= key + '=' + item %>
+      <% end %>
+    <% end %>
+  <% end %>
 }
 <% end %>

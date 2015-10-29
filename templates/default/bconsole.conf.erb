@@ -6,9 +6,9 @@
 
 <% @bareos_dir.each do |director| %>
 Director {
-  Name = <%= director['fqdn'] %>-dir
-  DIRport = <%= node['bareos']['director']['dir_port'] %>
-  address = <%= director['fqdn'] %>
-  Password = "<%= node['bareos']['dir_password'] %>"
+  Name = <%= director['bareos']['workstation']['name'] %>-dir
+  DIRport = <%= director['bareos']['director']['dir_port'] %>
+  address = <%= director['bareos']['workstation']['name'] %>
+  Password = "<%= director['bareos']['dir_password'] %>"
 }
 <% end %>

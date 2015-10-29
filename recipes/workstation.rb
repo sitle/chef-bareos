@@ -40,7 +40,7 @@ template '/etc/bareos/bconsole.conf' do
   if Chef::Config[:solo]
     variables(
       bareos_dir: bareos_dir,
-      solo_mode: Chef::Config[:solo] 
+      solo_mode: Chef::Config[:solo]
     )
   else
     variables(

@@ -74,7 +74,6 @@ default['bareos']['clients']['storage'] = node['bareos']['clients']['jobdef_defa
 default['bareos']['clients']['vfull_storage'] = node['bareos']['clients']['jobdef_default_storage']
 default['bareos']['clients']['fileset'] = node['bareos']['clients']['jobdef_default_fileset']
 
-
 default['bareos']['clients']['enable_vfulls'] = false
 default['bareos']['clients']['vfull_priority'] = 9
 default['bareos']['clients']['vfull_accurate'] = 'no' # More sane option is no, yes is preferred if possible
@@ -87,28 +86,23 @@ default['bareos']['clients']['vfull_reschedule_on_fail'] = 'yes'
 default['bareos']['clients']['vfull_reschedule_interval'] = '30 minutes'
 default['bareos']['clients']['vfull_reschedule_times'] = 1
 
-default['bareos']['clients']['vfull']["#{}"] = {
-  '' => '',
-  '' => ''
-}
-
 # Clients Definitions - You have the power, here is an example for a default definition
 default['bareos']['clients']['pools']['default'] = {
   'Pool Type' => 'Backup',
   'Recycle' => 'yes',
   'Volume Retention' => '30 days',
   'Maximum Volume Bytes' => '10G',
-  'Maximum Volumes' => '25'
+  'Maximum Volumes' => '25',
   'LabelFormat' => 'FileVolume-'
 }
 
-# Job Definitions - You have the power, here is an example for a default definition
+# Jobs - You have the power, here is an example for a default definition
 default['bareos']['clients']['job_definitions']['default'] = {
   'Pool Type' => 'Backup',
   'Recycle' => 'yes',
   'Volume Retention' => '30 days',
   'Maximum Volume Bytes' => '10G',
-  'Maximum Volumes' => '25'
+  'Maximum Volumes' => '25',
   'LabelFormat' => 'FileVolume-'
 }
 
@@ -118,7 +112,7 @@ default['bareos']['clients']['pools']['default'] = {
   'Recycle' => 'yes',
   'Volume Retention' => '30 days',
   'Maximum Volume Bytes' => '10G',
-  'Maximum Volumes' => '25'
+  'Maximum Volumes' => '25',
   'LabelFormat' => 'FileVolume-'
 }
 
@@ -128,7 +122,7 @@ default['bareos']['clients']['pools']['default'] = {
   'Recycle' => 'yes',
   'Volume Retention' => '30 days',
   'Maximum Volume Bytes' => '10G',
-  'Maximum Volumes' => '25'
+  'Maximum Volumes' => '25',
   'LabelFormat' => 'FileVolume-'
 }
 
@@ -138,7 +132,7 @@ default['bareos']['clients']['pools']['default'] = {
   'Recycle' => 'yes',
   'Volume Retention' => '30 days',
   'Maximum Volume Bytes' => '10G',
-  'Maximum Volumes' => '25'
+  'Maximum Volumes' => '25',
   'LabelFormat' => 'FileVolume-'
 }
 
@@ -148,7 +142,7 @@ default['bareos']['clients']['pools']['default'] = {
   'Recycle' => 'yes',
   'Volume Retention' => '30 days',
   'Maximum Volume Bytes' => '10G',
-  'Maximum Volumes' => '25'
+  'Maximum Volumes' => '25',
   'LabelFormat' => 'FileVolume-'
 }
 
@@ -158,7 +152,7 @@ default['bareos']['clients']['pools']['default'] = {
   'Recycle' => 'yes',
   'Volume Retention' => '30 days',
   'Maximum Volume Bytes' => '10G',
-  'Maximum Volumes' => '25'
+  'Maximum Volumes' => '25',
   'LabelFormat' => 'FileVolume-'
 }
 

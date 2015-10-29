@@ -67,8 +67,8 @@ template '/etc/bareos/bareos-dir.d/clients.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    bareos_client: bareos_clients,
-    client_pools: node['bareos']['clients']['definition'] 
+    bareos_client: bareos_clients
+    clients: bareos_clients
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
@@ -129,7 +129,7 @@ end
 
 # Create schedules config based on sets of hashes, see attributes file for example
 template '/etc/bareos/bareos-dir.d/schedules.conf' do
-  source 'filesets.conf.erb'
+  source 'schedules.conf.erb'
   owner 'bareos'
   group 'bareos'
   mode '0640'
