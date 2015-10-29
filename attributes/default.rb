@@ -17,25 +17,37 @@ when 'debian'
   when 'debian'
     default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Debian_#{node['platform_version'].to_i}.0/"
     default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Debian_#{node['platform_version'].to_i}.0/Release.key"
+    default['bareos']['contrib_baseurl'] = "#{node['bareos']['contrib_url']}/Debian_#{node['platform_version'].to_i}.0/"
+    default['bareos']['contrib_gpgkey'] = "#{node['bareos']['contrib_url']}/Debian_#{node['platform_version'].to_i}.0/Release.key"
   when 'ubuntu'
     default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/xUbuntu_#{node['platform_version']}/"
     default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/xUbuntu_#{node['platform_version']}/Release.key"
+    default['bareos']['contrib_baseurl'] = "#{node['bareos']['contrib_url']}/xUbuntu_#{node['platform_version']}/"
+    default['bareos']['contrib_gpgkey'] = "#{node['bareos']['contrib_url']}/xUbuntu_#{node['platform_version']}/Release.key"
   end
 when 'rhel'
   case node['platform']
-  when 'centos'
+  when 'scientific', 'centos'
     default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/CentOS_#{node['platform_version'].to_i}/"
     default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/CentOS_#{node['platform_version'].to_i}/repodata/repomd.xml.key"
+    default['bareos']['contrib_baseurl'] = "#{node['bareos']['contrib_url']}/CentOS_#{node['platform_version'].to_i}/"
+    default['bareos']['contrib_gpgkey'] = "#{node['bareos']['contrib_url']}/CentOS_#{node['platform_version'].to_i}/repodata/repomd.xml.key"
   when 'redhat'
     default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/#{node['platform_family'].upcase}_#{node['platform_version'].to_i}/"
     default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/#{node['platform_family'].upcase}_#{node['platform_version'].to_i}/repodata/repomd.xml.key"
+    default['bareos']['contrib_baseurl'] = "#{node['bareos']['contrib_url']}/#{node['platform_family'].upcase}_#{node['platform_version'].to_i}/"
+    default['bareos']['contrib_gpgkey'] = "#{node['bareos']['contrib_url']}/#{node['platform_family'].upcase}_#{node['platform_version'].to_i}/repodata/repomd.xml.key"
   end
 when 'fedora'
   default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Fedora_20/"
   default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Fedora_20/repodata/repomd.xml.key"
+  default['bareos']['contrib_baseurl'] = "#{node['bareos']['contrib_url']}/Fedora_20/"
+  default['bareos']['contrib_gpgkey'] = "#{node['bareos']['contrib_url']}/Fedora_20/repodata/repomd.xml.key"
 else
   default['bareos']['baseurl'] = nil
   default['bareos']['gpgkey'] = nil
+  default['bareos']['contrib_baseurl'] = nil
+  default['bareos']['contrib_gpgkey'] = nil
 end
 
 # Messages
