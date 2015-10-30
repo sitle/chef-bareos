@@ -67,7 +67,8 @@ template '/etc/bareos/bareos-dir.d/clients.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    bareos_client: bareos_clients
+    bareos_clients: bareos_clients,
+    client_config: bareos_clients['bareos']['clients']['conf']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
