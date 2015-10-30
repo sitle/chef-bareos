@@ -1,14 +1,17 @@
 # Repository
 
 default['bareos']['url'] = 'http://download.bareos.org/bareos/release'
+default['bareos']['contrib_url'] = 'http://download.bareos.org/bareos/contrib'
 
 # Used to have 'latest' as default, had potential update dangers
 # default['bareos']['version'] = 'latest' <--- Could be dangerous, ***CAUTION***
-default['bareos']['version'] = '14.2' # <--- Latest version as of 6-26-15
+default['bareos']['version'] = '14.2' # <--- Latest Stable version as of 6-26-15
 
 if platform_family?('rhel', 'fedora')
   default['bareos']['yum_repository'] = 'bareos'
   default['bareos']['description'] = "Backup Archiving REcovery Open Sourced Current #{node['bareos']['version']}"
+  default['bareos']['contrib_yum_repository'] = 'bareos_contrib'
+  default['bareos']['contrib_description'] = "Backup Archiving REcovery Open Sourced Current #{node['bareos']['version']} contrib"
 end
 
 case node['platform_family']
@@ -27,7 +30,12 @@ when 'debian'
   end
 when 'rhel'
   case node['platform']
-  when 'scientific', 'centos'
+  when 'centos'
+    default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/CentOS_#{node['platform_version'].to_i}/"
+    default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/CentOS_#{node['platform_version'].to_i}/repodata/repomd.xml.key"
+    default['bareos']['contrib_baseurl'] = "#{node['bareos']['contrib_url']}/CentOS_#{node['platform_version'].to_i}/"
+    default['bareos']['contrib_gpgkey'] = "#{node['bareos']['contrib_url']}/CentOS_#{node['platform_version'].to_i}/repodata/repomd.xml.key"
+  when 'scientific'
     default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/CentOS_#{node['platform_version'].to_i}/"
     default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/CentOS_#{node['platform_version'].to_i}/repodata/repomd.xml.key"
     default['bareos']['contrib_baseurl'] = "#{node['bareos']['contrib_url']}/CentOS_#{node['platform_version'].to_i}/"
@@ -65,6 +73,7 @@ default['bareos']['database']['dbpassword'] = ''
 default['bareos']['database']['dbaddress'] = nil
 
 # Clients
+default['bareos']['clients']['name'] = node['fqdn']
 default['bareos']['clients']['client_search_query'] = 'roles:bareos_client'
 default['bareos']['clients']['fd_port'] = 9102
 default['bareos']['clients']['max_concurrent_jobs'] = 20
@@ -85,6 +94,7 @@ default['bareos']['clients']['jobdef_default_fileset'] = "#{node['fqdn']}-Filese
 default['bareos']['clients']['storage'] = node['bareos']['clients']['jobdef_default_storage']
 default['bareos']['clients']['vfull_storage'] = node['bareos']['clients']['jobdef_default_storage']
 default['bareos']['clients']['fileset'] = node['bareos']['clients']['jobdef_default_fileset']
+default['bareos']['clients']['fileset_signature'] = 'MD5'
 
 default['bareos']['clients']['enable_vfulls'] = false
 default['bareos']['clients']['vfull_priority'] = 9
@@ -98,48 +108,40 @@ default['bareos']['clients']['vfull_reschedule_on_fail'] = 'yes'
 default['bareos']['clients']['vfull_reschedule_interval'] = '30 minutes'
 default['bareos']['clients']['vfull_reschedule_times'] = 1
 
-# Clients Definitions - You have the power, here is an example for a default definition
-default['bareos']['clients']['pools']['default'] = {
-  'Pool Type' => 'Backup',
-  'Recycle' => 'yes',
-  'Volume Retention' => '30 days',
-  'Maximum Volume Bytes' => '10G',
-  'Maximum Volumes' => '25',
-  'LabelFormat' => 'FileVolume-'
-}
-
 # Jobs - You have the power, here is an example for a default definition
-default['bareos']['clients']['job_definitions']['default'] = {
-  'Pool Type' => 'Backup',
-  'Recycle' => 'yes',
-  'Volume Retention' => '30 days',
-  'Maximum Volume Bytes' => '10G',
-  'Maximum Volumes' => '25',
-  'LabelFormat' => 'FileVolume-'
+default['bareos']['clients']['jobs']['_default_job'] = {
+  'key' => 'value'
 }
 
 # Job Definitions - You have the power, here is an example for a default definition
-default['bareos']['clients']['pools']['default'] = {
-  'Pool Type' => 'Backup',
-  'Recycle' => 'yes',
-  'Volume Retention' => '30 days',
-  'Maximum Volume Bytes' => '10G',
-  'Maximum Volumes' => '25',
-  'LabelFormat' => 'FileVolume-'
+default['bareos']['clients']['job_definitions']['_default_job_def'] = {
+  'key' => 'value'
 }
 
 # Filesets - You have the power, here is an example for a default definition
-default['bareos']['clients']['pools']['default'] = {
-  'Pool Type' => 'Backup',
-  'Recycle' => 'yes',
-  'Volume Retention' => '30 days',
-  'Maximum Volume Bytes' => '10G',
-  'Maximum Volumes' => '25',
-  'LabelFormat' => 'FileVolume-'
+default['baroes']['clients']['filesets']['_default_file_set'] = {
+  'options' => {
+    'signature' => 'MD5'
+  },
+  'include' => {
+    'File' => '/',
+    'Exclude Dir Containing' => '.bareos_ignore'
+  },
+  'exclude' => {
+    'File' => '/var/lib/bareos',
+    'File' => '/var/lib/bareos/storage',
+    'File' => '/var/lib/pgsql',
+    'File' => '/var/lib/mysql',
+    'File' => '/proc',
+    'File' => 'tmp',
+    'File' => '/.journal',
+    'File' => '/.fsck',
+    'File' => '/spool'
+  }
 }
 
 # Pools - You have the power, here is an example for default pool only
-default['bareos']['clients']['pools']['default'] = {
+default['bareos']['clients']['pools']['_default_pool'] = {
   'Pool Type' => 'Backup',
   'Recycle' => 'yes',
   'Volume Retention' => '30 days',
@@ -149,26 +151,17 @@ default['bareos']['clients']['pools']['default'] = {
 }
 
 # Schedules - You have the power, here is an example for a default definition
-default['bareos']['clients']['pools']['default'] = {
-  'Pool Type' => 'Backup',
-  'Recycle' => 'yes',
-  'Volume Retention' => '30 days',
-  'Maximum Volume Bytes' => '10G',
-  'Maximum Volumes' => '25',
-  'LabelFormat' => 'FileVolume-'
+default['bareos']['clients']['schedules']['monthly'] = {
+  'key' => 'value'
 }
 
 # Storages - You have the power, here is an example for a default definition
-default['bareos']['clients']['pools']['default'] = {
-  'Pool Type' => 'Backup',
-  'Recycle' => 'yes',
-  'Volume Retention' => '30 days',
-  'Maximum Volume Bytes' => '10G',
-  'Maximum Volumes' => '25',
-  'LabelFormat' => 'FileVolume-'
+default['bareos']['clients']['storages']['_local_file_storage'] = {
+  'key' => 'value'
 }
 
 # Storage Daemon
+default['bareos']['storage']['name'] = node['fqdn']
 default['bareos']['storage']['storage_search_query'] = 'roles:bareos_storage'
 default['bareos']['storage']['sd_port'] = 9103
 default['bareos']['storage']['tape'] = false # Tape may have to be handled via custom wrapper cookbooks
@@ -178,6 +171,7 @@ default['bareos']['storage']['sd_mon_enable'] = 'yes'
 default['bareos']['storage']['max_concurrent_jobs'] = 20
 
 # Director
+default['bareos']['director']['name'] = node['fqdn']
 default['bareos']['director']['dir_search_query'] = 'role:bareos_server'
 default['bareos']['director']['dir_port'] = 9101
 default['bareos']['director']['dir_max_concurrent_jobs'] = 20
