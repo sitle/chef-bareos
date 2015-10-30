@@ -51,7 +51,7 @@ template '/etc/bareos/bareos-dir.conf' do
     db_password: node['bareos']['database']['dbpassword'],
     db_address: node['bareos']['database']['dbaddress']
   )
-  notifies :run, 'execute[reload-dir]', :delayed
+  notifies :run, 'execute[restart-dir]', :delayed
 end
 
 # Create clients config based on sets of hashes, see attributes file for example
@@ -67,8 +67,7 @@ template '/etc/bareos/bareos-dir.d/clients.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    bareos_client: bareos_clients,
-    clients: bareos_clients
+    bareos_client: bareos_clients
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
@@ -93,7 +92,6 @@ template '/etc/bareos/bareos-dir.d/job_definitions.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    bareos_client: bareos_clients,
     job_definitions: node['bareos']['clients']['job_definitions']
   )
   notifies :run, 'execute[reload-dir]', :delayed
@@ -106,10 +104,7 @@ template '/etc/bareos/bareos-dir.d/filesets.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    bareos_client: bareos_clients,
-    fileset_options: node['baroes']['clients']['filesets']['options'],
-    fileset_include_files: node['bareos']['clients']['filesets']['include'],
-    fileset_exclude_files: node['bareos']['clients']['filesets']['exclude']
+    fileset_config: node['baroes']['clients']['filesets']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
@@ -121,7 +116,6 @@ template '/etc/bareos/bareos-dir.d/pools.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    bareos_client: bareos_clients,
     client_pools: node['bareos']['clients']['pools']
   )
   notifies :run, 'execute[reload-dir]', :delayed
@@ -134,7 +128,6 @@ template '/etc/bareos/bareos-dir.d/schedules.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    bareos_client: bareos_clients,
     client_schedules: node['bareos']['clients']['schedules']
   )
   notifies :run, 'execute[reload-dir]', :delayed
@@ -152,8 +145,15 @@ template '/etc/bareos/bareos-dir.d/storages.conf' do
   notifies :run, 'execute[reload-dir]', :delayed
 end
 
-# Allow a restart of the director daemon if called with tests up front
+# Allow a reload of the director daemon configs if called with tests up front
 execute 'reload-dir' do
+  command 'su - bareos -s /bin/sh -c "/usr/sbin/bareos-dir -t -c /etc/bareos/bareos-dir.conf" && echo reload | bconsole'
+  action :nothing
+  notifies :restart, 'service[bareos-dir]', :delayed
+end
+
+# Allow a restart of the director daemon if called with tests up front
+execute 'restart-dir' do
   command 'su - bareos -s /bin/sh -c "/usr/sbin/bareos-dir -t -c /etc/bareos/bareos-dir.conf"'
   action :nothing
   notifies :restart, 'service[bareos-dir]', :delayed
