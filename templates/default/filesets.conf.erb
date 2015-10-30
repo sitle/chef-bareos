@@ -9,16 +9,16 @@ FileSet {
   Name = "<%= fileset_name %>-Fileset"
   Include {
     Options {
-      <% fileset_name[:options].each do |key1, value1| %>
+      <% fileset_name['options'].each do |key1, value1| %>
       <%= key1 %> = <%= value1 %>
       <% end %>
     }
-    <% fileset_name[:include].each do |key2, value2| %>
+    <% fileset_name['include'].each do |key2, value2| %>
     <%= key2 %> = <%= value2 %>
     <% end %>
   }
   Exclude {
-    <% fileset_name[:exclude].each do |key3, value3| %>
+    <% fileset_name['exclude'].each do |key3, value3| %>
     <%= key3 %> = <%= value3 %>
     <% end %>
   }
