@@ -83,7 +83,7 @@ default['bareos']['clients']['jobdef_default_fileset'] = "#{node['fqdn']}-Filese
 default['bareos']['clients']['storage'] = node['bareos']['clients']['jobdef_default_storage']
 
 # General Client Config, can override with role or wrapper, may need overrides per host
-default['bareos']['clients']['conf']["#{node['bareos']['clients']['name']}"] = {
+default['bareos']['clients']['conf'][node.default['bareos']['clients']['name']] = {
   'Address' => node['bareos']['clients']['name'],
   'FDPort' => '9102',
   'File Retention' => '30 days',
