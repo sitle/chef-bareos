@@ -49,7 +49,8 @@ template '/etc/bareos/bareos-dir.conf' do
     db_name: node['bareos']['database']['dbname'],
     db_user: node['bareos']['database']['dbuser'],
     db_password: node['bareos']['database']['dbpassword'],
-    db_address: node['bareos']['database']['dbaddress']
+    db_address: node['bareos']['database']['dbaddress'],
+    dir_name: node['bareos']['director']['name']
   )
   notifies :run, 'execute[restart-dir]', :delayed
 end
@@ -68,7 +69,8 @@ template '/etc/bareos/bareos-dir.d/clients.conf' do
   mode '0640'
   variables(
     bareos_clients: bareos_clients,
-    client_config: bareos_clients['bareos']['clients']['conf']
+    client_config: bareos_clients['bareos']['clients']['conf'],
+    dir_name: node['bareos']['director']['name']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
@@ -80,8 +82,9 @@ template '/etc/bareos/bareos-dir.d/jobs.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    bareos_client: bareos_clients,
-    client_jobs: node['bareos']['clients']['jobs']
+    bareos_clients: bareos_clients,
+    client_jobs: node['bareos']['clients']['jobs'],
+    dir_name: node['bareos']['director']['name']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
@@ -93,7 +96,8 @@ template '/etc/bareos/bareos-dir.d/job_definitions.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    job_definitions: node['bareos']['clients']['job_definitions']
+    job_definitions: node['bareos']['clients']['job_definitions'],
+    dir_name: node['bareos']['director']['name']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
@@ -105,7 +109,8 @@ template '/etc/bareos/bareos-dir.d/filesets.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    fileset_config: node['baroes']['clients']['filesets']
+    fileset_config: node['baroes']['clients']['filesets'],
+    dir_name: node['bareos']['director']['name']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
@@ -117,7 +122,8 @@ template '/etc/bareos/bareos-dir.d/pools.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    client_pools: node['bareos']['clients']['pools']
+    client_pools: node['bareos']['clients']['pools'],
+    dir_name: node['bareos']['director']['name']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
@@ -129,7 +135,8 @@ template '/etc/bareos/bareos-dir.d/schedules.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    client_schedules: node['bareos']['clients']['schedules']
+    client_schedules: node['bareos']['clients']['schedules'],
+    dir_name: node['bareos']['director']['name']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
@@ -141,7 +148,8 @@ template '/etc/bareos/bareos-dir.d/storages.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    director_storages: node['bareos']['director']['storages']
+    director_storages: node['bareos']['director']['storages'],
+    dir_name: node['bareos']['director']['name']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
