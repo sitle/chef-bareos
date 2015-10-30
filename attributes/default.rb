@@ -75,38 +75,22 @@ default['bareos']['database']['dbaddress'] = nil
 # Clients
 default['bareos']['clients']['name'] = node['fqdn']
 default['bareos']['clients']['client_search_query'] = 'roles:bareos_client'
-default['bareos']['clients']['fd_port'] = 9102
-default['bareos']['clients']['max_concurrent_jobs'] = 20
 default['bareos']['clients']['client_list'] = %w(node)
-default['bareos']['clients']['file_retention'] = '30 days'
-default['bareos']['clients']['job_retention'] = '6 months'
-default['bareos']['clients']['volume_retention'] = '6 months'
-default['bareos']['clients']['catalog_files'] = 'yes'
-default['bareos']['clients']['autoprune'] = 'yes'
-default['bareos']['clients']['heartbeat_interval'] = 600
 default['bareos']['clients']['bootstrap_file'] = '/var/lib/bareos/%c.bsr'
-default['bareos']['clients']['spool_data'] = 'no'
-default['bareos']['clients']['jobdef_default_runlevel'] = 10
-default['bareos']['clients']['jobdef_default_schedule'] = 'WeeklyCycle'
 default['bareos']['clients']['jobdef_default_messages'] = node['bareos']['messages']['default_messages']
 default['bareos']['clients']['jobdef_default_storage'] = 'File'
 default['bareos']['clients']['jobdef_default_fileset'] = "#{node['fqdn']}-Fileset"
 default['bareos']['clients']['storage'] = node['bareos']['clients']['jobdef_default_storage']
-default['bareos']['clients']['vfull_storage'] = node['bareos']['clients']['jobdef_default_storage']
-default['bareos']['clients']['fileset'] = node['bareos']['clients']['jobdef_default_fileset']
-default['bareos']['clients']['fileset_signature'] = 'MD5'
 
-default['bareos']['clients']['enable_vfulls'] = false
-default['bareos']['clients']['vfull_priority'] = 9
-default['bareos']['clients']['vfull_accurate'] = 'no' # More sane option is no, yes is preferred if possible
-default['bareos']['clients']['vfull_spool'] = 'no' # Not useful in most cases but available
-default['bareos']['clients']['vfull_schedule'] = "#{node['fqdn']}-VFullSchedule"
-default['bareos']['clients']['vfull_concurrent_jobs'] = 6
-default['bareos']['clients']['vfull_duplicate_jobs'] = 'no'
-default['bareos']['clients']['vfull_cancel_low_duplicates'] = 'yes'
-default['bareos']['clients']['vfull_reschedule_on_fail'] = 'yes'
-default['bareos']['clients']['vfull_reschedule_interval'] = '30 minutes'
-default['bareos']['clients']['vfull_reschedule_times'] = 1
+# General Client Config, can override with role or wrapper, may need overrides per host
+default['bareos']['clients']['conf']["#{node['bareos']['clients']['name']}"] = {
+  'Address' => node['bareos']['clients']['name'],
+  'FDPort' => '9102',
+  'File Retention' => '30 days',
+  'Job Retention' => '6 months',
+  'AutoPrune' => 'yes',
+  'Maximum Concurrent Jobs' => '20'
+}
 
 # Jobs - You have the power, here is an example for a default definition
 default['bareos']['clients']['jobs']['_default_job'] = {
