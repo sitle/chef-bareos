@@ -124,19 +124,25 @@ default['baroes']['clients']['filesets']['_default_file_set'] = {
     'signature' => 'MD5'
   },
   'include' => {
-    'File' => '/',
-    'Exclude Dir Containing' => '.bareos_ignore'
+    'File' => [
+      '/'
+    ],
+    'Exclude Dir Containing' => [
+      '.bareos_ignore'
+    ]
   },
   'exclude' => {
-    'File' => '/var/lib/bareos',
-    'File' => '/var/lib/bareos/storage',
-    'File' => '/var/lib/pgsql',
-    'File' => '/var/lib/mysql',
-    'File' => '/proc',
-    'File' => 'tmp',
-    'File' => '/.journal',
-    'File' => '/.fsck',
-    'File' => '/spool'
+    'File' => [
+      '/var/lib/bareos',
+      '/var/lib/bareos/storage',
+      '/var/lib/pgsql',
+      '/var/lib/mysql',
+      '/proc',
+      'tmp',
+      '/.journal',
+      '/.fsck',
+      '/spool'
+    ]
   }
 }
 
