@@ -6,7 +6,7 @@
 
 Storage {
   Name = "<%= node['bareos']['storage']['name'] %>-sd"
-  SDPort = "<%= node['bareos']['storage']['sd_port'] %>"
+  SDPort = <%= node['bareos']['storage']['sd_port'] %>
   Maximum Concurrent Jobs = "<%= node['bareos']['storage']['max_concurrent_jobs'] %>"
 }
 
