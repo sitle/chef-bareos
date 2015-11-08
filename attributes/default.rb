@@ -190,7 +190,7 @@ default['bareos']['clients']['schedules']['monthly'] = {
   ],
   'Enabled' => [
     'yes'
-  ],
+  ]
 }
 
 # Storages
