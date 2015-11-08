@@ -39,12 +39,16 @@ end
 # end
 
 # Define both the bareos-sd and bareos-dir lists based on run_list searches
+
+storage_search_query = node['bareos']['storage']['storage_search_query']
+dir_search_query = node['bareos']['director']['dir_search_query']
+
 if Chef::Config[:solo]
   bareos_sd = node['bareos']['storage']['servers']
   bareos_dir = node['bareos']['director']['servers']
 else
-  bareos_sd = search(:node, node['bareos']['storage']['storage_search_query'])
-  bareos_dir = search(:node, node['bareos']['director']['dir_search_query'])
+  bareos_sd = search(:node, storage_search_query)
+  bareos_dir = search(:node, dir_search_query)
 end
 
 # Setup the bareos-sd config

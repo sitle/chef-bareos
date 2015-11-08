@@ -74,6 +74,11 @@ default['bareos']['database']['dbaddress'] = nil
 
 # Clients
 default['bareos']['clients']['name'] = node['fqdn']
+
+default['bareos']['clients']['fd_port'] = 9102
+default['bareos']['clients']['max_concurrent_jobs'] = 20
+default['bareos']['clients']['heartbeat_interval'] = 600
+
 default['bareos']['clients']['client_search_query'] = 'roles:bareos_client'
 default['bareos']['clients']['client_list'] = %w(node)
 default['bareos']['clients']['bootstrap_file'] = '/var/lib/bareos/%c.bsr'
@@ -82,9 +87,38 @@ default['bareos']['clients']['jobdef_default_storage'] = 'File'
 default['bareos']['clients']['jobdef_default_fileset'] = "#{node['fqdn']}-Fileset"
 default['bareos']['clients']['storage'] = node['bareos']['clients']['jobdef_default_storage']
 
-# General Client Config, can override with role or wrapper, may need overrides per host
-default['bareos']['clients']['conf'][node.default['bareos']['clients']['name']] = {
-  'Address' => node['bareos']['clients']['name'],
+# Storage Daemon
+default['bareos']['storage']['name'] = node['fqdn']
+default['bareos']['storage']['storage_search_query'] = 'roles:bareos_storage'
+default['bareos']['storage']['sd_port'] = 9103
+default['bareos']['storage']['tape'] = false # Tape may have to be handled via custom wrapper cookbooks
+default['bareos']['storage']['main_storage'] = 'File'
+default['bareos']['storage']['servers'] = %w(node)
+default['bareos']['storage']['sd_mon_enable'] = 'yes'
+default['bareos']['storage']['max_concurrent_jobs'] = 20
+
+# Director
+default['bareos']['director']['name'] = node['fqdn']
+default['bareos']['director']['dir_search_query'] = 'roles:bareos_director'
+default['bareos']['director']['dir_port'] = 9101
+default['bareos']['director']['dir_max_concurrent_jobs'] = 20
+default['bareos']['director']['servers'] = %w(node)
+default['bareos']['director']['console_commandacl'] = 'status, .status'
+default['bareos']['director']['heartbeat_interval'] = 600
+
+# Subscription Management (Director)
+default['bareos']['director']['dir_subscription'] = nil
+default['bareos']['director']['dir_subs'] = nil
+
+# Workstation
+default['bareos']['workstation']['name'] = node['fqdn']
+
+##########################
+# Example Default Hashes #
+##########################
+
+# General Client Config
+default['bareos']['clients']['conf'] = {
   'FDPort' => '9102',
   'File Retention' => '30 days',
   'Job Retention' => '6 months',
@@ -92,28 +126,32 @@ default['bareos']['clients']['conf'][node.default['bareos']['clients']['name']] 
   'Maximum Concurrent Jobs' => '20'
 }
 
-# Jobs - You have the power, here is an example for a default definition
-default['bareos']['clients']['jobs']['_default_job'] = {
-  'key' => 'value'
+# Jobs
+default['bareos']['clients']['jobs'] = {
+  'JobDefs' => 'default-def'
 }
 
-# Job Definitions - You have the power, here is an example for a default definition
-default['bareos']['clients']['job_definitions']['_default_job_def'] = {
-  'key' => 'value'
+# Job Definitions
+default['bareos']['clients']['job_definitions']['default-def'] = {
+  'Level' => 'Incremental',
+  'Fileset' => 'default-fileset',
+  'Schedule' => 'monthly',
+  'Storage' => 'default-file-storage',
+  'Messages' => 'Standard',
+  'Pool' => 'default-file-pool',
+  'Priority' => '10',
+  'Write Bootstrap' => '"/var/lib/bareos/%c.bsr"',
+  'SpoolData' => 'no'
 }
 
-# Filesets - You have the power, here is an example for a default definition
-default['baroes']['clients']['filesets']['_default_file_set'] = {
+# Filesets
+default['baroes']['clients']['filesets']['default'] = {
   'options' => {
     'signature' => 'MD5'
   },
   'include' => {
-    'File' => [
-      '/'
-    ],
-    'Exclude Dir Containing' => [
-      '.bareos_ignore'
-    ]
+    'File' => '/',
+    'Exclude Dir Containing' => '.bareos_ignore'
   },
   'exclude' => {
     'File' => [
@@ -130,8 +168,8 @@ default['baroes']['clients']['filesets']['_default_file_set'] = {
   }
 }
 
-# Pools - You have the power, here is an example for default pool only
-default['bareos']['clients']['pools']['_default_pool'] = {
+# Pools
+default['bareos']['clients']['pools']['default-file-pool'] = {
   'Pool Type' => 'Backup',
   'Recycle' => 'yes',
   'Volume Retention' => '30 days',
@@ -140,35 +178,24 @@ default['bareos']['clients']['pools']['_default_pool'] = {
   'LabelFormat' => 'FileVolume-'
 }
 
-# Schedules - You have the power, here is an example for a default definition
+# Schedules
 default['bareos']['clients']['schedules']['monthly'] = {
-  'key' => 'value'
+  'Description' => [
+    'Default Monthly Schedule'
+  ],
+  'Run' => [
+    'Full 1st sun at 23:05',
+    'Differential 2nd-5th sun at 23:05',
+    'Incremental mon-sat at 23:05'
+  ],
+  'Enabled' => [
+    'yes'
+  ],
 }
 
-# Storages - You have the power, here is an example for a default definition
-default['bareos']['clients']['storages']['_local_file_storage'] = {
-  'key' => 'value'
+# Storages
+default['bareos']['clients']['storages']['default-file-storage'] = {
+  'Address' => node['bareos']['storage']['name'], # N.B. Use a fully qualified name here
+  'Device' => 'FileStorage',
+  'Media Type' => 'File'
 }
-
-# Storage Daemon
-default['bareos']['storage']['name'] = node['fqdn']
-default['bareos']['storage']['storage_search_query'] = 'roles:bareos_storage'
-default['bareos']['storage']['sd_port'] = 9103
-default['bareos']['storage']['tape'] = false # Tape may have to be handled via custom wrapper cookbooks
-default['bareos']['storage']['main_storage'] = 'File'
-default['bareos']['storage']['servers'] = %w(node)
-default['bareos']['storage']['sd_mon_enable'] = 'yes'
-default['bareos']['storage']['max_concurrent_jobs'] = 20
-
-# Director
-default['bareos']['director']['name'] = node['fqdn']
-default['bareos']['director']['dir_search_query'] = 'role:bareos_server'
-default['bareos']['director']['dir_port'] = 9101
-default['bareos']['director']['dir_max_concurrent_jobs'] = 20
-default['bareos']['director']['servers'] = %w(node)
-default['bareos']['director']['console_commandacl'] = 'status, .status'
-default['bareos']['director']['heartbeat_interval'] = 600
-
-# Subscription Management (Director)
-default['bareos']['director']['dir_subscription'] = nil
-default['bareos']['director']['dir_subs'] = nil

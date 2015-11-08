@@ -11,8 +11,8 @@
     "role[bareos_client]",
     "recipe[chef-bareos::database]",
     "recipe[chef-bareos::server]",
-    "role[bareos_storage]",
-    "recipe[chef-bareos::workstation]"
+    "recipe[chef-bareos::workstation]",
+    "role[bareos_storage]"
   ],
   "env_run_lists": {
   }

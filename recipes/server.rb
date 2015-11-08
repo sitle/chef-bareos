@@ -31,11 +31,13 @@ node.save unless Chef::Config[:solo]
   end
 end
 
-# Create a blank placeholder for d directory
-execute 'director_conf_holder' do
-  command 'touch /etc/bareos/bareos-dir.d/.conf'
-  creates '/etc/bareos/bareos-dir.d/.conf'
-  action :run
+# Create a placeholder file so BAREOS doesn't throw error when none found
+file '/etc/bareos/bareos-dir.d/.conf' do
+  content '# This is a base file so the recipe works with no additional help'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
 end
 
 # Create the base config for the Bareos Director
@@ -56,12 +58,16 @@ template '/etc/bareos/bareos-dir.conf' do
 end
 
 # Create clients config based on sets of hashes, see attributes file for example
+
+client_search_query = node['bareos']['clients']['client_search_query']
+
 if Chef::Config[:solo]
   bareos_clients = node['bareos']['clients']['client_list']
 else
-  bareos_clients = search(:node, node['bareos']['clients']['client_search_query'])
+  bareos_clients = search(:node, client_search_query)
 end
 
+# Create clients config based on sets of hashes
 template '/etc/bareos/bareos-dir.d/clients.conf' do
   source 'clients.conf.erb'
   owner 'bareos'
@@ -69,13 +75,12 @@ template '/etc/bareos/bareos-dir.d/clients.conf' do
   mode '0640'
   variables(
     bareos_clients: bareos_clients,
-    client_config: bareos_clients['bareos']['clients']['conf'],
-    dir_name: node['bareos']['director']['name']
+    client_conf: node['bareos']['clients']['conf']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
 
-# Create jobs config based on sets of hashes, see attributes file for example
+# Create jobs config based on sets of hashes
 template '/etc/bareos/bareos-dir.d/jobs.conf' do
   source 'jobs.conf.erb'
   owner 'bareos'
@@ -83,73 +88,67 @@ template '/etc/bareos/bareos-dir.d/jobs.conf' do
   mode '0640'
   variables(
     bareos_clients: bareos_clients,
-    client_jobs: node['bareos']['clients']['jobs'],
-    dir_name: node['bareos']['director']['name']
+    client_jobs: node['bareos']['clients']['jobs']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
 
-# Create job definitions config based on sets of hashes, see attributes file for example
+# Create job definitions config based on sets of hashes
 template '/etc/bareos/bareos-dir.d/job_definitions.conf' do
   source 'job_definitions.conf.erb'
   owner 'bareos'
   group 'bareos'
   mode '0640'
   variables(
-    job_definitions: node['bareos']['clients']['job_definitions'],
-    dir_name: node['bareos']['director']['name']
+    job_definitions: node['bareos']['clients']['job_definitions']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
 
-# Create filesets config based on sets of hashes, see attributes file for example
+# Create filesets config based on sets of hashes
 template '/etc/bareos/bareos-dir.d/filesets.conf' do
   source 'filesets.conf.erb'
   owner 'bareos'
   group 'bareos'
   mode '0640'
   variables(
-    fileset_config: node['baroes']['clients']['filesets'],
-    dir_name: node['bareos']['director']['name']
+    fileset_config: node['baroes']['clients']['filesets']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
 
-# Create pools config based on sets of hashes, see attributes file for example
+# Create pools config based on sets of hashes
 template '/etc/bareos/bareos-dir.d/pools.conf' do
   source 'pools.conf.erb'
   owner 'bareos'
   group 'bareos'
   mode '0640'
   variables(
-    client_pools: node['bareos']['clients']['pools'],
-    dir_name: node['bareos']['director']['name']
+    client_pools: node['bareos']['clients']['pools']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
 
-# Create schedules config based on sets of hashes, see attributes file for example
+# Create schedules config based on sets of hashes
 template '/etc/bareos/bareos-dir.d/schedules.conf' do
   source 'schedules.conf.erb'
   owner 'bareos'
   group 'bareos'
   mode '0640'
   variables(
-    client_schedules: node['bareos']['clients']['schedules'],
-    dir_name: node['bareos']['director']['name']
+    client_schedules: node['bareos']['clients']['schedules']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end
 
-# Create storages config based on sets of hashes, see attributes file for example
+# Create storages config based on sets of hashes
 template '/etc/bareos/bareos-dir.d/storages.conf' do
   source 'storages.conf.erb'
   owner 'bareos'
   group 'bareos'
   mode '0640'
   variables(
-    director_storages: node['bareos']['director']['storages'],
-    dir_name: node['bareos']['director']['name']
+    client_storages: node['bareos']['clients']['storages']
   )
   notifies :run, 'execute[reload-dir]', :delayed
 end

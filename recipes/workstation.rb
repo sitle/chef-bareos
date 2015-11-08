@@ -25,10 +25,13 @@ package 'bareos-bconsole' do
 end
 
 # Define the list of bareos directors
+
+dir_search_query = node['bareos']['director']['dir_search_query']
+
 if Chef::Config[:solo]
   bareos_dir = node['bareos']['director']['servers']
 else
-  bareos_dir = search(:node, node['bareos']['director']['dir_search_query'])
+  bareos_dir = search(:node, dir_search_query)
 end
 
 # Setup the bconsole config, pushes out list of bareos-dirs and if solo mode
@@ -37,14 +40,7 @@ template '/etc/bareos/bconsole.conf' do
   mode 0640
   owner 'bareos'
   group 'bareos'
-  if Chef::Config[:solo]
-    variables(
-      bareos_dir: bareos_dir,
-      solo_mode: Chef::Config[:solo]
-    )
-  else
-    variables(
-      bareos_dir: bareos_dir
-    )
-  end
+  variables(
+    bareos_dir: bareos_dir
+  )
 end

@@ -20,12 +20,14 @@ Director {
   <% end %>
 }
 
-######################
-# Catalog Backup Job #
-######################
+##############################
+# Default Catalog Backup Job #
+##############################
 Job {
   Name = "<%= @dir_name %>-BackupCatalog"
-  JobDefs = "<%= @dir_name %>-JobDef"
+  Type = Backup
+  Client = <%= @dir_name %>-fd
+  JobDefs = "default-def"
   Level = Full
   FileSet = "Catalog"
   Schedule = "WeeklyCycleAfterBackup"
@@ -33,31 +35,6 @@ Job {
   RunAfterJob  = "/usr/lib/bareos/scripts/delete_catalog_backup"
   Write Bootstrap = "|/usr/sbin/bsmtp -h localhost -f \"\(Bareos\) \" -s \"Bootstrap for Job %j\" <%= node['bareos']['messages']['mail_to'] %>"
   Priority = 11 # run after main backup
-}
-
-####################
-# Default Filesets #
-####################
-FileSet {
-  Name = "Full Set"
-  Include {
-    Options {
-      signature = MD5
-    }
-    File = /
-    Exclude Dir Containing = .bareos_ignore
-  }
-  Exclude {
-    File = /var/lib/bareos
-    File = /var/lib/bareos/storage
-    File = /var/lib/pgsql
-    File = /var/lib/mysql
-    File = /proc
-    File = /tmp
-    File = /.journal
-    File = /.fsck
-    File = /spool
-  }
 }
 
 FileSet {
@@ -71,30 +48,9 @@ FileSet {
   }
 }
 
-#####################
-# Default Schedules #
-#####################
-Schedule {
-  Name = "WeeklyCycle"
-  Run = Full 1st sun at 23:05
-  Run = Differential 2nd-5th sun at 23:05
-  Run = Incremental mon-sat at 23:05
-}
-
 Schedule {
   Name = "WeeklyCycleAfterBackup"
   Run = Full sun-sat at 23:10
-}
-
-###################
-# Default Storage #
-###################
-Storage {
-  Name = File
-  Address = <%= @dir_name %> # N.B. Use a fully qualified name here
-  Password = "<%= node['bareos']['sd_password'] %>"
-  Device = FileStorage
-  Media Type = File
 }
 
 ###################

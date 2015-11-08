@@ -23,6 +23,8 @@ node.set_unless['bareos']['fd_password'] = random_password(length: 30, mode: :ba
 node.set_unless['bareos']['mon_password'] = random_password(length: 30, mode: :base64)
 node.save unless Chef::Config[:solo]
 
+dir_search_query = node.default['bareos']['director']['dir_search_query']
+
 # Installation of the BAREOS File Daemon
 package 'bareos-filedaemon'
 
@@ -30,7 +32,7 @@ package 'bareos-filedaemon'
 if Chef::Config[:solo]
   bareos_dir = node['bareos']['director']['servers']
 else
-  bareos_dir = search(:node, node['bareos']['dir_search_query'])
+  bareos_dir = search(:node, dir_search_query)
 end
 
 # Setup the configs for any local/remote File Daemons clients
