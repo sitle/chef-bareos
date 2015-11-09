@@ -46,4 +46,4 @@ Device {
 # Custom Storage Daemon Config Locations
 ########################################
 
-@|"sh -c 'for f in /etc/bareos/bareos-sd.d/*.conf ; do echo @${f} ; done'"
+@|"sh -c 'for conf in /etc/bareos/bareos-sd.d/*.conf ; do echo @${conf} ; done'"

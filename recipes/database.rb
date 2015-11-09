@@ -44,21 +44,18 @@ end
 case database
 when 'postgresql'
   execute 'create_database' do
-    command 'su postgres -c "/usr/lib/bareos/scripts/create_bareos_database"'
+    command 'su postgres -c /usr/lib/bareos/scripts/create_bareos_database && touch /usr/lib/bareos/.dbcreated'
+    creates '/usr/lib/bareos/.dbcreated'
     action :run
-    not_if { node['bareos']['database']['db_created'] }
   end
   execute 'create_tables' do
-    command 'su postgres -s /bin/bash -c "/usr/lib/bareos/scripts/make_bareos_tables"'
+    command 'su postgres -s /bin/bash -c /usr/lib/bareos/scripts/make_bareos_tables && touch /usr/lib/bareos/.dbtablescreated'
+    creates '/usr/lib/bareos/.dbtablescreated'
     action :run
-    not_if { node['bareos']['database']['db_tables_created'] }
   end
   execute 'grant_privileges' do
-    command 'su postgres -s /bin/bash -c "/usr/lib/bareos/scripts/grant_bareos_privileges"'
+    command 'su postgres -s /bin/bash -c /usr/lib/bareos/scripts/grant_bareos_privileges && touch /usr/lib/bareos/.dbprivgranted'
+    creates '/usr/lib/bareos/.dbprivgranted'
     action :run
-    not_if { node['bareos']['database']['db_priv_granted'] }
   end
-  node.default['bareos']['database']['db_created'] = true
-  node.default['bareos']['database']['db_tables_created'] = true
-  node.default['bareos']['database']['db_priv_granted'] = true
 end

@@ -32,7 +32,23 @@ node.save unless Chef::Config[:solo]
   end
 end
 
-# Create the core config for the Director
+# Create the custom config directory and placeholder file
+directory '/etc/bareos/bareos-dir.d' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+file '/etc/bareos/bareos-dir.d/dir_helper.conf' do
+  content '# This is a base file so the recipe works with no additional help'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+# Director Config
 template '/etc/bareos/bareos-dir.conf' do
   source 'bareos-dir.conf.erb'
   owner 'bareos'
@@ -46,13 +62,7 @@ template '/etc/bareos/bareos-dir.conf' do
     db_address: node['bareos']['database']['dbaddress'],
     dir_name: node['bareos']['director']['name']
   )
-end
-file '/etc/bareos/bareos-dir.d/.conf' do
-  content '# This is a base file so the recipe works with no additional help'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
+  only_if { File.exist?('/etc/bareos/bareos-dir.d/dir_helper.conf') }
 end
 
 # Create clients config based on sets of hashes, see attributes file for default example(s)
@@ -133,7 +143,7 @@ end
 
 # Allow a reload of the director daemon configs if called with tests up front
 execute 'reload-dir' do
-  command 'su - bareos -s /bin/sh -c "/usr/sbin/bareos-dir -t -c /etc/bareos/bareos-dir.conf" && echo reload | bconsole'
+  command 'su - bareos -s /bin/sh -c "/usr/sbin/bareos-dir -t -c /etc/bareos/bareos-dir.conf"'
   action :nothing
   subscribes :run, 'template[/etc/bareos/bareos-dir.d/storages.conf]', :delayed
   subscribes :run, 'template[/etc/bareos/bareos-dir.d/schedules.conf]', :delayed
@@ -149,5 +159,5 @@ end
 # Enable and start the bareos-dir service
 service 'bareos-dir' do
   supports status: true, restart: true, reload: false
-  action [:enable, :start]
+  action :enable
 end

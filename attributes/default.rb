@@ -5,7 +5,7 @@ default['bareos']['contrib_url'] = 'http://download.bareos.org/bareos/contrib'
 
 # Used to have 'latest' as default, had potential update dangers
 # default['bareos']['version'] = 'latest' <--- Could be dangerous, ***CAUTION***
-default['bareos']['version'] = '14.2' # <--- Latest Stable version as of 6-26-15
+default['bareos']['version'] = '14.2' # <--- Latest Stable version as of 05-Jan-2015
 
 if platform_family?('rhel', 'fedora')
   default['bareos']['yum_repository'] = 'bareos'

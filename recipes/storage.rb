@@ -39,6 +39,22 @@ else
   bareos_dir = search(:node, dir_search_query)
 end
 
+# Create the custom config directory and placeholder file
+directory '/etc/bareos/bareos-sd.d' do
+  owner 'root'
+  group 'bareos'
+  mode '0755'
+  action :create
+end
+
+file '/etc/bareos/bareos-sd.d/sd_helper.conf' do
+  content '# This is a base file so the recipe works with no additional help'
+  owner 'root'
+  group 'bareos'
+  mode '0755'
+  action :create
+end
+
 # SD Config
 template '/etc/bareos/bareos-sd.conf' do
   source 'bareos-sd.conf.erb'
@@ -49,14 +65,7 @@ template '/etc/bareos/bareos-sd.conf' do
     bareos_sd: bareos_sd,
     bareos_dir: bareos_dir
   )
-end
-
-# Create the custom config directory
-directory '/etc/bareos/bareos-sd.d' do
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
+  only_if { File.exist?('/etc/bareos/bareos-sd.d/sd_helper.conf') }
 end
 
 # Test Config before restarting SD
@@ -70,5 +79,5 @@ end
 # Start and enable SD service
 service 'bareos-sd' do
   supports status: true, restart: true, reload: false
-  action [:enable, :start]
+  action :enable
 end
