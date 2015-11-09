@@ -49,7 +49,7 @@ end
 execute 'restart-fd' do
   command 'bareos-fd -t -c /etc/bareos/bareos-fd.conf'
   action :nothing
-  subscribes :run, 'template[/etc/bareos/bareos-fd.conf', :immediately
+  subscribes :run, 'template[/etc/bareos/bareos-fd.conf]', :immediately
   notifies :restart, 'service[bareos-fd]', :delayed
 end
 
