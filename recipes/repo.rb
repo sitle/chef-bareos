@@ -16,38 +16,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Add repos for supported platform families, else give fatal error during chef run
+# Add repos for supported OS platforms, otherwise return fatal notice
 case node['platform_family']
 when 'rhel', 'fedora'
-
   yum_repository node['bareos']['yum_repository'] do
     description node['bareos']['description']
     baseurl node['bareos']['baseurl']
     gpgkey node['bareos']['gpgkey']
     action :create
   end
-
   yum_repository node['bareos']['contrib_yum_repository'] do
     description node['bareos']['contrib_description']
     baseurl node['bareos']['contrib_baseurl']
     gpgkey node['bareos']['contrib_gpgkey']
     action :create
   end
-
 when 'debian'
-
   apt_repository 'bareos' do
     uri node['bareos']['baseurl']
     components ['/']
     key node['bareos']['gpgkey']
   end
-
   apt_repository 'bareos_contrib' do
     uri node['bareos']['contrib_baseurl']
     components ['/']
     key node['bareos']['contrib_gpgkey']
   end
-
 else
-  Chef::Log.fatal('System is not in the currently supported OS list')
+  Chef::Log.fatal('OS is not currently supported by this cookbook, submit enhancement request or PR')
 end

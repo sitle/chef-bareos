@@ -58,12 +58,12 @@ Schedule {
 ###################
 Catalog {
   Name = <%= node['bareos']['database']['catalog_name'] %>
-  dbdriver = "<%= @db_driver %>"
-  dbname = "<%= @db_name %>"
-  dbuser = "<%= @db_user %>"
+  dbdriver = <%= @db_driver %>
+  dbname = <%= @db_name %>
+  dbuser = <%= @db_user %>
   dbpassword = "<%= @db_password %>"
 <% if @db_address != nil %>
-  dbaddress = "<%= @db_address %>"
+  dbaddress = <%= @db_address %>
 <% end %>
 }
 

@@ -74,11 +74,9 @@ default['bareos']['database']['dbaddress'] = nil
 
 # Clients
 default['bareos']['clients']['name'] = node['fqdn']
-
 default['bareos']['clients']['fd_port'] = 9102
 default['bareos']['clients']['max_concurrent_jobs'] = 20
 default['bareos']['clients']['heartbeat_interval'] = 600
-
 default['bareos']['clients']['client_search_query'] = 'roles:bareos_client'
 default['bareos']['clients']['client_list'] = %w(node)
 default['bareos']['clients']['bootstrap_file'] = '/var/lib/bareos/%c.bsr'
@@ -91,11 +89,11 @@ default['bareos']['clients']['storage'] = node['bareos']['clients']['jobdef_defa
 default['bareos']['storage']['name'] = node['fqdn']
 default['bareos']['storage']['storage_search_query'] = 'roles:bareos_storage'
 default['bareos']['storage']['sd_port'] = 9103
-default['bareos']['storage']['tape'] = false # Tape may have to be handled via custom wrapper cookbooks
 default['bareos']['storage']['main_storage'] = 'File'
 default['bareos']['storage']['servers'] = %w(node)
 default['bareos']['storage']['sd_mon_enable'] = 'yes'
 default['bareos']['storage']['max_concurrent_jobs'] = 20
+# default['bareos']['storage']['tape'] = false  # Not currently supported internally to this cookbook, TBD
 
 # Director
 default['bareos']['director']['name'] = node['fqdn']

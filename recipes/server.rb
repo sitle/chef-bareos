@@ -17,7 +17,8 @@
 # limitations under the License.
 
 # By default here including both the repo and client recipes
-include_recipe 'chef-bareos'
+# This is just so Bareos has SOMETHING to backup (i.e. Catalog)
+include_recipe 'chef-bareos::client'
 
 # Preparing Random Password for the director and mon, including OpenSSL library from client.rb
 node.set_unless['bareos']['dir_password'] = random_password(length: 30, mode: :base64)
@@ -31,16 +32,7 @@ node.save unless Chef::Config[:solo]
   end
 end
 
-# Create a placeholder file so BAREOS doesn't throw error when none found
-file '/etc/bareos/bareos-dir.d/.conf' do
-  content '# This is a base file so the recipe works with no additional help'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
-end
-
-# Create the base config for the Bareos Director
+# Create the core config for the Director
 template '/etc/bareos/bareos-dir.conf' do
   source 'bareos-dir.conf.erb'
   owner 'bareos'
@@ -54,11 +46,16 @@ template '/etc/bareos/bareos-dir.conf' do
     db_address: node['bareos']['database']['dbaddress'],
     dir_name: node['bareos']['director']['name']
   )
-  notifies :run, 'execute[restart-dir]', :delayed
+end
+file '/etc/bareos/bareos-dir.d/.conf' do
+  content '# This is a base file so the recipe works with no additional help'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
 end
 
-# Create clients config based on sets of hashes, see attributes file for example
-
+# Create clients config based on sets of hashes, see attributes file for default example(s)
 client_search_query = node['bareos']['clients']['client_search_query']
 
 if Chef::Config[:solo]
@@ -66,8 +63,6 @@ if Chef::Config[:solo]
 else
   bareos_clients = search(:node, client_search_query)
 end
-
-# Create clients config based on sets of hashes
 template '/etc/bareos/bareos-dir.d/clients.conf' do
   source 'clients.conf.erb'
   owner 'bareos'
@@ -77,10 +72,9 @@ template '/etc/bareos/bareos-dir.d/clients.conf' do
     bareos_clients: bareos_clients,
     client_conf: node['bareos']['clients']['conf']
   )
-  notifies :run, 'execute[reload-dir]', :delayed
 end
 
-# Create jobs config based on sets of hashes
+# Create other various configs based on sets of hashes
 template '/etc/bareos/bareos-dir.d/jobs.conf' do
   source 'jobs.conf.erb'
   owner 'bareos'
@@ -90,10 +84,7 @@ template '/etc/bareos/bareos-dir.d/jobs.conf' do
     bareos_clients: bareos_clients,
     client_jobs: node['bareos']['clients']['jobs']
   )
-  notifies :run, 'execute[reload-dir]', :delayed
 end
-
-# Create job definitions config based on sets of hashes
 template '/etc/bareos/bareos-dir.d/job_definitions.conf' do
   source 'job_definitions.conf.erb'
   owner 'bareos'
@@ -102,10 +93,7 @@ template '/etc/bareos/bareos-dir.d/job_definitions.conf' do
   variables(
     job_definitions: node['bareos']['clients']['job_definitions']
   )
-  notifies :run, 'execute[reload-dir]', :delayed
 end
-
-# Create filesets config based on sets of hashes
 template '/etc/bareos/bareos-dir.d/filesets.conf' do
   source 'filesets.conf.erb'
   owner 'bareos'
@@ -114,10 +102,7 @@ template '/etc/bareos/bareos-dir.d/filesets.conf' do
   variables(
     fileset_config: node['baroes']['clients']['filesets']
   )
-  notifies :run, 'execute[reload-dir]', :delayed
 end
-
-# Create pools config based on sets of hashes
 template '/etc/bareos/bareos-dir.d/pools.conf' do
   source 'pools.conf.erb'
   owner 'bareos'
@@ -126,10 +111,7 @@ template '/etc/bareos/bareos-dir.d/pools.conf' do
   variables(
     client_pools: node['bareos']['clients']['pools']
   )
-  notifies :run, 'execute[reload-dir]', :delayed
 end
-
-# Create schedules config based on sets of hashes
 template '/etc/bareos/bareos-dir.d/schedules.conf' do
   source 'schedules.conf.erb'
   owner 'bareos'
@@ -138,10 +120,7 @@ template '/etc/bareos/bareos-dir.d/schedules.conf' do
   variables(
     client_schedules: node['bareos']['clients']['schedules']
   )
-  notifies :run, 'execute[reload-dir]', :delayed
 end
-
-# Create storages config based on sets of hashes
 template '/etc/bareos/bareos-dir.d/storages.conf' do
   source 'storages.conf.erb'
   owner 'bareos'
@@ -150,20 +129,20 @@ template '/etc/bareos/bareos-dir.d/storages.conf' do
   variables(
     client_storages: node['bareos']['clients']['storages']
   )
-  notifies :run, 'execute[reload-dir]', :delayed
 end
 
 # Allow a reload of the director daemon configs if called with tests up front
 execute 'reload-dir' do
   command 'su - bareos -s /bin/sh -c "/usr/sbin/bareos-dir -t -c /etc/bareos/bareos-dir.conf" && echo reload | bconsole'
   action :nothing
-  notifies :restart, 'service[bareos-dir]', :delayed
-end
-
-# Allow a restart of the director daemon if called with tests up front
-execute 'restart-dir' do
-  command 'su - bareos -s /bin/sh -c "/usr/sbin/bareos-dir -t -c /etc/bareos/bareos-dir.conf"'
-  action :nothing
+  subscribes :run, 'template[/etc/bareos/bareos-dir.d/storages.conf]', :delayed
+  subscribes :run, 'template[/etc/bareos/bareos-dir.d/schedules.conf]', :delayed
+  subscribes :run, 'template[/etc/bareos/bareos-dir.d/pools.conf]', :delayed
+  subscribes :run, 'template[/etc/bareos/bareos-dir.d/filesets.conf]', :delayed
+  subscribes :run, 'template[/etc/bareos/bareos-dir.d/job_definitions.conf]', :delayed
+  subscribes :run, 'template[/etc/bareos/bareos-dir.d/jobs.conf]', :delayed
+  subscribes :run, 'template[/etc/bareos/bareos-dir.d/clients.conf]', :delayed
+  subscribes :run, 'template[/etc/bareos/bareos-dir.conf]', :delayed
   notifies :restart, 'service[bareos-dir]', :delayed
 end
 

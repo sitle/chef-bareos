@@ -16,25 +16,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Repo recipe is needed to install, so include by default, ok in most cases
-include_recipe 'chef-bareos::repo'
-
 # Install bconsole from repo
+include_recipe 'chef-bareos::repo'
 package 'bareos-bconsole' do
   action :install
 end
 
-# Define the list of bareos directors
-
+# Find director(s)
 dir_search_query = node['bareos']['director']['dir_search_query']
-
 if Chef::Config[:solo]
   bareos_dir = node['bareos']['director']['servers']
 else
   bareos_dir = search(:node, dir_search_query)
 end
 
-# Setup the bconsole config, pushes out list of bareos-dirs and if solo mode
+# bconsole config
 template '/etc/bareos/bconsole.conf' do
   source 'bconsole.conf.erb'
   mode 0640

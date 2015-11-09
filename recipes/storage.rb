@@ -16,33 +16,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Include the OpenSSL library by itself so it isn't dependant on the client recipe
-::Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
-
-# Include the repo recipe by default here, should be ok under most circumstances
-include_recipe 'chef-bareos::repo'
-
+# Include the OpenSSL cookbook library
 # Setup Storage Daemon Random Passwords
+::Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
 node.set_unless['bareos']['sd_password'] = random_password(length: 30, mode: :base64)
 node.save unless Chef::Config[:solo]
 
 # Install BAREOS Storage Daemon Packages
+include_recipe 'chef-bareos::repo'
 package 'bareos-storage' do
   action :install
 end
 
-# Need more work on any Tape Integration
-# if node['bareos']['storage']['tape'] == 'true'
-# package  "bareos-storage-tape" do
-#   action :install
-#  end
-# end
-
-# Define both the bareos-sd and bareos-dir lists based on run_list searches
-
+# Find Storage Daemon(s) and Director(s)
 storage_search_query = node['bareos']['storage']['storage_search_query']
 dir_search_query = node['bareos']['director']['dir_search_query']
-
 if Chef::Config[:solo]
   bareos_sd = node['bareos']['storage']['servers']
   bareos_dir = node['bareos']['director']['servers']
@@ -51,7 +39,7 @@ else
   bareos_dir = search(:node, dir_search_query)
 end
 
-# Setup the bareos-sd config
+# SD Config
 template '/etc/bareos/bareos-sd.conf' do
   source 'bareos-sd.conf.erb'
   mode 0640
@@ -61,7 +49,6 @@ template '/etc/bareos/bareos-sd.conf' do
     bareos_sd: bareos_sd,
     bareos_dir: bareos_dir
   )
-  notifies :run, 'execute[restart-sd]', :delayed
 end
 
 # Create the custom config directory
@@ -70,17 +57,17 @@ directory '/etc/bareos/bareos-sd.d' do
   group 'root'
   mode '0755'
   action :create
-  notifies :run, 'execute[restart-sd]', :delayed
 end
 
-# If called restart the bareos-sd confg(s) with a test first
+# Test Config before restarting SD
 execute 'restart-sd' do
   command 'bareos-sd -t -c /etc/bareos/bareos-sd.conf'
   action :nothing
-  notifies :restart, 'service[bareos-sd]', :immediately
+  subscribes :run, 'template[/etc/bareos/bareos-sd.conf]', :immediately
+  notifies :restart, 'service[bareos-sd]', :delayed
 end
 
-# Start and enable the bareos-sd service and run if called elsewhere
+# Start and enable SD service
 service 'bareos-sd' do
   supports status: true, restart: true, reload: false
   action [:enable, :start]
