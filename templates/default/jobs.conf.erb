@@ -18,7 +18,7 @@ Job {
   Name = "<%= client['bareos']['clients']['name'] %>-Restore-Job"
   Client = <%= client['bareos']['clients']['name'] %>-fd
   Type = Restore
-  <% @client_jobs.each do |key,value| %>
+  <% @client_restore_jobs.each do |key1,value2| %>
   <%= key %> = <%= value %>
   <% end %>
 }

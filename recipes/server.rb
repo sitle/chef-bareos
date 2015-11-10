@@ -92,7 +92,8 @@ template '/etc/bareos/bareos-dir.d/jobs.conf' do
   mode '0640'
   variables(
     bareos_clients: bareos_clients,
-    client_jobs: node['bareos']['clients']['jobs']
+    client_jobs: node['bareos']['clients']['jobs'],
+    client_restore_jobs: node['bareos']['clients']['restore_jobs']
   )
 end
 template '/etc/bareos/bareos-dir.d/job_definitions.conf' do

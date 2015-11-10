@@ -129,6 +129,10 @@ default['bareos']['clients']['jobs'] = {
   'JobDefs' => 'default-def'
 }
 
+default['bareos']['clients']['restore_jobs'] = {
+  'JobDefs' => 'default-restore-def'
+}
+
 # Job Definitions
 default['bareos']['clients']['job_definitions']['default-def'] = {
   'Level' => 'Incremental',
@@ -140,6 +144,15 @@ default['bareos']['clients']['job_definitions']['default-def'] = {
   'Priority' => '10',
   'Write Bootstrap' => '"/var/lib/bareos/%c.bsr"',
   'SpoolData' => 'no'
+}
+
+default['bareos']['clients']['job_definitions']['default-restore-def'] = {
+  'Fileset' => 'default-fileset',
+  'Storage' => 'default-file-storage',
+  'Messages' => 'Standard',
+  'Pool' => 'default-file-pool',
+  'Priority' => '7',
+  'Where' => '/tmp/bareos-restores'
 }
 
 # Filesets
