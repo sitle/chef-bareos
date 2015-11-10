@@ -51,7 +51,7 @@ file '/etc/bareos/bareos-sd.d/sd_helper.conf' do
   content '# This is a base file so the recipe works with no additional help'
   owner 'root'
   group 'bareos'
-  mode '0755'
+  mode '0644'
   action :create
 end
 

@@ -44,7 +44,7 @@ file '/etc/bareos/bareos-dir.d/dir_helper.conf' do
   content '# This is a base file so the recipe works with no additional help'
   owner 'root'
   group 'root'
-  mode '0755'
+  mode '0644'
   action :create
 end
 
