@@ -14,15 +14,16 @@ FileSet {
       <% end %>
     }
     <% section['include'].each do |key2, value2| %>
-    File = <%= value2 %>
-    <% end %>
-    <% section['other_conf'].each do |key3, value3| %>
-    <%= key3 %> = <%= value3 %>
+      <% value2.each do |v2| %>
+    <%= key2 %> = <%= v2 %>
+      <% end %>
     <% end %>
   }
   Exclude {
-    <% section['exclude'].each do |key4, value4| %>
-    <%= key4 %> = <%= value4 %>
+    <% section['exclude'].each do |key3, value3| %>
+      <% value3.each do |v3| %>
+    <%= key3 %> = <%= v3 %>
+      <% end %>
     <% end %>
   }
 }
