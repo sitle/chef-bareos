@@ -161,8 +161,8 @@ default['baroes']['clients']['filesets']['default'] = {
     'signature' => 'MD5'
   },
   'include' => {
-    'File' => '/',
-    'Exclude Dir Containing' => '.bareos_ignore'
+    'File' => ['/','/home'],
+    'Exclude Dir Containing' => ['.bareos_ignore']
   },
   'exclude' => {
     'File' => [
