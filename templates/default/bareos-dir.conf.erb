@@ -16,7 +16,7 @@ Director {
   Messages = Daemon
   Heartbeat Interval = <%= node['bareos']['director']['heartbeat_interval'] %>
   <% if node['bareos']['director']['dir_subscription'] == true %>
-  Subscriptions = <%= node['bareos']['dir_subs'] %>
+  Subscriptions = <%= node['bareos']['director']['dir_subs'] %>
   <% end %>
 }
 
