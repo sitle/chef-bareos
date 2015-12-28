@@ -68,6 +68,9 @@ template '/etc/bareos/bareos-sd.conf' do
   only_if { File.exist?('/etc/bareos/bareos-sd.d/sd_helper.conf') }
 end
 
+# Experimental Tape Autochanger Support
+include_recipe 'chef-bareos::autochanger' if node['bareos']['storage']['autochanger_enabled']
+
 # Test Config before restarting SD
 execute 'restart-sd' do
   command 'bareos-sd -t -c /etc/bareos/bareos-sd.conf'
