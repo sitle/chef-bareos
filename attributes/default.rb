@@ -93,7 +93,7 @@ default['bareos']['storage']['main_storage'] = 'File'
 default['bareos']['storage']['servers'] = %w(node)
 default['bareos']['storage']['sd_mon_enable'] = 'yes'
 default['bareos']['storage']['max_concurrent_jobs'] = 20
-# default['bareos']['storage']['tape'] = false  # Not currently supported internally to this cookbook, TBD
+# default['bareos']['storage']['autochanger_enabled'] = false  # Experimental, Limited Support
 
 # Director
 default['bareos']['director']['name'] = node['fqdn']
@@ -161,7 +161,7 @@ default['baroes']['clients']['filesets']['default'] = {
     'signature' => 'MD5'
   },
   'include' => {
-    'File' => ['/','/home'],
+    'File' => ['/', '/home'],
     'Exclude Dir Containing' => ['.bareos_ignore']
   },
   'exclude' => {
@@ -209,4 +209,25 @@ default['bareos']['clients']['storages']['default-file-storage'] = {
   'Address' => node['bareos']['storage']['name'], # N.B. Use a fully qualified name here
   'Device' => 'FileStorage',
   'Media Type' => 'File'
+}
+
+default['bareos']['storage']['autochanger']['default-devices'] = {
+  'autochanger' => {
+    'autochanger-0' => {
+      'Changer Device' => '/dev/tape/by-id/scsi-1TANDBERGStorageLoader_SOMEAUTOCHANGER',
+      'Device' => 'tapedrive-0',
+      'Changer Command' => '"/usr/lib/bareos/scripts/mtx-changer %c %o %S %a %d"'
+    }
+  },
+  'device' => {
+    'tapedrive-0' => {
+      'DeviceType' => 'tape',
+      'DriveIndex' => '0',
+      'ArchiveDevice' => 'dev/nst0',
+      'MediaType' => 'lto',
+      'Autochanger' => 'no',
+      'AutomaticMount' => 'no',
+      'MaximumFileSize' => '10GB'
+    }
+  }
 }
