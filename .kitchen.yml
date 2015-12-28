@@ -28,3 +28,10 @@ suites:
     run_list:
       - role[bareos_director]
     attributes:
+  - name: tape-storage
+    run_list:
+      - role[bareos_director]
+    attributes:
+      bareos:
+        storage:
+          autochanger_enabled: true
