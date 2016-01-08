@@ -211,23 +211,43 @@ default['bareos']['clients']['storages']['default-file-storage'] = {
   'Media Type' => 'File'
 }
 
-default['bareos']['storage']['autochanger']['default-devices'] = {
-  'autochanger' => {
-    'autochanger-0' => {
-      'Changer Device' => '/dev/tape/by-id/scsi-1TANDBERGStorageLoader_SOMEAUTOCHANGER',
-      'Device' => 'tapedrive-0',
-      'Changer Command' => '"/usr/lib/bareos/scripts/mtx-changer %c %o %S %a %d"'
-    }
-  },
-  'device' => {
-    'tapedrive-0' => {
-      'DeviceType' => 'tape',
-      'DriveIndex' => '0',
-      'ArchiveDevice' => 'dev/nst0',
-      'MediaType' => 'lto',
-      'Autochanger' => 'no',
-      'AutomaticMount' => 'no',
-      'MaximumFileSize' => '10GB'
-    }
+# Developing Feature - Tape Autochanger Devices
+default['bareos']['storage']['test_mode'] = false
+if node.default['bareos']['storage']['test_mode'] = true
+  default['bareos']['storage']['autochangers']['autochanger-0'] = {
+    'Device' => [
+      'tapedrive-0',
+      'tapedrive-1'
+    ],
+    'Changer Device' => ['/dev/tape/by-id/scsi-1TANDBERGStorageLoader_SOMEAUTOCHANGER'],
+    'Changer Command' => ['"/usr/lib/bareos/scripts/mtx-changer %c %o %S %a %d"']
   }
-}
+  
+  default['bareos']['storage']['autochangers']['autochanger-1'] = {
+    'Device' => [
+      'tapedrive-0'
+    ],
+    'Changer Device' => ['/dev/tape/by-id/scsi-1TANDBERGStorageLoader_SOMEAUTOCHANGER'],
+    'Changer Command' => ['"/usr/lib/bareos/scripts/mtx-changer %c %o %S %a %d"']
+  }
+  
+  default['bareos']['storage']['devices']['tapedrive-0'] = {
+    'DeviceType' => 'tape',
+    'DriveIndex' => '0',
+    'ArchiveDevice' => 'dev/nst0',
+    'MediaType' => 'lto',
+    'Autochanger' => 'no',
+    'AutomaticMount' => 'no',
+    'MaximumFileSize' => '10GB'
+  }
+  
+  default['bareos']['storage']['devices']['tapedrive-1'] = {
+    'DeviceType' => 'tape',
+    'DriveIndex' => '0',
+    'ArchiveDevice' => 'dev/nst0',
+    'MediaType' => 'lto',
+    'Autochanger' => 'no',
+    'AutomaticMount' => 'no',
+    'MaximumFileSize' => '10GB'
+  }
+end

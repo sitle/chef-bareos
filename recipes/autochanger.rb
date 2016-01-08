@@ -31,7 +31,8 @@ template '/etc/bareos/bareos-sd.d/device-tape-with-autoloader.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    autochanger: node['bareos']['storage']['autochanger']
+    autochangers: node['bareos']['storage']['autochangers'],
+    devices: node['bareos']['storage']['devices']
   )
   only_if { File.exist?('/etc/bareos/mtx-changer.conf') }
   notifies :restart, 'service[bareos-sd]', :delayed

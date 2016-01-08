@@ -4,7 +4,7 @@ driver:
 
 provisioner:
   name: chef_zero
-  require_chef_omnibus: latest
+  require_chef_omnibus: 12.6.0
 
 platforms:
   - name: debian-7.8
@@ -35,3 +35,4 @@ suites:
       bareos:
         storage:
           autochanger_enabled: true
+          test_mode: true
