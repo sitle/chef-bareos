@@ -212,8 +212,7 @@ default['bareos']['clients']['storages']['default-file-storage'] = {
 }
 
 # Developing Feature - Tape Autochanger Devices
-default['bareos']['storage']['test_mode'] = false
-if node.default['bareos']['storage']['test_mode'] = true
+if node['bareos']['storage']['test_mode'] == true
   default['bareos']['storage']['autochangers']['autochanger-0'] = {
     'Device' => [
       'tapedrive-0',
@@ -222,7 +221,7 @@ if node.default['bareos']['storage']['test_mode'] = true
     'Changer Device' => ['/dev/tape/by-id/scsi-1TANDBERGStorageLoader_SOMEAUTOCHANGER'],
     'Changer Command' => ['"/usr/lib/bareos/scripts/mtx-changer %c %o %S %a %d"']
   }
-  
+
   default['bareos']['storage']['autochangers']['autochanger-1'] = {
     'Device' => [
       'tapedrive-0'
@@ -230,7 +229,7 @@ if node.default['bareos']['storage']['test_mode'] = true
     'Changer Device' => ['/dev/tape/by-id/scsi-1TANDBERGStorageLoader_SOMEAUTOCHANGER'],
     'Changer Command' => ['"/usr/lib/bareos/scripts/mtx-changer %c %o %S %a %d"']
   }
-  
+
   default['bareos']['storage']['devices']['tapedrive-0'] = {
     'DeviceType' => 'tape',
     'DriveIndex' => '0',
@@ -240,7 +239,7 @@ if node.default['bareos']['storage']['test_mode'] = true
     'AutomaticMount' => 'no',
     'MaximumFileSize' => '10GB'
   }
-  
+
   default['bareos']['storage']['devices']['tapedrive-1'] = {
     'DeviceType' => 'tape',
     'DriveIndex' => '0',
