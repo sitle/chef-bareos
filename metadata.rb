@@ -16,5 +16,5 @@ end
 
 depends 'apt'
 depends 'openssl'
-depends 'postgresql'
+depends 'postgresql', '< 4.0.0'
 depends 'yum'
