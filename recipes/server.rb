@@ -79,6 +79,7 @@ template '/etc/bareos/bareos-dir.d/clients.conf' do
   group 'bareos'
   mode '0640'
   variables(
+    clients: node['bareos']['clients']['unmanaged'],
     bareos_clients: bareos_clients,
     client_conf: node['bareos']['clients']['conf']
   )
@@ -92,6 +93,7 @@ template '/etc/bareos/bareos-dir.d/jobs.conf' do
   mode '0640'
   variables(
     bareos_clients: bareos_clients,
+    jobs: node['bareos']['server']['jobs'],
     client_jobs: node['bareos']['clients']['jobs'],
     client_restore_jobs: node['bareos']['clients']['restore_jobs']
   )
