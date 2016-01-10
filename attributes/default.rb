@@ -249,4 +249,15 @@ if node['bareos']['storage']['test_mode'] == true
     'AutomaticMount' => 'no',
     'MaximumFileSize' => '10GB'
   }
+
+end
+
+# Unmanaged client for testing
+if node['bareos']['storage']['test_mode'] == true
+  default['bareos']['clients']['unmanaged']['unmanaged-client-fd'] = {
+    'Address' => 'unmanaged-client',
+    'Password' => 'onefbofnerwob',
+    'Catalog' => 'MyCatalog',
+    'FDPort' => '9102'
+  }
 end
