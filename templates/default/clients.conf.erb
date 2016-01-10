@@ -4,6 +4,17 @@
 #
 # Bareos Client Configuration File
 
+<% unless @clients.nil? %>
+  <% @clients.each do |client_key, client_value| %>
+Client {
+  Name = "<%= client_key %>"
+    <% client_value.each do |key, value| %>
+  <%= key %> = <%= value %>
+    <% end %>
+}
+  <% end %>
+<% end %>
+
 <% @bareos_clients.each do |client| %>
 Client {
   Name = <%= client['bareos']['clients']['name'] %>-fd
