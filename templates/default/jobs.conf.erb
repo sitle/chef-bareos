@@ -4,6 +4,17 @@
 #
 # Bareos Jobs File
 
+<% unless @jobs.nil? %>
+  <% @jobs.each do |job_key, job_value| %>
+Job {
+  Name = "<%= job_key %>"
+    <% job_value.each do |key, value| %>
+  <%= key %> = <%= value %>
+    <% end %>
+}
+
+  <% end %>
+<% end %>
 <% @bareos_clients.each do |client| %>
 Job {
   Name = "<%= client['bareos']['clients']['name'] %>-Job"
