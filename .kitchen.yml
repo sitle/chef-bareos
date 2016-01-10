@@ -36,3 +36,12 @@ suites:
         storage:
           autochanger_enabled: true
           test_mode: true
+        server:
+          jobs: {
+            unmanaged-host-job: {
+              Description: '"Unmanaged Host Test Job"',
+              Client: 'unmanaged-client-fd',
+              JobDefs: 'default-def',
+              Type: 'Backup'
+            }
+          }
