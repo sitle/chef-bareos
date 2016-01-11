@@ -113,7 +113,7 @@ template '/etc/bareos/bareos-dir.d/filesets.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    fileset_config: node['baroes']['clients']['filesets']
+    fileset_config: node['bareos']['clients']['filesets']
   )
 end
 template '/etc/bareos/bareos-dir.d/pools.conf' do

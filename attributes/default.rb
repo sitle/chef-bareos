@@ -133,6 +133,8 @@ default['bareos']['clients']['restore_jobs'] = {
   'JobDefs' => 'default-restore-def'
 }
 
+default['bareos']['server']['jobs'] = nil
+
 # Job Definitions
 default['bareos']['clients']['job_definitions']['default-def'] = {
   'Level' => 'Incremental',
@@ -156,7 +158,7 @@ default['bareos']['clients']['job_definitions']['default-restore-def'] = {
 }
 
 # Filesets
-default['baroes']['clients']['filesets']['default'] = {
+default['bareos']['clients']['filesets']['default'] = {
   'options' => {
     'signature' => 'MD5'
   },
