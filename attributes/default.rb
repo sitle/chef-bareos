@@ -125,11 +125,11 @@ default['bareos']['clients']['conf'] = {
 }
 
 # Jobs
-default['bareos']['clients']['jobs'] = {
+default['bareos']['clients']['jobs'][node.default['bareos']['clients']['name']] = {
   'JobDefs' => 'default-def'
 }
 
-default['bareos']['clients']['restore_jobs'] = {
+default['bareos']['clients']['restore_jobs'][node.default['bareos']['clients']['name']] = {
   'JobDefs' => 'default-restore-def'
 }
 
