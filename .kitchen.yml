@@ -28,14 +28,16 @@ suites:
     run_list:
       - role[bareos_director]
     attributes:
+      bareos:
+        test_mode: true
   - name: tape-storage
     run_list:
       - role[bareos_director]
     attributes:
       bareos:
+        test_mode: true
         storage:
           autochanger_enabled: true
-          test_mode: true
         server:
           jobs: {
             unmanaged-host-job: {
