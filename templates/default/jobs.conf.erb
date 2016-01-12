@@ -15,30 +15,28 @@ Job {
 
   <% end %>
 <% end %>
-<% @bareos_clients.each do |client| %>
-  <% unless @client_jobs.nil? %>
-    <% @client_jobs.each do |key1,value1| %>
+<% unless @client_jobs.nil? %>
+  <% @client_jobs.each do |key1,value1| %>
 Job {
-  Name = "<%= client['bareos']['clients']['name'] %>-job"
-  Client = <%= client['bareos']['clients']['net_name'] %>-fd
+  Name = "<%= key1 %>-job"
+  Client = <%= key1 %>-fd
   Type = Backup
-      <% value1.each do |k1, v1| %>
+    <% value1.each do |k1, v1| %>
   <%= k1 %> = <%= v1 %>
-      <% end %>
+    <% end %>
 }
 
-    <% end %>
   <% end %>
-  <% unless @client_restore_jobs.nil? %>
-    <% @client_restore_jobs.each do |key2, value2| %>
+<% end %>
+<% unless @client_restore_jobs.nil? %>
+  <% @client_restore_jobs.each do |key2, value2| %>
 Job {
-  Name = "<%= client['bareos']['clients']['name'] %>-restore-job"
-  Client = <%= client['bareos']['clients']['net_name'] %>-fd
+  Name = "<%= key2 %>-restore-job"
+  Client = <%= key2 %>-fd
   Type = Restore
-      <% value2.each do |k2, v2| %>
+    <% value2.each do |k2, v2| %>
   <%= k2 %> = <%= v2 %>
-      <% end %>
-}
     <% end %>
+}
   <% end %>
 <% end %>
