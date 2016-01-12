@@ -4,11 +4,13 @@
 #
 # Bareos Job Definitions File
 
-<% @job_definitions.each do |def_name, def_value| %>
+<% unless @job_definitions.nil? %>
+  <% @job_definitions.each do |def_name, def_value| %>
 JobDefs {
   Name = "<%= def_name %>"
-  <% def_value.each do |key,value| %>
+    <% def_value.each do |key,value| %>
   <%= key %> = <%= value %>
-  <% end %>
+    <% end %>
 }
+  <% end %>
 <% end %>
