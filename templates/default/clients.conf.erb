@@ -12,9 +12,9 @@ Client {
   <%= key %> = <%= value %>
     <% end %>
 }
+
   <% end %>
 <% end %>
-
 <% @bareos_clients.each do |client| %>
 Client {
   Name = <%= client['bareos']['clients']['name'] %>-fd
@@ -25,4 +25,5 @@ Client {
   <%= key %> = <%= value %>
   <% end %>
 }
+
 <% end %>
