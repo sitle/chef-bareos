@@ -94,7 +94,7 @@ default['bareos']['storage']['main_storage'] = 'File'
 default['bareos']['storage']['servers'] = %w(node)
 default['bareos']['storage']['sd_mon_enable'] = 'yes'
 default['bareos']['storage']['max_concurrent_jobs'] = 20
-# default['bareos']['storage']['autochanger_enabled'] = false  # Experimental, Limited Support
+default['bareos']['storage']['autochanger_enabled'] = false  # Experimental, Limited Support
 
 # Director
 default['bareos']['director']['name'] = node['fqdn']
@@ -126,13 +126,17 @@ default['bareos']['clients']['conf'] = {
 }
 
 # Jobs
-default['bareos']['clients']['jobs'][node.default['bareos']['clients']['name']] = {
-  'JobDefs' => 'default-def'
-}
-
-default['bareos']['clients']['restore_jobs'][node.default['bareos']['clients']['name']] = {
-  'JobDefs' => 'default-restore-def'
-}
+if node['bareos']['test_mode'] == true
+  default['bareos']['clients']['jobs'][node.default['bareos']['clients']['name']] = {
+    'JobDefs' => 'default-def'
+  }
+  default['bareos']['clients']['restore_jobs'][node.default['bareos']['clients']['name']] = {
+    'JobDefs' => 'default-restore-def'
+  }
+else
+  default['bareos']['clients']['jobs'] = nil
+  default['bareos']['clients']['restore_jobs'] = nil
+end
 
 default['bareos']['server']['jobs'] = nil
 
@@ -215,7 +219,7 @@ default['bareos']['clients']['storages']['default-file-storage'] = {
 }
 
 # Developing Feature - Tape Autochanger Devices
-if node['bareos']['storage']['test_mode'] == true
+if node['bareos']['test_mode'] == true && node['bareos']['storage']['autochanger_enabled'] == true
   default['bareos']['storage']['autochangers']['autochanger-0'] = {
     'Device' => [
       'tapedrive-0',
@@ -256,7 +260,7 @@ if node['bareos']['storage']['test_mode'] == true
 end
 
 # Unmanaged client for testing
-if node['bareos']['storage']['test_mode'] == true
+if node['bareos']['test_mode'] == true
   default['bareos']['clients']['unmanaged']['unmanaged-client-fd'] = {
     'Address' => 'unmanaged-client',
     'Password' => 'onefbofnerwob',
