@@ -4,7 +4,7 @@ maintainer_email 'leonard.tavae@informatique.gov.pf'
 license 'Apache 2.0'
 description 'Installs/Configures bareos'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '2.1.7'
+version '2.1.8'
 
 %w( centos redhat ).each do |os|
   supports os, '>= 6.0'
