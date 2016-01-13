@@ -257,10 +257,7 @@ if node['bareos']['test_mode'] == true && node['bareos']['storage']['autochanger
     'MaximumFileSize' => '10GB'
   }
 
-end
-
 # Unmanaged client for testing
-if node['bareos']['test_mode'] == true
   default['bareos']['clients']['unmanaged']['unmanaged-client-fd'] = {
     'Address' => 'unmanaged-client',
     'Password' => 'onefbofnerwob',
