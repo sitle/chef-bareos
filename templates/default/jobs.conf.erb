@@ -22,7 +22,9 @@ Job {
   Client = <%= key1 %>-fd
   Type = Backup
     <% value1.each do |k1, v1| %>
-  <%= k1 %> = <%= v1 %>
+      <% v1.each do |v1a| %>
+  <%= k1 %> = <%= v1a %>
+      <% end %>
     <% end %>
 }
 
@@ -35,7 +37,9 @@ Job {
   Client = <%= key2 %>-fd
   Type = Restore
     <% value2.each do |k2, v2| %>
-  <%= k2 %> = <%= v2 %>
+      <% v2.each do |v2a| %>
+  <%= k2 %> = <%= v2a %>
+      <% end %>
     <% end %>
 }
   <% end %>
