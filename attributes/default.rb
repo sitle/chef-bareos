@@ -128,10 +128,10 @@ default['bareos']['clients']['conf'] = {
 # Jobs
 if node['bareos']['test_mode'] == true
   default['bareos']['clients']['jobs'][node.default['bareos']['clients']['name']] = {
-    'JobDefs' => 'default-def'
+    'JobDefs' => ['default-def']
   }
   default['bareos']['clients']['restore_jobs'][node.default['bareos']['clients']['name']] = {
-    'JobDefs' => 'default-restore-def'
+    'JobDefs' => ['default-restore-def']
   }
 else
   default['bareos']['clients']['jobs'] = nil
