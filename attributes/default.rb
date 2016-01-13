@@ -74,7 +74,6 @@ default['bareos']['database']['dbaddress'] = nil
 
 # Clients
 default['bareos']['clients']['name'] = node['fqdn']
-default['bareos']['clients']['net_name'] = node['fqdn']
 default['bareos']['clients']['fd_port'] = 9102
 default['bareos']['clients']['max_concurrent_jobs'] = 20
 default['bareos']['clients']['heartbeat_interval'] = 600
