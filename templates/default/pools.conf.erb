@@ -6,7 +6,7 @@
 
 <% @client_pools.each do |pool_name, pool| %>
 Pool {
-  Name = <%= pool_name %>
+  Name = "<%= pool_name %>"
 <% pool.each do |key,value| %>
   <%= key %> = <%= value %>
 <% end %>
