@@ -125,18 +125,18 @@ default['bareos']['clients']['conf'] = {
   'Maximum Concurrent Jobs' => '20'
 }
 
-# Jobs
-default['bareos']['clients']['jobs']["#{node.default['bareos']['clients']['name']}-job"] = {
-  'Client' => "#{node['bareos']['clients']['name']}-fd",
-  'Type' => 'Backup',
-  'JobDefs' => 'default-def'
-}
-
-default['bareos']['clients']['jobs']["#{node.default['bareos']['clients']['name']}-restore-job"] = {
-  'Client' => "#{node['bareos']['clients']['name']}-fd",
-  'Type' => 'Restore',
-  'JobDefs' => 'default-restore-def'
-}
+# Jobs - Example
+# default['bareos']['clients']['jobs']["#{node.default['bareos']['clients']['name']}-job"] = {
+#   'Client' => "#{node['bareos']['clients']['name']}-fd",
+#   'Type' => 'Backup',
+#   'JobDefs' => 'default-def'
+# }
+# 
+# default['bareos']['clients']['jobs']["#{node.default['bareos']['clients']['name']}-restore-job"] = {
+#   'Client' => "#{node['bareos']['clients']['name']}-fd",
+#   'Type' => 'Restore',
+#   'JobDefs' => 'default-restore-def'
+# }
 
 default['bareos']['server']['jobs'] = nil
 
