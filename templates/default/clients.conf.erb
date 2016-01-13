@@ -18,7 +18,7 @@ Client {
 <% @bareos_clients.each do |client| %>
 Client {
   Name = "<%= client['bareos']['clients']['name'] %>-fd"
-  Address = <%= client['bareos']['clients']['name'] %>
+  Address = <%= client['bareos']['clients']['net_name'] %>
   Password = "<%= client['bareos']['fd_password'] %>" # password for FileDaemon
   Catalog = <%= client['bareos']['database']['catalog_name'] %>
   <% @client_conf.each do |key, value| %>
