@@ -125,17 +125,13 @@ default['bareos']['clients']['conf'] = {
 }
 
 # Jobs
-if node['bareos']['test_mode'] == true
-  default['bareos']['clients']['jobs'][node.default['bareos']['clients']['name']] = {
-    'JobDefs' => ['default-def']
-  }
-  default['bareos']['clients']['restore_jobs'][node.default['bareos']['clients']['name']] = {
-    'JobDefs' => ['default-restore-def']
-  }
-else
-  default['bareos']['clients']['jobs'] = nil
-  default['bareos']['clients']['restore_jobs'] = nil
-end
+default['bareos']['clients']['jobs'] = {
+  'JobDefs' => 'default-def'
+}
+
+default['bareos']['clients']['restore_jobs'] = {
+  'JobDefs' => 'default-restore-def'
+}
 
 default['bareos']['server']['jobs'] = nil
 
