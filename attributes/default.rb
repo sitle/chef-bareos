@@ -98,6 +98,7 @@ default['bareos']['storage']['autochanger_enabled'] = false  # Experimental, Lim
 
 # Director
 default['bareos']['director']['name'] = node['fqdn']
+default['bareos']['director']['net_name'] = node['fqdn']
 default['bareos']['director']['dir_search_query'] = 'roles:bareos_director'
 default['bareos']['director']['dir_port'] = 9101
 default['bareos']['director']['dir_max_concurrent_jobs'] = 20

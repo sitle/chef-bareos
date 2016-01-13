@@ -7,7 +7,7 @@
 <% @bareos_dir.each do |director| %>
 Director {
   Name = <%= director['bareos']['director']['name'] %>-dir
-  address = <%= director['bareos']['director']['name'] %>
+  address = <%= director['bareos']['director']['net_name'] %>
   DIRport = <%= director['bareos']['director']['dir_port'] %>
   Password = "<%= director['bareos']['dir_password'] %>"
 }
