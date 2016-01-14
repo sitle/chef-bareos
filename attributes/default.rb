@@ -132,7 +132,7 @@ default['bareos']['clients']['conf'] = {
 #   'Type' => 'Backup',
 #   'JobDefs' => 'default-def'
 # }
-# 
+#
 # default['bareos']['clients']['jobs']["#{node.default['bareos']['clients']['name']}-restore-job"] = {
 #   'Client' => "#{node['bareos']['clients']['name']}-fd",
 #   'Type' => 'Restore',
@@ -258,7 +258,7 @@ if node['bareos']['test_mode'] == true && node['bareos']['storage']['autochanger
     'MaximumFileSize' => '10GB'
   }
 
-# Unmanaged client for testing
+  # Unmanaged client for testing
   default['bareos']['clients']['unmanaged']['unmanaged-client-fd'] = {
     'Address' => 'unmanaged-client',
     'Password' => 'onefbofnerwob',

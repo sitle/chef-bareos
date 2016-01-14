@@ -40,11 +40,14 @@ directory '/etc/bareos/bareos-dir.d' do
   action :create
 end
 
-file '/etc/bareos/bareos-dir.d/dir_helper.conf' do
-  content '# This is a base file so the recipe works with no additional help'
+template '/etc/bareos/bareos-dir.d/dir_helper.conf' do
+  source 'dir_helper.conf.erb'
   owner 'root'
   group 'root'
   mode '0644'
+  variables(
+    dir_help: node['bareos']['server']['conf']['help']
+  )
   action :create
 end
 

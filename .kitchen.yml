@@ -24,12 +24,19 @@ platforms:
 roles_path: test/integration/roles/
 
 suites:
+
   - name: aio-server
     run_list:
       - role[bareos_director]
     attributes:
       bareos:
         test_mode: true
+        server:
+          conf:
+            help: {
+              test: '# Some String'
+            }
+
   - name: tape-storage
     run_list:
       - role[bareos_director]
