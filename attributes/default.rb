@@ -105,6 +105,7 @@ default['bareos']['director']['dir_max_concurrent_jobs'] = 20
 default['bareos']['director']['servers'] = %w(node)
 default['bareos']['director']['console_commandacl'] = 'status, .status'
 default['bareos']['director']['heartbeat_interval'] = 600
+default['bareos']['director']['catalog_jobdef'] = 'default-catalog-def'
 
 # Subscription Management (Director)
 default['bareos']['director']['dir_subscription'] = nil
@@ -152,6 +153,16 @@ default['bareos']['clients']['job_definitions']['default-def'] = {
   'Priority' => '10',
   'Write Bootstrap' => '"/var/lib/bareos/%c.bsr"',
   'SpoolData' => 'no'
+}
+
+default['bareos']['clients']['job_definitions']['default-catalog-def'] = {
+  'Level' => 'Full',
+  'Fileset' => 'Catalog',
+  'Schedule' => 'WeeklyCycleAfterBackup',
+  'Storage' => 'default-file-storage',
+  'Messages' => 'Standard',
+  'Pool' => 'default-file-pool',
+  'Allow Duplicate Jobs' => 'no'
 }
 
 default['bareos']['clients']['job_definitions']['default-restore-def'] = {
