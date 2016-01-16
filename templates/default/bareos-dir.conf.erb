@@ -27,7 +27,7 @@ Job {
   Name = "<%= @dir_name %>-BackupCatalog"
   Type = Backup
   Client = <%= @dir_name %>-fd
-  JobDefs = "default-def"
+  JobDefs = <%= node['bareos']['director']['catalog_jobdef'] %>"
   Level = Full
   FileSet = "Catalog"
   Schedule = "WeeklyCycleAfterBackup"
