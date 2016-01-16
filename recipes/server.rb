@@ -42,8 +42,8 @@ end
 
 template '/etc/bareos/bareos-dir.d/dir_helper.conf' do
   source 'dir_helper.conf.erb'
-  owner 'root'
-  group 'root'
+  owner 'bareos'
+  group 'bareos'
   mode '0644'
   variables(
     dir_help: node['bareos']['server']['conf']['help']
