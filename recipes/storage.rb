@@ -47,11 +47,14 @@ directory '/etc/bareos/bareos-sd.d' do
   action :create
 end
 
-file '/etc/bareos/bareos-sd.d/sd_helper.conf' do
-  content '# This is a base file so the recipe works with no additional help'
+template '/etc/bareos/bareos-sd.d/sd_helper.conf' do
+  source 'sd_helper.conf.erb'
   owner 'root'
   group 'bareos'
   mode '0644'
+  variables(
+    sd_help: node['bareos']['storage']['conf']['help']
+  )
   action :create
 end
 
