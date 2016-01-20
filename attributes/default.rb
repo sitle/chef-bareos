@@ -94,7 +94,8 @@ default['bareos']['storage']['main_storage'] = 'File'
 default['bareos']['storage']['servers'] = %w(node)
 default['bareos']['storage']['sd_mon_enable'] = 'yes'
 default['bareos']['storage']['max_concurrent_jobs'] = 20
-default['bareos']['storage']['autochanger_enabled'] = false  # Experimental, Limited Support
+default['bareos']['storage']['autochanger_enabled'] = false
+default['bareos']['storage']['conf']['help']['Example Block'] = '# Put any extra configs you would like to include in the storage daemon config below this line. Chef manages this file so make sure you are using the attributes to apply them.'
 
 # Director
 default['bareos']['director']['name'] = node['fqdn']
