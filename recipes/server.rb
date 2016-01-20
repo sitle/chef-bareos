@@ -46,7 +46,7 @@ template '/etc/bareos/bareos-dir.d/dir_helper.conf' do
   group 'bareos'
   mode '0644'
   variables(
-    dir_help: node['bareos']['server']['conf']['help']
+    dir_help: node['bareos']['director']['conf']['help']
   )
   action :create
 end
@@ -83,7 +83,7 @@ template '/etc/bareos/bareos-dir.d/clients.conf' do
   mode '0640'
   variables(
     clients: node['bareos']['clients']['unmanaged'],
-    bareos_clients: bareos_clients,
+    bareos_clients: bareos_clients.sort,
     client_conf: node['bareos']['clients']['conf']
   )
 end

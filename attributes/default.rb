@@ -106,6 +106,7 @@ default['bareos']['director']['servers'] = %w(node)
 default['bareos']['director']['console_commandacl'] = 'status, .status'
 default['bareos']['director']['heartbeat_interval'] = 600
 default['bareos']['director']['catalog_jobdef'] = 'default-catalog-def'
+default['bareos']['director']['conf']['help']['Example Block'] = '# Put any extra configs you would like to include in the director config below this line. Chef manages this file so make sure you are using the attributes to apply them.'
 
 # Subscription Management (Director)
 default['bareos']['director']['dir_subscription'] = nil
