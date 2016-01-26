@@ -82,9 +82,9 @@ template '/etc/bareos/bareos-dir.d/clients.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    clients: node['bareos']['clients']['unmanaged'],
+    clients: node['bareos']['clients']['unmanaged'].sort,
     bareos_clients: bareos_clients.sort,
-    client_conf: node['bareos']['clients']['conf']
+    client_conf: node['bareos']['clients']['conf'].sort
   )
 end
 
@@ -95,7 +95,7 @@ template '/etc/bareos/bareos-dir.d/jobs.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    jobs: node['bareos']['clients']['jobs']
+    jobs: node['bareos']['clients']['jobs'].sort
   )
 end
 template '/etc/bareos/bareos-dir.d/job_definitions.conf' do
@@ -104,7 +104,7 @@ template '/etc/bareos/bareos-dir.d/job_definitions.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    job_definitions: node['bareos']['clients']['job_definitions']
+    job_definitions: node['bareos']['clients']['job_definitions'].sort
   )
 end
 template '/etc/bareos/bareos-dir.d/filesets.conf' do
@@ -113,7 +113,7 @@ template '/etc/bareos/bareos-dir.d/filesets.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    fileset_config: node['bareos']['clients']['filesets']
+    fileset_config: node['bareos']['clients']['filesets'].sort
   )
 end
 template '/etc/bareos/bareos-dir.d/pools.conf' do
@@ -122,7 +122,7 @@ template '/etc/bareos/bareos-dir.d/pools.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    client_pools: node['bareos']['clients']['pools']
+    client_pools: node['bareos']['clients']['pools'].sort
   )
 end
 template '/etc/bareos/bareos-dir.d/schedules.conf' do
@@ -131,7 +131,7 @@ template '/etc/bareos/bareos-dir.d/schedules.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    client_schedules: node['bareos']['clients']['schedules']
+    client_schedules: node['bareos']['clients']['schedules'].sort
   )
 end
 template '/etc/bareos/bareos-dir.d/storages.conf' do
@@ -140,7 +140,7 @@ template '/etc/bareos/bareos-dir.d/storages.conf' do
   group 'bareos'
   mode '0640'
   variables(
-    client_storages: node['bareos']['clients']['storages']
+    client_storages: node['bareos']['clients']['storages'].sort
   )
 end
 
