@@ -17,7 +17,7 @@ platforms:
     run_list:
       - recipe[apt]
   - name: centos-6.7
-  - name: centos-7.1
+  - name: centos-7.2
   - name: fedora-20
   - name: fedora-21
 
