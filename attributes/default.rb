@@ -233,13 +233,6 @@ default['bareos']['clients']['storages']['default-file-storage'] = {
   'Media Type' => 'File'
 }
 
-default['bareos']['clients']['unmanaged']['# unmanaged-client-fd'] = {
-  '# Address' => 'unmanaged-client',
-  '# Password' => 'onefbofnerwob',
-  '# Catalog' => 'MyCatalog',
-  '# FDPort' => '9102'
-}
-
 # Developing Feature - Tape Autochanger Devices
 if node['bareos']['test_mode'] == true && node['bareos']['storage']['autochanger_enabled'] == true
   default['bareos']['storage']['autochangers']['autochanger-0'] = {
