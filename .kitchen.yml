@@ -39,11 +39,11 @@ suites:
     attributes:
       bareos:
         test_mode: true
-        server:
+        director:
           conf:
-            help: {
+            help:
               test: '# Some String'
-            }
+          config_change_notify: 'reload'
 
   - name: tape-storage
     run_list:
@@ -54,11 +54,9 @@ suites:
         storage:
           autochanger_enabled: true
         server:
-          jobs: {
-            unmanaged-host-job: {
-              Description: '"Unmanaged Host Test Job"',
-              Client: 'unmanaged-client-fd',
-              JobDefs: 'default-def',
+          jobs:
+            unmanaged-host-job: 
+              Description: '"Unmanaged Host Test Job"'
+              Client: 'unmanaged-client-fd'
+              JobDefs: 'default-def'
               Type: 'Backup'
-            }
-          }
