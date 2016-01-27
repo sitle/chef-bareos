@@ -156,11 +156,21 @@ execute 'reload-dir' do
   subscribes :run, 'template[/etc/bareos/bareos-dir.d/jobs.conf]', :delayed
   subscribes :run, 'template[/etc/bareos/bareos-dir.d/clients.conf]', :delayed
   subscribes :run, 'template[/etc/bareos/bareos-dir.conf]', :delayed
-  notifies :restart, 'service[bareos-dir]', :delayed
+  if node['bareos']['director']['config_change_notify'] == 'restart'
+    notifies :restart, 'service[bareos-dir]', :delayed
+  else
+    notifies :run, 'execute[bareos-dir_reload]', :delayed
+  end
 end
 
 # Enable and start the bareos-dir service
 service 'bareos-dir' do
   supports status: true, restart: true, reload: false
   action :enable
+end
+
+# Optional reload of the director config via execute
+execute 'bareos-dir_reload' do
+  command 'echo reload | bconsole'
+  action :nothing
 end

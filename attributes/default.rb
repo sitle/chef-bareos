@@ -108,6 +108,7 @@ default['bareos']['director']['console_commandacl'] = 'status, .status'
 default['bareos']['director']['heartbeat_interval'] = 600
 default['bareos']['director']['catalog_jobdef'] = 'default-catalog-def'
 default['bareos']['director']['conf']['help']['Example Block'] = '# Put any extra configs you would like to include in the director config below this line. Chef manages this file so make sure you are using the attributes to apply them.'
+default['bareos']['director']['config_change_notify'] = 'restart'
 
 # Subscription Management (Director)
 default['bareos']['director']['dir_subscription'] = nil
@@ -130,18 +131,19 @@ default['bareos']['clients']['conf'] = {
 }
 
 # Jobs - Example
-# default['bareos']['clients']['jobs']["#{node.default['bareos']['clients']['name']}-job"] = {
-#   'Client' => "#{node['bareos']['clients']['name']}-fd",
-#   'Type' => 'Backup',
-#   'JobDefs' => 'default-def'
+# default['bareos']['clients']['jobs']["# #{node.default['bareos']['clients']['name']}-job"] = {
+#   '# Client' => "#{node['bareos']['clients']['name']}-fd",
+#   '# Type' => 'Backup',
+#   '# JobDefs' => 'default-def'
 # }
 #
-# default['bareos']['clients']['jobs']["#{node.default['bareos']['clients']['name']}-restore-job"] = {
-#   'Client' => "#{node['bareos']['clients']['name']}-fd",
-#   'Type' => 'Restore',
-#   'JobDefs' => 'default-restore-def'
+# default['bareos']['clients']['jobs']["# #{node.default['bareos']['clients']['name']}-restore-job"] = {
+#   '# Client' => "#{node['bareos']['clients']['name']}-fd",
+#   '# Type' => 'Restore',
+#   '# JobDefs' => 'default-restore-def'
 # }
 
+default['bareos']['clients']['jobs'] = nil
 default['bareos']['server']['jobs'] = nil
 
 # Job Definitions
@@ -230,6 +232,13 @@ default['bareos']['clients']['storages']['default-file-storage'] = {
   'Address' => node['bareos']['storage']['name'], # N.B. Use a fully qualified name here
   'Device' => 'FileStorage',
   'Media Type' => 'File'
+}
+
+default['bareos']['clients']['unmanaged']['# unmanaged-client-fd'] = {
+  '# Address' => 'unmanaged-client',
+  '# Password' => 'onefbofnerwob',
+  '# Catalog' => 'MyCatalog',
+  '# FDPort' => '9102'
 }
 
 # Developing Feature - Tape Autochanger Devices
