@@ -17,9 +17,14 @@ platforms:
     run_list:
       - recipe[apt]
   - name: centos-6.7
+    run_list:
+      - recipe[yum-epel]
   - name: centos-7.2
+      - recipe[yum-epel]
   - name: fedora-21
+      - recipe[yum-epel]
   - name: fedora-22
+      - recipe[yum-epel]
 
 roles_path: test/integration/roles/
 
