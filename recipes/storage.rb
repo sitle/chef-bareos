@@ -31,7 +31,7 @@ end
 # Find Storage Daemon(s) and Director(s)
 storage_search_query = node['bareos']['storage']['storage_search_query']
 dir_search_query = node['bareos']['director']['dir_search_query']
-if Chef::Config[:solo]
+if Chef::Config.solo
   bareos_sd = node['bareos']['storage']['servers']
   bareos_dir = node['bareos']['director']['servers']
 else

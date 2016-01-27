@@ -71,7 +71,7 @@ end
 # Create clients config based on sets of hashes, see attributes file for default example(s)
 client_search_query = node['bareos']['clients']['client_search_query']
 
-if Chef::Config[:solo]
+if Chef::Config.solo
   bareos_clients = node['bareos']['clients']['client_list']
 else
   bareos_clients = search(:node, client_search_query)

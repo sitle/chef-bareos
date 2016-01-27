@@ -28,7 +28,7 @@ package 'bareos-filedaemon'
 
 # Determine the list of BAREOS directors
 dir_search_query = node.default['bareos']['director']['dir_search_query']
-if Chef::Config[:solo]
+if Chef::Config.solo
   bareos_dir = node['bareos']['director']['servers']
 else
   bareos_dir = search(:node, dir_search_query)
