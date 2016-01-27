@@ -14,7 +14,7 @@ MethodLength:
   Max: 30
 NumericLiterals:
   Enabled: false
-SingleSpaceBeforeFirstArg:
+SpaceBeforeFirstArg:
   Enabled: false
 Metrics/LineLength:
   Max: 180
