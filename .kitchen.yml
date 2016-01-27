@@ -18,8 +18,8 @@ platforms:
       - recipe[apt]
   - name: centos-6.7
   - name: centos-7.2
-  - name: fedora-20
   - name: fedora-21
+  - name: fedora-22
 
 roles_path: test/integration/roles/
 

@@ -5,7 +5,7 @@ default['bareos']['contrib_url'] = 'http://download.bareos.org/bareos/contrib'
 
 # Used to have 'latest' as default, had potential update dangers
 # default['bareos']['version'] = 'latest' <--- Could be dangerous, ***CAUTION***
-default['bareos']['version'] = '14.2' # <--- Latest Stable version as of 05-Jan-2015
+default['bareos']['version'] = '15.2' # <--- Latest Stable version as of 06-Dec-2015
 
 if platform_family?('rhel', 'fedora')
   default['bareos']['yum_repository'] = 'bareos'
@@ -47,10 +47,10 @@ when 'rhel'
     default['bareos']['contrib_gpgkey'] = "#{node['bareos']['contrib_url']}/#{node['platform_family'].upcase}_#{node['platform_version'].to_i}/repodata/repomd.xml.key"
   end
 when 'fedora'
-  default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Fedora_20/"
-  default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/Fedora_20/repodata/repomd.xml.key"
-  default['bareos']['contrib_baseurl'] = "#{node['bareos']['contrib_url']}/Fedora_20/"
-  default['bareos']['contrib_gpgkey'] = "#{node['bareos']['contrib_url']}/Fedora_20/repodata/repomd.xml.key"
+  default['bareos']['baseurl'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/#{node['platform']}_#{node['platform_version']}/"
+  default['bareos']['gpgkey'] = "#{node['bareos']['url']}/#{node['bareos']['version']}/#{node['platform']}_#{node['platform_version']}/repodata/repomd.xml.key"
+  default['bareos']['contrib_baseurl'] = "#{node['bareos']['contrib_url']}/#{node['platform']}_#{node['platform_version']}/"
+  default['bareos']['contrib_gpgkey'] = "#{node['bareos']['contrib_url']}/#{node['platform']}_#{node['platform_version']}/repodata/repomd.xml.key"
 else
   default['bareos']['baseurl'] = nil
   default['bareos']['gpgkey'] = nil
