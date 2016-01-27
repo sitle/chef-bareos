@@ -4,7 +4,7 @@
 #
 # Bareos Client Configuration File
 
-<% unless @clients.nil? %>
+<% unless @unmanaged_clients.nil? %>
   <% @unmanaged_clients.sort.each do |client_key, client_value| %>
 Client {
   Name = "<%= client_key %>"
