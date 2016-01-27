@@ -4,7 +4,7 @@
 #
 # Bareos Storage Definitions File
 
-<% @client_storages.each do |stor_name, stor| %>
+<% @client_storages.sort.each do |stor_name, stor| %>
 Storage {
   Name = "<%= stor_name %>"
   Password = "<%= node['bareos']['sd_password'] %>"

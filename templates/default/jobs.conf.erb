@@ -5,7 +5,7 @@
 # Bareos Jobs File
 
 <% unless @jobs.nil? %>
-  <% @jobs.each do |job_key, job_value| %>
+  <% @jobs.sort.each do |job_key, job_value| %>
 Job {
   Name = "<%= job_key %>"
     <% job_value.each do |key, value| %>

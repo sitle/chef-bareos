@@ -4,7 +4,7 @@
 #
 # Bareos User Agent (or Console) Configuration File
 
-<% @bareos_dir.each do |director| %>
+<% @bareos_dir.sort.each do |director| %>
 Director {
   Name = <%= director['bareos']['director']['name'] %>-dir
   address = <%= director['bareos']['director']['net_name'] %>

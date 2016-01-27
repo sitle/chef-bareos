@@ -4,7 +4,7 @@
 #
 # Bareos Schedule Definitions File
 
-<% @client_schedules.each do |sched_name, directive| %>
+<% @client_schedules.sort.each do |sched_name, directive| %>
 Schedule {
   Name = "<%= sched_name %>"
   <% directive['Run'].each do |schedules| %>

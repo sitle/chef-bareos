@@ -9,7 +9,7 @@
 # inclusions or other bits not currently available in the base director template
 
 <% unless @dir_help.nil? %>
-  <% @dir_help.each do |helper_name, helper_str| %>
+  <% @dir_help.sort.each do |helper_name, helper_str| %>
 # <%= helper_name %>
 <%= helper_str %>
 

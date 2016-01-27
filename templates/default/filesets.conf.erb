@@ -4,7 +4,7 @@
 #
 # Bareos Pool Definition File
 
-<% @fileset_config.each do |fileset_name, section| -%>
+<% @fileset_config.sort.each do |fileset_name, section| -%>
 FileSet {
   Name = "<%= fileset_name %>-fileset"
   Include {

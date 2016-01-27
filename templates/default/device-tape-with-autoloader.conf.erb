@@ -37,7 +37,7 @@
 ####
 
 <%# AutoChanger Config %>
-<% @autochangers.each do |autochanger_key, line_value1| %>
+<% @autochangers.sort.each do |autochanger_key, line_value1| %>
 Autochanger {
   Name = <%= autochanger_key %>
   Description = "<%= autochanger_key %> Defined by Chef"
@@ -50,7 +50,7 @@ Autochanger {
 
 <% end %>
 <%# Device Config %>
-<% @devices.each do |device_key, line_value2| %>
+<% @devices.sort.each do |device_key, line_value2| %>
 Device {
   Name = <%= device_key %>
   Description = "<%= device_key %> Defined by Chef"
