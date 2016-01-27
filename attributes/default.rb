@@ -143,7 +143,6 @@ default['bareos']['clients']['conf'] = {
 #   '# JobDefs' => 'default-restore-def'
 # }
 
-default['bareos']['clients']['jobs'] = nil
 default['bareos']['server']['jobs'] = nil
 
 # Job Definitions
