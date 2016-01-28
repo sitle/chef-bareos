@@ -155,7 +155,30 @@ You'll need a searchable storage role named ```bareos_storage```, for example:
 
 ```
 
-## Recipes and Configurations based on hashes
+## Recipes and Hashable Configurations
+
+### Recipes
+#### default.rb
+#### client.rb
+#### repo.rb
+#### database.rb
+#### server.rb
+#### storage.rb
+#### autochanger.rb
+#### workstation.rb
+
+### Hashable Configurations (via templates)
+#### bconsole
+#### clients
+#### autochanger
+#### dir\_helper
+#### filesets
+#### job\_definitions (jobdefs)
+#### jobs
+#### pools
+#### schedules
+#### sd\_helper
+#### storages
 
 # Contributing
 
