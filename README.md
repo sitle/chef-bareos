@@ -66,7 +66,7 @@ Attribute        | Description | Type | Default
 -----------------|-------------|------|---------
 
 ## Workstation
-Provides a way to specify if you want to use fqdn or some other way to define host names in your deployment
+Determines if you want to use FQDN or some other way of defining hosts in your management workstation deployment
 
 Attribute        | Description | Type | Default
 -----------------|-------------|------|---------
