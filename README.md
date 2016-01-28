@@ -67,9 +67,10 @@ Attribute        | Description | Type | Default
 
 ## Roles
 
-### Basic bareos\_client role (install the bareos client backup by default)
+### Basic bareos\_client role
+Install the Bareos Client so hosts can be backup automatically (required)
 
-You'll need a searchable client role named ``bareos_client``, for example :
+You'll need a searchable client role named ```bareos_client```, for example:
 ```
 
 {
@@ -91,7 +92,8 @@ You'll need a searchable client role named ``bareos_client``, for example :
 
 This role has to be applied to all your clients so they can be backed up by this cookbook.
 
-### Basic bareos\_director role (install the bareos director for scheduling backups)
+### Basic bareos\_director role
+Install the Bareos Director for scheduling backups (required).
 
 You'll need a searchable director role named ```bareos_director```, for example:
 ```
@@ -121,9 +123,10 @@ You'll need to run chef-client on the backup server every time you add a new nod
 
 Running the server recipe should work in chef-solo but you need to populate the ['bareos']['clients'] attribute with an array of client names.
 
-### Basic bareos\_storage role (install the bareos storage daemon for data transfers)
+### Basic bareos\_storage role
+Install the Bareos Storage Daemon for data transfers (required).
 
-You'll need a searchable storage role named ``bareos_storage``, for example:
+You'll need a searchable storage role named ```bareos_storage```, for example:
 ```
 
 {
@@ -149,7 +152,7 @@ You'll need a searchable storage role named ``bareos_storage``, for example:
 # Contributing
 
 1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
+2. Create a named feature branch (like ```add_component_x```)
 3. Write your change
 4. Write tests for your change (if applicable)
 5. Run the tests, ensuring they all pass
