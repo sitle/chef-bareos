@@ -10,6 +10,7 @@ This cookbook installs and configures backups based on [BAREOS](https://www.bare
 # Requirements
 
 ## Supported Platforms:
+
  * Ubuntu 12.04+
  * Debian 7
  * CentOS 6+
@@ -17,6 +18,7 @@ This cookbook installs and configures backups based on [BAREOS](https://www.bare
  * Fedora 21/22
 
 ## Supported Chef Versions:
+
  * Chef 11+
 
 # Attributes
@@ -66,8 +68,10 @@ Attribute        | Description | Type | Default
 ## Roles
 
 ### Basic bareos\_client role (install the bareos client backup by default)
+
 You'll need a searchable client role named ``bareos_client``, for example :
-``
+```
+
 {
   "name": "bareos_client",
   "description": "Example Role for Bareos clients using the chef-bareos Cookbook, used in searches, throws down sources for installs",
@@ -83,12 +87,15 @@ You'll need a searchable client role named ``bareos_client``, for example :
   "env_run_lists": {
   }
 }
-``
+```
+
 This role has to be applied to all your clients so they can be backed up by this cookbook.
 
 ### Basic bareos\_director role (install the bareos director for scheduling backups)
-You'll need a searchable director role named ``bareos_director``, for example:
-``
+
+You'll need a searchable director role named ```bareos_director```, for example:
+```
+
 {
   "name": "bareos_director",
   "description": "Example Role for a Bareos director",
@@ -107,15 +114,18 @@ You'll need a searchable director role named ``bareos_director``, for example:
   "env_run_lists": {
   }
 }
-``
+
+```
 
 You'll need to run chef-client on the backup server every time you add a new node. Client jobs should be created for you automatically.
 
 Running the server recipe should work in chef-solo but you need to populate the ['bareos']['clients'] attribute with an array of client names.
 
 ### Basic bareos\_storage role (install the bareos storage daemon for data transfers)
+
 You'll need a searchable storage role named ``bareos_storage``, for example:
-``
+```
+
 {
   "name": "bareos_storage",
   "description": "Example Role for a Bareos storage",
@@ -131,7 +141,8 @@ You'll need a searchable storage role named ``bareos_storage``, for example:
   "env_run_lists": {
   }
 }
-``
+
+```
 
 ## Recipes (More detail coming)
 
@@ -146,9 +157,8 @@ You'll need a searchable storage role named ``bareos_storage``, for example:
 
 ## License and Authors
 
-### License 
+### License
 
-``
 Copyright 2014 Léonard TAVAE
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -162,7 +172,6 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-``
 
 ### Authors 
 
