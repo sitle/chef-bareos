@@ -3,6 +3,17 @@ Bareos Cookbook CHANGELOG
 
 This file is used to list changes made in each version of the bareos cookbook.
 
+2.2.13
+-----
+- Ian Smith
+
+  - Near complete refactoring of how the cookbook works
+    * Adding various ways to add configs based on hashes. Examples in attributes/default.rb
+  - Updating README for usage details
+  - If you are not prepared to use this cookbook version, please lock cookbook version to < 2.0.0
+  - TODO: Refactor the main bareos-dir/sd/fd to be fully base on hashes like other configs
+    * Remaining attributes support primary bareos-dir/sd/fd configs mostly, used elsewhere but not much
+
 1.0.4
 -----
 - Ian Smith
