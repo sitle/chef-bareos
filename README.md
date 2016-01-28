@@ -24,41 +24,49 @@ This cookbook installs and configures backups based on [BAREOS](https://www.bare
 # Attributes
 
 ## Repository
+Assists with adding necessary sources for installing Bareos
 
 Attribute        | Description | Type | Default
 -----------------|-------------|------|---------
 
 ## Messages
+Defines default admin e-mail address for service notifications and what messages to care about
 
 Attribute        | Description | Type | Default
 -----------------|-------------|------|---------
 
 ## Database
+Prefills the Catalog resource in the main Director configuration
 
 Attribute        | Description | Type | Default
 -----------------|-------------|------|---------
 
 ## Clients
+Provides resources for the Catalog (Director configuration) and Filedaemon configurations/templates
 
 Attribute        | Description | Type | Default
 -----------------|-------------|------|---------
 
 ## Storage Daemon
+Provides for a baseline Storage Daemon Config with optional configurables
 
 Attribute        | Description | Type | Default
 -----------------|-------------|------|---------
 
 ## Director
+Provides standard variables for a typical Director configuration
 
 Attribute        | Description | Type | Default
 -----------------|-------------|------|---------
 
 ## Subscription Management (Director)
+Provides a system counter method if you have a paid service subscription
 
 Attribute        | Description | Type | Default
 -----------------|-------------|------|---------
 
 ## Workstation
+Provides a way to specify if you want to use fqdn or some other way to define host names in your deployment
 
 Attribute        | Description | Type | Default
 -----------------|-------------|------|---------
@@ -147,7 +155,7 @@ You'll need a searchable storage role named ```bareos_storage```, for example:
 
 ```
 
-## Recipes (More detail coming)
+## Recipes and Configurations based on hashes
 
 # Contributing
 
