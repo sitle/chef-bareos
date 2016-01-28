@@ -1,9 +1,7 @@
 Chef-Bareos Cookbook
 ====================
 
-[![Join the chat at https://gitter.im/EMSL-MSC/chef-bareos](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/EMSL-MSC/chef-bareos?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-[![Build Status](https://travis-ci.org/sitle/chef-bareos.svg?branch=master)](https://travis-ci.org/sitle/chef-bareos)
+[![Join the chat at https://gitter.im/EMSL-MSC/chef-bareos](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/EMSL-MSC/chef-bareos?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)  [![Build Status](https://travis-ci.org/sitle/chef-bareos.svg?branch=master)](https://travis-ci.org/sitle/chef-bareos)
 
 This cookbook installs and configures backups based on [BAREOS](https://www.bareos.org/en/).
 
