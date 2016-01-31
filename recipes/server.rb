@@ -71,11 +71,12 @@ end
 # Create clients config based on sets of hashes, see attributes file for default example(s)
 client_search_query = node['bareos']['clients']['client_search_query']
 
-if Chef::Config.solo
-  bareos_clients = node['bareos']['clients']['client_list']
-else
-  bareos_clients = search(:node, client_search_query)
-end
+bareos_clients = if Chef::Config[:solo]
+                   node['bareos']['clients']['client_list']
+                 else
+                   search(:node, client_search_query)
+                 end
+
 template '/etc/bareos/bareos-dir.d/clients.conf' do
   source 'clients.conf.erb'
   owner 'bareos'

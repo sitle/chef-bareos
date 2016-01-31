@@ -28,11 +28,11 @@ package 'bareos-filedaemon'
 
 # Determine the list of BAREOS directors
 dir_search_query = node.default['bareos']['director']['dir_search_query']
-if Chef::Config.solo
-  bareos_dir = node['bareos']['director']['servers']
-else
-  bareos_dir = search(:node, dir_search_query)
-end
+bareos_dir = if Chef::Config[:solo]
+               node['bareos']['director']['servers']
+             else
+               search(:node, dir_search_query)
+             end
 
 # Setup the configs for any local/remote File Daemons clients
 template '/etc/bareos/bareos-fd.conf' do

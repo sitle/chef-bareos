@@ -24,11 +24,11 @@ end
 
 # Find director(s)
 dir_search_query = node['bareos']['director']['dir_search_query']
-if Chef::Config[:solo]
-  bareos_dir = node['bareos']['director']['servers']
-else
-  bareos_dir = search(:node, dir_search_query)
-end
+bareos_dir = if Chef::Config[:solo]
+               node['bareos']['director']['servers']
+             else
+               search(:node, dir_search_query)
+             end
 
 # bconsole config
 template '/etc/bareos/bconsole.conf' do
