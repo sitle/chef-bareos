@@ -81,16 +81,14 @@ default['bareos']['clients']['heartbeat_interval'] = 600
 default['bareos']['clients']['client_search_query'] = 'roles:bareos_client'
 default['bareos']['clients']['client_list'] = %w(node)
 default['bareos']['clients']['bootstrap_file'] = '/var/lib/bareos/%c.bsr'
-default['bareos']['clients']['jobdef_default_messages'] = node['bareos']['messages']['default_messages']
-default['bareos']['clients']['jobdef_default_storage'] = 'File'
+default['bareos']['clients']['jobdef_default_messages'] = 'Standard'
 default['bareos']['clients']['jobdef_default_fileset'] = "#{node['fqdn']}-Fileset"
-default['bareos']['clients']['storage'] = node['bareos']['clients']['jobdef_default_storage']
+default['bareos']['clients']['storage'] = 'File'
 
 # Storage Daemon
 default['bareos']['storage']['name'] = node['fqdn']
 default['bareos']['storage']['storage_search_query'] = 'roles:bareos_storage'
 default['bareos']['storage']['sd_port'] = 9103
-default['bareos']['storage']['main_storage'] = 'File'
 default['bareos']['storage']['servers'] = %w(node)
 default['bareos']['storage']['sd_mon_enable'] = 'yes'
 default['bareos']['storage']['max_concurrent_jobs'] = 20
@@ -117,9 +115,9 @@ default['bareos']['director']['dir_subs'] = nil
 # Workstation
 default['bareos']['workstation']['name'] = node['fqdn']
 
-##########################
-# Example Default Hashes #
-##########################
+##############################
+# Examples -  Default Hashes #
+##############################
 
 # General Client Config
 default['bareos']['clients']['conf'] = {
