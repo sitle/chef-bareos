@@ -43,8 +43,12 @@ describe 'chef-bareos::default' do
       expect { chef_run }.to_not raise_error
     end
 
-    it 'adds the apt repo' do
+    it 'adds the apt repo bareos' do
       expect(chef_run).to add_apt_repository('bareos')
+    end
+
+    it 'adds the apt repo bareos_contrib' do
+      expect(chef_run).to add_apt_repository('bareos_contrib')
     end
   end
 
@@ -61,8 +65,12 @@ describe 'chef-bareos::default' do
       expect { chef_run }.to_not raise_error
     end
 
-    it 'adds the yum repo' do
+    it 'adds the yum repo bareos' do
       expect(chef_run).to create_yum_repository('bareos-repo-test').with(baseurl: 'http://foo/bar')
+    end
+
+    it 'adds the yum repo bareos_contrib' do
+      expect(chef_run).to create_yum_repository('bareos_contrib').with(baseurl: 'http://download.bareos.org/bareos/contrib/CentOS_6/')
     end
   end
 end
