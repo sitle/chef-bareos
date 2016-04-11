@@ -4,37 +4,52 @@
 #
 # Bareos Autochanger Definition File
 
-# Preparations:
-#
-# include this configuration file in bareos-sd.conf by
-# @/etc/bareos/bareos-sd.d/device-tape-with-autoloader.conf
-#
+## Default commented lines from packaged config
 
-# on Linux use "lsscsi --generic"
-# to get a list of your SCSI devices.
-# However, normaly you should access your devices by-id
-# (eg. /dev/tape/by-id/scsi-350011d00018a5f03-nst),
-# because the short device names like /dev/nst1
-# might change on reboot.
+### Preparations
 
-#### Other Default comment lines from default config ####
-# DriveIndex = 0 #default:0, only required if the autoloader have multiple drives.
 
-# if only one drive is available, this is normally /dev/nst0.
-  # However, it is advised to access it via id (/dev/tape/by-id/...)
-  #ArchiveDevice = /dev/nst0
-  #ArchiveDevice = /dev/tape/by-id/scsi-350011d00018a5f03-nst
-  # arbitrary string that descripes the the storage media.
-  # Bareos uses this to determine, which device can be handle what media.
+#### Include this configuration file in bareos-sd.conf by:
 
-# enable "Check Labels" if tapes with ANSI/IBM labels
-  # should be preserved
-  #Check Labels = yes
+#@/etc/bareos/bareos-sd.d/device-tape-with-autoloader.conf
 
-#AutoChanger = yes                       # default: no
-  #AutomaticMount = yes                  # default: no
-  #MaximumFileSize = 10GB                # default: 1000000000 (1GB)
-####
+
+#### On Linux use "lsscsi --generic"
+#### to get a list of your SCSI devices.
+#### However, normaly you should access your devices by-id
+#### (eg. /dev/tape/by-id/scsi-350011d00018a5f03-nst),
+#### because the short device names like /dev/nst1
+#### might change on reboot.
+
+#DriveIndex = 0           #default:0, only required if the autoloader have multiple drives.
+
+
+#### If only one drive is available, this is normally /dev/nst0.
+#### However, it is advised to access it via id (/dev/tape/by-id/...)
+
+#ArchiveDevice = /dev/nst0
+#ArchiveDevice = /dev/tape/by-id/scsi-350011d00018a5f03-nst
+
+
+#### Arbitrary string that descripes the the storage media.
+
+#Description = "Some description for device"
+
+
+#### Bareos uses this to determine which device can handle what media.
+
+#MediaType = lto
+
+
+#### Enable "Check Labels" if tapes with ANSI/IBM labels should be preserved
+
+#Check Labels = yes
+#AutoChanger = yes        # default: no
+#AutomaticMount = y       # default: no
+#MaximumFileSize = 10GB   # default: 1000000000 (1GB)
+
+
+#########################################################
 
 <%# AutoChanger Config %>
 <% @autochangers.sort.each do |autochanger_key, line_value1| %>
