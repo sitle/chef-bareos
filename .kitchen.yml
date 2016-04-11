@@ -32,8 +32,7 @@ platforms:
 roles_path: test/integration/roles/
 
 suites:
-
-  - name: aio-server
+  - name: bareos-aio-server
     run_list:
       - role[bareos_director]
     attributes:
@@ -44,19 +43,12 @@ suites:
             help:
               test: '# Some String'
           config_change_notify: 'reload'
-
-  - name: tape-storage
-    run_list:
-      - role[bareos_director]
-    attributes:
-      bareos:
-        test_mode: true
-        storage:
-          autochanger_enabled: true
         server:
           jobs:
-            unmanaged-host-job: 
+            unmanaged-host-job:
               Description: '"Unmanaged Host Test Job"'
               Client: 'unmanaged-client-fd'
               JobDefs: 'default-def'
               Type: 'Backup'
+        storage:
+          autochanger_enabled: true
