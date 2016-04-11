@@ -119,7 +119,7 @@ default['bareos']['workstation']['name'] = node['fqdn']
 # Examples -  Default Hashes #
 ##############################
 
-# General Client Config
+# Default Client Config
 default['bareos']['clients']['conf'] = {
   'FDPort' => '9102',
   'File Retention' => '30 days',
@@ -128,22 +128,9 @@ default['bareos']['clients']['conf'] = {
   'Maximum Concurrent Jobs' => '20'
 }
 
-# Jobs - Example
-# default['bareos']['clients']['jobs']["# #{node.default['bareos']['clients']['name']}-job"] = {
-#   '# Client' => "#{node['bareos']['clients']['name']}-fd",
-#   '# Type' => 'Backup',
-#   '# JobDefs' => 'default-def'
-# }
-#
-# default['bareos']['clients']['jobs']["# #{node.default['bareos']['clients']['name']}-restore-job"] = {
-#   '# Client' => "#{node['bareos']['clients']['name']}-fd",
-#   '# Type' => 'Restore',
-#   '# JobDefs' => 'default-restore-def'
-# }
-
 default['bareos']['director']['jobs'] = nil
 
-# Job Definitions
+# Default Job Definitions
 default['bareos']['clients']['job_definitions']['default-def'] = {
   'Level' => 'Incremental',
   'Fileset' => 'default-fileset',
@@ -175,7 +162,7 @@ default['bareos']['clients']['job_definitions']['default-restore-def'] = {
   'Where' => '/tmp/bareos-restores'
 }
 
-# Filesets
+# Default Filesets
 default['bareos']['clients']['filesets']['default'] = {
   'options' => {
     'signature' => 'MD5'
@@ -199,7 +186,7 @@ default['bareos']['clients']['filesets']['default'] = {
   }
 }
 
-# Pools
+# Default Pools
 default['bareos']['clients']['pools']['default-file-pool'] = {
   'Pool Type' => 'Backup',
   'Recycle' => 'yes',
@@ -209,7 +196,7 @@ default['bareos']['clients']['pools']['default-file-pool'] = {
   'LabelFormat' => 'FileVolume-'
 }
 
-# Schedules
+# Default Schedules
 default['bareos']['clients']['schedules']['monthly'] = {
   'Description' => [
     'Default Monthly Schedule'
@@ -224,14 +211,14 @@ default['bareos']['clients']['schedules']['monthly'] = {
   ]
 }
 
-# Storages
+# Default Storages
 default['bareos']['clients']['storages']['default-file-storage'] = {
   'Address' => node['bareos']['storage']['name'], # N.B. Use a fully qualified name here
   'Device' => 'FileStorage',
   'Media Type' => 'File'
 }
 
-# Developing Feature - Tape Autochanger Devices
+# Example/Test Tape Autochanger Configurations
 if node['bareos']['test_mode'] == true && node['bareos']['storage']['autochanger_enabled'] == true
   default['bareos']['storage']['autochangers']['autochanger-0'] = {
     'Device' => [
@@ -270,11 +257,23 @@ if node['bareos']['test_mode'] == true && node['bareos']['storage']['autochanger
     'MaximumFileSize' => '10GB'
   }
 
-  # Unmanaged client for testing
+  # Example Unmanaged client for testing
   default['bareos']['clients']['unmanaged']['unmanaged-client-fd'] = {
     'Address' => 'unmanaged-client',
     'Password' => 'onefbofnerwob',
     'Catalog' => 'MyCatalog',
     'FDPort' => '9102'
+  }
+  # Example Jobs
+  default['bareos']['clients']['jobs']["#{node.default['bareos']['clients']['name']}-job"] = {
+    'Client' => "#{node['bareos']['clients']['name']}-fd",
+    'Type' => 'Backup',
+    'JobDefs' => 'default-def'
+  }
+
+  default['bareos']['clients']['jobs']["#{node.default['bareos']['clients']['name']}-restore-job"] = {
+    'Client' => "#{node['bareos']['clients']['name']}-fd",
+    'Type' => 'Restore',
+    'JobDefs' => 'default-restore-def'
   }
 end
