@@ -93,7 +93,7 @@ default['bareos']['storage']['servers'] = %w(node)
 default['bareos']['storage']['sd_mon_enable'] = 'yes'
 default['bareos']['storage']['max_concurrent_jobs'] = 20
 default['bareos']['storage']['autochanger_enabled'] = false
-default['bareos']['storage']['conf']['help']['Example Block'] = '# Put any extra configs you would like to include in the storage daemon config below this line. Chef manages this file so make sure you are using the attributes to apply them.'
+default['bareos']['storage']['conf']['help']['Example Block'] = '# You can put extra configs here.'
 
 # Director
 default['bareos']['director']['name'] = node['fqdn']
@@ -105,7 +105,7 @@ default['bareos']['director']['servers'] = %w(node)
 default['bareos']['director']['console_commandacl'] = 'status, .status'
 default['bareos']['director']['heartbeat_interval'] = 600
 default['bareos']['director']['catalog_jobdef'] = 'default-catalog-def'
-default['bareos']['director']['conf']['help']['Example Block'] = '# Put any extra configs you would like to include in the director config below this line. Chef manages this file so make sure you are using the attributes to apply them.'
+default['bareos']['director']['conf']['help']['Example Block'] = '# You can put extra configs here.'
 default['bareos']['director']['config_change_notify'] = 'restart'
 
 # Subscription Management (Director)
