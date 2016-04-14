@@ -4,7 +4,7 @@ maintainer_email 'leonard.tavae@informatique.gov.pf'
 license 'Apache 2.0'
 description 'Installs/Configures bareos'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '2.2.16'
+version '2.2.17'
 
 %w( centos redhat ).each do |os|
   supports os, '>= 6.0'
@@ -14,8 +14,8 @@ end
   supports os
 end
 
-depends 'apt', '~> 3.0.0'
-depends 'openssl', '~> 4.4.0'
-depends 'postgresql', '~> 3.4.24'
-depends 'yum', '~> 3.10.0'
-depends 'yum-epel', '~> 0.6.6'
+depends 'apt', '~> 3.0'
+depends 'openssl', '~> 4.0'
+depends 'postgresql', '~> 3.4'
+depends 'yum', '~> 3.0'
+depends 'yum-epel', '~> 0.6'
