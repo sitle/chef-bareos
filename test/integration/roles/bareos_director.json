@@ -12,7 +12,8 @@
     "recipe[chef-bareos::database]",
     "role[bareos_storage]",
     "recipe[chef-bareos::server]",
-    "recipe[chef-bareos::workstation]"
+    "recipe[chef-bareos::workstation]",
+    "recipe[chef-bareos::graphite_plugin]"
   ],
   "env_run_lists": {
   }
