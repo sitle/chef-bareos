@@ -1,6 +1,6 @@
 # encoding: UTF-8
 #
-# Copyright (C) 2014 Léonard TAVAE
+# Copyright (C) 2014 Leonard TAVAE
 #
 # Cookbook Name:: chef-bareos
 # Recipe:: default
