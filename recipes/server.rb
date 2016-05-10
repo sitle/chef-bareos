@@ -178,7 +178,8 @@ end
 # Enable and start the bareos-dir service
 service 'bareos-dir' do
   supports status: true, restart: true, reload: false
-  action :enable
+  action [:enable, :start]
+  subscribes :restart, 'service[postgresql]', :delayed
 end
 
 # Optional reload of the director config via execute
