@@ -20,13 +20,13 @@
 # Add repos for supported OS platforms, otherwise return fatal notice
 case node['platform_family']
 when 'rhel', 'fedora'
-  yum_repository node['bareos']['yum_repository'] do
+  yum_repository node['bareos']['repository_name'] do
     description node['bareos']['description']
     baseurl node['bareos']['baseurl']
     gpgkey node['bareos']['gpgkey']
     action :create
   end
-  yum_repository node['bareos']['contrib_yum_repository'] do
+  yum_repository node['bareos']['contrib_repository_name'] do
     description node['bareos']['contrib_description']
     baseurl node['bareos']['contrib_baseurl']
     gpgkey node['bareos']['contrib_gpgkey']
