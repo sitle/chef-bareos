@@ -49,6 +49,7 @@ template '/etc/bareos/bareos-dir.d/dir_helper.conf' do
   variables(
     dir_help: node['bareos']['director']['conf']['help']
   )
+  sensitive true
   action :create
 end
 
@@ -66,6 +67,7 @@ template '/etc/bareos/bareos-dir.conf' do
     db_address: node['bareos']['database']['dbaddress'],
     dir_name: node['bareos']['director']['name']
   )
+  sensitive true
   only_if { File.exist?('/etc/bareos/bareos-dir.d/dir_helper.conf') }
 end
 
@@ -88,6 +90,7 @@ template '/etc/bareos/bareos-dir.d/clients.conf' do
     bareos_clients: bareos_clients,
     client_conf: node['bareos']['clients']['conf']
   )
+  sensitive true
 end
 
 # Create other various configs based on sets of hashes
@@ -99,6 +102,7 @@ template '/etc/bareos/bareos-dir.d/jobs.conf' do
   variables(
     jobs: node['bareos']['clients']['jobs']
   )
+  sensitive true
 end
 template '/etc/bareos/bareos-dir.d/job_definitions.conf' do
   source 'job_definitions.conf.erb'
@@ -108,6 +112,7 @@ template '/etc/bareos/bareos-dir.d/job_definitions.conf' do
   variables(
     job_definitions: node['bareos']['clients']['job_definitions']
   )
+  sensitive true
 end
 template '/etc/bareos/bareos-dir.d/filesets.conf' do
   source 'filesets.conf.erb'
@@ -117,6 +122,7 @@ template '/etc/bareos/bareos-dir.d/filesets.conf' do
   variables(
     fileset_config: node['bareos']['clients']['filesets']
   )
+  sensitive true
 end
 template '/etc/bareos/bareos-dir.d/pools.conf' do
   source 'pools.conf.erb'
@@ -126,6 +132,7 @@ template '/etc/bareos/bareos-dir.d/pools.conf' do
   variables(
     client_pools: node['bareos']['clients']['pools']
   )
+  sensitive true
 end
 template '/etc/bareos/bareos-dir.d/schedules.conf' do
   source 'schedules.conf.erb'
@@ -135,6 +142,7 @@ template '/etc/bareos/bareos-dir.d/schedules.conf' do
   variables(
     client_schedules: node['bareos']['clients']['schedules']
   )
+  sensitive true
 end
 template '/etc/bareos/bareos-dir.d/storages.conf' do
   source 'storages.conf.erb'
@@ -144,6 +152,7 @@ template '/etc/bareos/bareos-dir.d/storages.conf' do
   variables(
     client_storages: node['bareos']['clients']['storages']
   )
+  sensitive true
 end
 
 # Allow a reload of the director daemon configs if called with tests up front
