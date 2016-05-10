@@ -203,7 +203,7 @@ This was an exciting recent addition to the Bareos contrib GitHub repo. This add
 
 ### License
 
-Copyright 2014 Léonard TAVAE
+Copyright 2014 Leonard TAVAE
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -219,6 +219,6 @@ limitations under the License.
 
 ### Authors
 
-* Léonard TAVAE
+* Leonard TAVAE
 * Ian Smith
 * Gerhard Sulzberger
