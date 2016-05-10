@@ -5,7 +5,6 @@ rvm:
   - 2.3.1
 
 script:
-  - bundle install
   - bundle exec rspec --default-path spec
   - bundle exec foodcritic -f any .
   - bundle exec rubocop
