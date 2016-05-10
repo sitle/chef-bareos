@@ -27,15 +27,11 @@ describe 'chef-bareos::default' do
       chef_run
     end
 
-    # it 'includes the openssl recipe' do
-    #   expect_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('openssl::default')
-    #   chef_run
-    # end
   end
 
-  context 'on an ubuntu 12.04 box' do
+  context 'on an ubuntu 14.04 box' do
     let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '12.04')
+      runner = ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '14.04')
       runner.converge(described_recipe)
     end
 
@@ -52,11 +48,9 @@ describe 'chef-bareos::default' do
     end
   end
 
-  context 'on an centos 6.6 box' do
+  context 'on an centos 6.7 box' do
     let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new(platform: 'centos', version: '6.6') do |node|
-        node.set['bareos']['yum_repository'] = 'bareos-repo-test'
-        node.set['bareos']['baseurl'] = 'http://foo/bar'
+      runner = ChefSpec::ServerRunner.new(platform: 'centos', version: '6.7') do |node|
       end
       runner.converge(described_recipe)
     end
@@ -66,11 +60,11 @@ describe 'chef-bareos::default' do
     end
 
     it 'adds the yum repo bareos' do
-      expect(chef_run).to create_yum_repository('bareos-repo-test').with(baseurl: 'http://foo/bar')
+      expect(chef_run).to create_yum_repository('bareos')
     end
 
     it 'adds the yum repo bareos_contrib' do
-      expect(chef_run).to create_yum_repository('bareos_contrib').with(baseurl: 'http://download.bareos.org/bareos/contrib/CentOS_6/')
+      expect(chef_run).to create_yum_repository('bareos_contrib')
     end
   end
 end
