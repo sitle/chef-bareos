@@ -88,5 +88,5 @@ end
 # Start and enable SD service
 service 'bareos-sd' do
   supports status: true, restart: true, reload: false
-  action :enable
+  action [:enable, :start]
 end
