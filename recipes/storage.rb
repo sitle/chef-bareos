@@ -1,8 +1,9 @@
 # encoding: UTF-8
-# Cookbook Name:: bareos
-# Recipe:: storage
 #
-# Copyright (C) 2014 Leonard TAVAE
+# Copyright (C) 2014 Léonard TAVAE
+#
+# Cookbook Name:: chef-bareos
+# Recipe:: storage
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
