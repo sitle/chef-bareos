@@ -12,6 +12,8 @@ script:
 notifications:
   email:
     recipients:
+      - leonard.tavae@gmail.com
+      - sysadmin@informatique.gov.pf
       - ian.smith@pnnl.gov
     on_success: always
   webhooks:
