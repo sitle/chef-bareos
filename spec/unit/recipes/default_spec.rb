@@ -26,7 +26,6 @@ describe 'chef-bareos::default' do
       expect_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('chef-bareos::client')
       chef_run
     end
-
   end
 
   context 'on an ubuntu 14.04 box' do
@@ -50,7 +49,7 @@ describe 'chef-bareos::default' do
 
   context 'on an centos 6.7 box' do
     let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new(platform: 'centos', version: '6.7') do |node|
+      runner = ChefSpec::ServerRunner.new(platform: 'centos', version: '6.7') do
       end
       runner.converge(described_recipe)
     end
