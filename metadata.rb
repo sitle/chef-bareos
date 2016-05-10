@@ -15,7 +15,6 @@ end
 end
 
 depends 'apt', '>= 2.0'
-depends 'openssl', '~> 4.0'
-depends 'postgresql', '~> 3.4'
-depends 'yum', '~> 3.0'
-depends 'yum-epel', '~> 0.6'
+depends 'openssl', '>= 4.0'
+depends 'postgresql', '~> 4.0'
+depends 'yum-epel', '>= 0.6'
