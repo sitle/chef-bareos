@@ -1,10 +1,7 @@
 # Repository
-
 default['bareos']['url'] = 'http://download.bareos.org/bareos/release'
 default['bareos']['contrib_url'] = 'http://download.bareos.org/bareos/contrib'
 
-# Used to have 'latest' as default, had potential update dangers
-# default['bareos']['version'] = 'latest' <--- Could be dangerous, ***CAUTION***
 default['bareos']['version'] = '15.2' # <--- Latest Stable version as of 06-Dec-2015
 
 if platform_family?('rhel', 'fedora')
