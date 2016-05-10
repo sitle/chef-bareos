@@ -1,7 +1,8 @@
 Chef-Bareos Cookbook
 ====================
 
-[![Join the chat at https://gitter.im/EMSL-MSC/chef-bareos](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/EMSL-MSC/chef-bareos?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)  [![Build Status](https://travis-ci.org/sitle/chef-bareos.svg?branch=master)](https://travis-ci.org/sitle/chef-bareos)
+[![BuildStatus](https://travis-ci.org/sitle/chef-bareos.svg?branch=master)](https://travis-ci.org/sitle/chef-bareos)
+[![Join the chat at https://gitter.im/EMSL-MSC/chef-bareos](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/EMSL-MSC/chef-bareos?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)  
 
 This cookbook installs and configures backups based on [BAREOS](https://www.bareos.org/en/).
 
@@ -11,11 +12,10 @@ This cookbook installs and configures backups based on [BAREOS](https://www.bare
 
 ## Supported Platforms:
 
- * Ubuntu 12.04+
- * Debian 7
+ * Ubuntu 14.04 (plan to add 16.04 as soon as binary is released)
+ * Debian 7 (8+ may or may not work, you'll need a repo basically)
  * CentOS 6+
- * RHEL 6+
- * Fedora 21/22
+ * RHEL 6+ (Assumed to work just as well as on CentOS)
 
 ## Supported Chef Versions:
 
@@ -159,15 +159,25 @@ You'll need a searchable storage role named ```bareos_storage```, for example:
 
 ### Recipes
 #### default.rb
+Installs necessary repos and includes the Bareos client recipe
 #### client.rb
+Installs client packages and creates a config file that is linked to available directors on chef server.
+You may also feed directors to the config via attributes if running in solo mode.
 #### repo.rb
+Installs base Bareos repo as well as the Bareos Contrib repo.
 #### database.rb
+Installs whichever database is desired per attributes (PostgreSQL/MySQL), installs Bareos database packages and creates the bareos database and user for you. Should also set the database password by default. You may need to recover this from the attributes or set a new one via vault via wrapper recipe.
 #### server.rb
+Installs necessary Bareos server packages and sets up base configs necessary for server to start. Also creates the config directory (bareos-dir.d) so you can drop whatever outside config files into place and have them get automatically included in your setup.
 #### storage.rb
+Installs necessary Bareos storage packages and sets up a default file storage for you to start backing stuff up to right away (configured for ~250GB of volumes by default).
 #### autochanger.rb
+This bit will setup an autochanger based on a pretty straight forward has table. Tested with IBM TS3500 Tape Library with 10 Frames and 16 Tape drives.
 #### workstation.rb
-
-### Hashable Configurations (via templates)
+Installs bconsole essentially. I plan to create another recipe for bat (Bareos Administration Tool) and the Bareos Web UI but I haven't gotten around to it yet.
+#### graphite_plugin.rb
+This was an exciting recent addition to the Bareos contrib GitHub repo. This addition in its current form will be dependent on a pending merge request getting accepted but if it isn't merged it can be easily worked around. Should work out of the gate here pretty soon given you adjust the graphite server string in the attributes for a graphite server location.
+### Hashable Configurations for templates
 #### bconsole
 #### clients
 #### autochanger
@@ -207,7 +217,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-### Authors 
+### Authors
 
 * Léonard TAVAE
 * Ian Smith
