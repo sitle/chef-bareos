@@ -36,11 +36,13 @@ when 'debian'
   apt_repository 'bareos' do
     uri node['bareos']['baseurl']
     components ['/']
+    distribution ''
     key node['bareos']['gpgkey']
   end
   apt_repository 'bareos_contrib' do
     uri node['bareos']['contrib_baseurl']
     components ['/']
+    distribution ''
     key node['bareos']['contrib_gpgkey']
   end
 else
