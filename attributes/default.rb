@@ -5,9 +5,9 @@ default['bareos']['contrib_url'] = 'http://download.bareos.org/bareos/contrib'
 default['bareos']['version'] = '15.2' # <--- Latest Stable version as of 06-Dec-2015
 
 if platform_family?('rhel', 'fedora')
-  default['bareos']['yum_repository'] = 'bareos'
+  default['bareos']['repository_name'] = 'bareos'
   default['bareos']['description'] = "Backup Archiving REcovery Open Sourced Current #{node['bareos']['version']}"
-  default['bareos']['contrib_yum_repository'] = 'bareos_contrib'
+  default['bareos']['contrib_repository_name'] = 'bareos_contrib'
   default['bareos']['contrib_description'] = "Backup Archiving REcovery Open Sourced Current #{node['bareos']['version']} contrib"
 end
 
