@@ -170,7 +170,7 @@ execute 'reload-dir' do
   if node['bareos']['director']['config_change_notify'] == 'restart'
     notifies :restart, 'service[bareos-dir]', :delayed
   else
-    notifies :start, 'service[bareos-dir]'
+    notifies :start, 'service[bareos-dir]', :immediate
     notifies :run, 'execute[bareos-dir_reload]', :delayed
   end
 end
