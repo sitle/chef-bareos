@@ -10,7 +10,7 @@ version           '3.0.1'
   supports os, '>= 6.0'
 end
 
-%w( fedora debian ubuntu ).each do |os|
+%w( debian ubuntu ).each do |os|
   supports os
 end
 
