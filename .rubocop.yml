@@ -16,7 +16,5 @@ NumericLiterals:
   Enabled: false
 SpaceBeforeFirstArg:
   Enabled: false
-LineLength:
-  Max: 180
 FileName:
   Enabled: false
