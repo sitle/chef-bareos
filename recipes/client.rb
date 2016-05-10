@@ -58,5 +58,5 @@ end
 # Start and enable the BAREOS File Daemon
 service 'bareos-fd' do
   supports status: true, restart: true, reload: false
-  action :enable
+  action [:enable, :start]
 end
