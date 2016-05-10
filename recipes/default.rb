@@ -1,8 +1,9 @@
 # encoding: UTF-8
-# Cookbook Name:: bareos
-# Recipe:: default
 #
-# Copyright (C) 2014 Leonard TAVAE
+# Copyright (C) 2014 Léonard TAVAE
+#
+# Cookbook Name:: chef-bareos
+# Recipe:: default
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,25 +16,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-include_recipe 'openssl::default'
-
-::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
-
-if platform_family?('rhel')
-  yum_repository node['bareos']['yum_repository'] do
-    description node['bareos']['description']
-    baseurl node['bareos']['baseurl']
-    gpgkey node['bareos']['gpgkey']
-    action :create
-  end
-else
-  apt_repository 'bareos' do
-    uri node['bareos']['baseurl']
-    components ['/']
-    key node['bareos']['gpgkey']
-  end
-end
-
+# Include both the repo and client recipes for most cases
+include_recipe 'chef-bareos::repo'
 include_recipe 'chef-bareos::client'

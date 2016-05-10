@@ -1,8 +1,9 @@
 # encoding: UTF-8
-# Cookbook Name:: bareos
-# Recipe:: database
 #
-# Copyright (C) 2014 Leonard TAVAE
+# Copyright (C) 2014 Léonard TAVAE
+#
+# Cookbook Name:: chef-bareos
+# Recipe:: database
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,73 +16,46 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-package 'bareos-database-tools' do
-  action :install
-end
+# Define the type of database desired, mysql still needs some cookbook work
+database = node['bareos']['database']['database_type']
 
-database = node['bareos']['database_type']
+# Install the BAREOS database packages
+include_recipe 'chef-bareos::repo'
+package 'bareos-database-tools'
+package "bareos-database-#{database}"
 
-if platform_family?('rhel')
-  database_client_name = database.to_s
-  database_server_name = "#{database}-server"
+# Determine DB resources to install (psql/mysql)
+case database
+when 'postgresql'
+  include_recipe 'postgresql::server'
 else
-  database_client_name = "#{database}-client"
-  database_server_name = database.to_s
-end
-
-package database_client_name.to_s do
-  action :install
-end
-
-package database_server_name.to_s do
-  action :install
-end
-
-package "bareos-database-#{database}" do
-  action :install
-end
-
-%w(postgresql postgresql-contrib).each do |psql_ubuntu|
-  package psql_ubuntu do
-    action :install
-    only_if { node['platform'] == 'ubuntu' && database == 'postgresql' }
+  if platform_family?('rhel')
+    database_client_name = database.to_s
+    database_server_name = "#{database}-server"
+  else
+    database_client_name = "#{database}-client"
+    database_server_name = database.to_s
   end
+  package database_client_name.to_s
+  package database_server_name.to_s
 end
 
-if database == 'postgresql'
-  execute 'initdb' do
-    case node['platform_family']
-    when 'debian'
-      command %(su postgres -c "usr/lib/postgresql/#{node['postgresql']['version']}/bin/initdb -D /var/lib/pgsql/data")
-    when 'rhel'
-      command 'su postgres -c "usr/bin/initdb -D /var/lib/pgsql/data"'
-    end
-    action :run
-    not_if { ::File.exist?('/var/lib/pgsql/data/postgresql.conf') }
-    not_if { ::File.exist?("/etc/postgresql/#{node['postgresql']['version']}/main/postgresql.conf") }
-  end
-
-  service 'postgresql' do
-    supports status: true, restart: true, reload: true
-    action [:enable, :start]
-  end
-
+# Need to add some mysql logic here to do the database setup for bareos, psql only right now, mysql is manual
+case database
+when 'postgresql'
   execute 'create_database' do
-    command 'su postgres -c "/usr/lib/bareos/scripts/create_bareos_database" && touch /usr/lib/bareos/.dbcreated'
+    command 'su postgres -c /usr/lib/bareos/scripts/create_bareos_database && touch /usr/lib/bareos/.dbcreated'
     creates '/usr/lib/bareos/.dbcreated'
     action :run
   end
-
   execute 'create_tables' do
-    command 'su postgres -c "/usr/lib/bareos/scripts/make_bareos_tables" && touch /usr/lib/bareos/.dbtablescreated'
+    command 'su postgres -s /bin/bash -c /usr/lib/bareos/scripts/make_bareos_tables && touch /usr/lib/bareos/.dbtablescreated'
     creates '/usr/lib/bareos/.dbtablescreated'
     action :run
   end
-
   execute 'grant_privileges' do
-    command 'su postgres -c "/usr/lib/bareos/scripts/grant_bareos_privileges" && touch /usr/lib/bareos/.dbprivgranted'
+    command 'su postgres -s /bin/bash -c /usr/lib/bareos/scripts/grant_bareos_privileges && touch /usr/lib/bareos/.dbprivgranted'
     creates '/usr/lib/bareos/.dbprivgranted'
     action :run
   end
