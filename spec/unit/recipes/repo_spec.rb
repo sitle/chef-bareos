@@ -10,7 +10,7 @@ describe 'chef-bareos::repo' do
       end
 
       let(:chef_run) do
-        ChefSpec::SoloRunner.new do |node|
+        ChefSpec::SoloRunner.new do
         end.converge('chef-bareos::repo')
       end
 
@@ -35,7 +35,7 @@ describe 'chef-bareos::repo' do
       end
 
       let(:chef_run) do
-        ChefSpec::SoloRunner.new do |node|
+        ChefSpec::SoloRunner.new do
         end.converge('chef-bareos::repo')
       end
 
