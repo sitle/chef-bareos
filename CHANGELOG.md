@@ -1,10 +1,10 @@
-Bareos Cookbook CHANGELOG
-==========================
-
-This file is used to list changes made in each version of the bareos cookbook.
+CHANGELOG
+=========
+Chef-Bareos Cookbook
+--------------------
 
 2.2.13
------
+------
 - Ian Smith
 
   - Near complete refactoring of how the cookbook works
