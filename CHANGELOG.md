@@ -1,11 +1,54 @@
-Bareos Cookbook CHANGELOG
-==========================
+CHANGELOG
+=========
+Chef-Bareos Cookbook
+--------------------
 
-This file is used to list changes made in each version of the bareos cookbook.
+3.0.2
+-----
+- Ian Smith
+
+ - Complete re-work of cookbook, which includes the rework bits from version 2.0
+ - Adding various features including:
+   * Templates populated from hash tables
+   * Up to date README
+   * Graphite plugin deployment recipe
+   * Migrate to postgresql cookbook version 4+
+   * Better testing (rspec), testing against current ruby, need some more rspec tests but no time
+   * Various other updates and enhancements, see README for details
+   * Supermarket Release...finally
+ - ***NOTE*** This release adds functionality that is not backwards compatible. Version lock until you have time to test the migration to version 3.0+
+
+2.2.13
+------
+- Ian Smith
+
+  - Near complete refactoring of how the cookbook works
+    * Adding various ways to add configs based on hashes. Examples in attributes/default.rb
+  - Updating README for usage details
+  - If you are not prepared to use this cookbook version, please lock cookbook version to < 2.0.0
+  - TODO: Refactor main bareos-dir/sd/fd configs to be fully based on hashes like other configs
+    * Remaining attributes support primary bareos-dir/sd/fd configs mostly, used elsewhere but not much
+
+1.0.4
+-----
+- Ian Smith
+
+  - Updating and validating Kitchen testing with new methods
+  - Adding ability to use custom Storage Daemon Configs via wrapper recipe
+  - Fixed a race condition that was likely to come up both in testing and production
+    * Was missing client config on fresh install so restart of dir would fail
+  - Limiting cookbook support for debian to ~>7.0 until we can test on 8+
+  - Refined storage recipe to correctly create client configs based on BOTH role search and solo instances, may need a bit more tuning but should work in most cases
+  - Creating basic Full, Inc, and Diff pools even if not used, just as a place holder (default)
+  - Minor fixes
+  - Larger version bump for version clarity
+  - Updated Docs
+  - Adding support for Fedora and RHEL 6/7
+  - Reworked the available repos to some better logic
 
 0.1.4
 -----
-- Ian smith
+- Ian Smith
 
   - Updating README
   - Revamping server.rb recipe to better utilize the bareos-dir.d directory
@@ -22,7 +65,7 @@ This file is used to list changes made in each version of the bareos cookbook.
 
 0.1.3
 -----
-- Ian smith
+- Ian Smith
 
   - Updating README
   - Updating CHANGELOG
@@ -30,7 +73,7 @@ This file is used to list changes made in each version of the bareos cookbook.
 
 0.1.2
 -----
-- Léonard TAVAE
+- Leonard TAVAE
 
   - The License has changed (Apache 2.0)
   - The cookbook now passed foodcritic, rubocop and tailor with success
@@ -50,10 +93,10 @@ This file is used to list changes made in each version of the bareos cookbook.
 
 0.1.1
 -----
-- Léonard TAVAE - Major release
+- Leonard TAVAE - Major release
 
 0.1.0
 -----
-- Léonard TAVAE - Initial release of bareos
+- Leonard TAVAE - Initial release of bareos
 
 - - -

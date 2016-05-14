@@ -1,8 +1,9 @@
 # encoding: UTF-8
-# Cookbook Name:: bareos
-# Recipe:: repo
 #
-# Copyright (C) 2014 Leonard TAVAE
+# Copyright (C) 2016 Leonard TAVAE
+#
+# Cookbook Name:: chef-bareos
+# Recipe:: repo
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,19 +16,35 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-if platform_family?('rhel')
-  yum_repository node['bareos']['yum_repository'] do
+# Add repos for supported OS platforms, otherwise return fatal notice
+case node['platform_family']
+when 'rhel', 'fedora'
+  yum_repository node['bareos']['repository_name'] do
     description node['bareos']['description']
     baseurl node['bareos']['baseurl']
     gpgkey node['bareos']['gpgkey']
     action :create
   end
-else
+  yum_repository node['bareos']['contrib_repository_name'] do
+    description node['bareos']['contrib_description']
+    baseurl node['bareos']['contrib_baseurl']
+    gpgkey node['bareos']['contrib_gpgkey']
+    action :create
+  end
+when 'debian'
   apt_repository 'bareos' do
     uri node['bareos']['baseurl']
     components ['/']
+    distribution ''
     key node['bareos']['gpgkey']
   end
+  apt_repository 'bareos_contrib' do
+    uri node['bareos']['contrib_baseurl']
+    components ['/']
+    distribution ''
+    key node['bareos']['contrib_gpgkey']
+  end
+else
+  Chef::Log.fatal('OS is not currently supported by this cookbook, submit enhancement request or PR')
 end

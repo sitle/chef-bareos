@@ -1,0 +1,10 @@
+<%# BAREOS GRAPHITE PLUGIN CONFIGURATION TEMPLATE %>
+[director]
+server=<%= node['bareos']['director']['net_name'] %>
+name=<%= node['bareos']['director']['name'] %>-dir
+password=<%= node['bareos']['dir_password'] %>
+
+[graphite]
+server=<%= node['bareos']['plugins']['graphite']['server'] %>
+port=<%= node['bareos']['plugins']['graphite']['graphite_port'] %>
+prefix=<%= node['bareos']['plugins']['graphite']['graphite_data_prefix'] %>

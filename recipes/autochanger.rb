@@ -3,7 +3,7 @@
 # Copyright (C) 2016 Leonard TAVAE
 #
 # Cookbook Name:: chef-bareos
-# Recipe:: workstation
+# Recipe:: autochanger
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,28 +17,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Install bconsole from repo
-include_recipe 'chef-bareos::repo'
-package 'bareos-bconsole' do
-  action :install
+# Experimental Tape Autochanger Support
+package 'bareos-storage-tape'
+
+execute 'mtx-changer' do
+  command '/usr/bin/bareos/scripts/mtx-changer'
+  creates '/etc/bareos/mtx-changer.conf'
+  action :run
 end
 
-# Find director(s)
-dir_search_query = node['bareos']['director']['dir_search_query']
-bareos_dir = if Chef::Config[:solo]
-               node['bareos']['director']['servers']
-             else
-               search(:node, dir_search_query)
-             end
-
-# bconsole config
-template '/etc/bareos/bconsole.conf' do
-  source 'bconsole.conf.erb'
-  mode 0640
+template '/etc/bareos/bareos-sd.d/device-tape-with-autoloader.conf' do
+  source 'device-tape-with-autoloader.conf.erb'
   owner 'bareos'
   group 'bareos'
+  mode '0640'
   variables(
-    bareos_dir: bareos_dir
+    autochangers: node['bareos']['storage']['autochangers'],
+    devices: node['bareos']['storage']['devices']
   )
-  sensitive true
+  only_if { File.exist?('/etc/bareos/mtx-changer.conf') }
+  notifies :restart, 'service[bareos-sd]', :delayed
+  action :create
 end

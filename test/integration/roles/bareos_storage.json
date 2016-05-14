@@ -1,6 +1,6 @@
 {
-  "name": "base",
-  "description": "simple base role for a bareos box test",
+  "name": "bareos_storage",
+  "description": "Bareos Storage Role",
   "json_class": "Chef::Role",
   "default_attributes": {
   },
@@ -8,7 +8,7 @@
   },
   "chef_type": "role",
   "run_list": [
-    "recipe[chef-bareos]"
+    "recipe[chef-bareos::storage]"
   ],
   "env_run_lists": {
   }
