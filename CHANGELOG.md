@@ -3,6 +3,21 @@ CHANGELOG
 Chef-Bareos Cookbook
 --------------------
 
+3.0.2
+-----
+- Ian Smith
+
+ - Complete re-work of cookbook, which includes the rework bits from version 2.0
+ - Adding various features including:
+   * Templates populated from hash tables
+   * Up to date README
+   * Graphite plugin deployment recipe
+   * Migrate to postgresql cookbook version 4+
+   * Better testing (rspec), testing against current ruby, need some more rspec tests but no time
+   * Various other updates and enhancements, see README for details
+   * Supermarket Release...finally
+ - ***NOTE*** This release adds functionality that is not backwards compatible. Version lock until you have time to test the migration to version 3.0+
+
 2.2.13
 ------
 - Ian Smith
