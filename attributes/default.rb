@@ -87,7 +87,6 @@ default['bareos']['storage']['name'] = node['fqdn']
 default['bareos']['storage']['storage_search_query'] = 'roles:bareos_storage'
 default['bareos']['storage']['sd_port'] = 9103
 default['bareos']['storage']['servers'] = %w(node)
-default['bareos']['storage']['sd_mon_enable'] = 'yes'
 default['bareos']['storage']['max_concurrent_jobs'] = 20
 default['bareos']['storage']['autochanger_enabled'] = false
 default['bareos']['storage']['conf']['help']['Example Block'] = '# You can put extra configs here.'
