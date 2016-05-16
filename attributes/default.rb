@@ -126,6 +126,7 @@ default['bareos']['plugins']['graphite']['server'] = 'graphite'
 default['bareos']['plugins']['graphite']['graphite_port'] = '2003'
 default['bareos']['plugins']['graphite']['graphite_data_prefix'] = 'bareos.'
 default['bareos']['plugins']['graphite']['graphite_plugin_src_url'] = 'https://raw.githubusercontent.com/bareos/bareos-contrib/master/misc/performance/graphite/bareos-graphite-poller.py'
+defualt['bareos']['plugins']['graphite']['mailto'] = 'bareos'
 
 ##############################
 # Examples -  Default Hashes #

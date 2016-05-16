@@ -24,16 +24,16 @@ end
 directory node['bareos']['plugins']['graphite']['config_path']
 
 template "#{node['bareos']['plugins']['graphite']['config_path']}/graphite-poller.conf" do
-  owner 'root'
-  group 'root'
+  owner 'bareos'
+  group 'bareos'
   mode '0740'
   sensitive true
 end
 
 remote_file "#{node['bareos']['plugins']['graphite']['plugin_path']}/bareos-graphite-poller.py" do
   source node['bareos']['plugins']['graphite']['graphite_plugin_src_url']
-  owner 'root'
-  group 'root'
+  owner 'bareos'
+  group 'bareos'
   mode '0740'
   use_last_modified true
   use_conditional_get true
@@ -45,4 +45,7 @@ cron 'bareos_graphite_poller' do
     #{node['bareos']['plugins']['graphite']['plugin_path']}/bareos-graphite-poller.py\
     -c #{node['bareos']['plugins']['graphite']['config_path']}/graphite-poller.conf
   EOH
+  mailto node['bareos']['plugins']['mailto']
+  user 'bareos'
+  minute '5'
 end
