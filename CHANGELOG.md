@@ -25,7 +25,6 @@ Chef-Bareos Cookbook
 3.0.2
 -----
 #### Ian Smith
-
   * Complete re-work of cookbook, which includes the rework bits from version 2.0
   * Adding various features including:
     * Templates populated from hash tables
