@@ -17,8 +17,10 @@
 
 include_recipe 'chef-bareos::repo'
 
-node['bareos']['plugins']['graphite']['packages'].each do |py_pkg|
-  package py_pkg
+if platform_family?('rhel') && node['platform_version'].to_i == 6
+  package ['python', 'python-bareos', 'python-requests', 'python-fedora-django']
+else
+  package ['python', 'python-bareos', 'python-requests', 'python-django']
 end
 
 directory node['bareos']['plugins']['graphite']['config_path']
@@ -45,7 +47,7 @@ cron 'bareos_graphite_poller' do
     #{node['bareos']['plugins']['graphite']['plugin_path']}/bareos-graphite-poller.py\
     -c #{node['bareos']['plugins']['graphite']['config_path']}/graphite-poller.conf
   EOH
-  mailto node['bareos']['plugins']['mailto']
+  mailto node['bareos']['plugins']['graphite']['mail_to']
   user 'bareos'
   minute '5'
 end

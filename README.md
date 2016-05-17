@@ -118,14 +118,13 @@ A new plugin that will send statistics to a graphite server which can then be us
 
 | Attribute        | Default Value | Description
 |------------------|---------------|------------
-| ['bareos']['plugins']['graphite']['packages'] | varies on platform | Default packages needed to get the plugin to work
 | ['bareos']['plugins']['graphite']['plugin_path'] | '/usr/sbin' | Default location for the plugin that runs in a defined cron job
 | ['bareos']['plugins']['graphite']['config_path'] | '/etc/bareos' | Default directory for the plugin config
 | ['bareos']['plugins']['graphite']['search_query'] | 'roles:bareos_director' | Default search string to populate the director name
 | ['bareos']['plugins']['graphite']['server'] | 'graphite' | Placeholder string for the graphite server DNS name
 | ['bareos']['plugins']['graphite']['graphite_port'] | '2003' | Default graphite communication port
 | ['bareos']['plugins']['graphite']['graphite_data_prefix'] | 'bareos.' | Default prefix for graphite data
-| ['bareos']['plugins']['graphite']['graphite_plugin_src_url'] | 'https://raw.githubusercontent.com/bareos/bareos-contrib/master/misc/performance/graphite/bareos-graphite-poller.py' | Default URL to the plugin
+| ['bareos']['plugins']['graphite']['graphite_plugin_src_url'] | See attributes file | Default URL to the plugin
 
 ## Recipes
 

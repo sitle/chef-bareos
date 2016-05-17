@@ -38,12 +38,14 @@ when 'debian'
     components ['/']
     distribution ''
     key node['bareos']['gpgkey']
+    action :add
   end
   apt_repository 'bareos_contrib' do
     uri node['bareos']['contrib_baseurl']
     components ['/']
     distribution ''
     key node['bareos']['contrib_gpgkey']
+    action :add
   end
 else
   Chef::Log.fatal('OS is not currently supported by this cookbook, submit enhancement request or PR')
