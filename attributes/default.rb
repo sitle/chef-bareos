@@ -113,12 +113,6 @@ default['bareos']['director']['dir_subs'] = nil
 default['bareos']['workstation']['name'] = node['fqdn']
 
 # Graphite Plugin Default Attributes
-default['bareos']['plugins']['graphite']['packages'] = if platform_family?('rhel') && node['platform_version'].to_i == 6
-                                                         %w(python python-bareos python-requests python-fedora-django)
-                                                       else
-                                                         %w(python python-bareos python-requests python-django)
-                                                       end
-
 default['bareos']['plugins']['graphite']['plugin_path'] = '/usr/sbin'
 default['bareos']['plugins']['graphite']['config_path'] = '/etc/bareos'
 default['bareos']['plugins']['graphite']['search_query'] = 'roles:bareos_director'
@@ -126,6 +120,7 @@ default['bareos']['plugins']['graphite']['server'] = 'graphite'
 default['bareos']['plugins']['graphite']['graphite_port'] = '2003'
 default['bareos']['plugins']['graphite']['graphite_data_prefix'] = 'bareos.'
 default['bareos']['plugins']['graphite']['graphite_plugin_src_url'] = 'https://raw.githubusercontent.com/bareos/bareos-contrib/master/misc/performance/graphite/bareos-graphite-poller.py'
+default['bareos']['plugins']['graphite']['mail_to'] = 'bareos'
 
 ##############################
 # Examples -  Default Hashes #

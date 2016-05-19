@@ -118,14 +118,13 @@ A new plugin that will send statistics to a graphite server which can then be us
 
 | Attribute        | Default Value | Description
 |------------------|---------------|------------
-| ['bareos']['plugins']['graphite']['packages'] | varies on platform | Default packages needed to get the plugin to work
 | ['bareos']['plugins']['graphite']['plugin_path'] | '/usr/sbin' | Default location for the plugin that runs in a defined cron job
 | ['bareos']['plugins']['graphite']['config_path'] | '/etc/bareos' | Default directory for the plugin config
 | ['bareos']['plugins']['graphite']['search_query'] | 'roles:bareos_director' | Default search string to populate the director name
 | ['bareos']['plugins']['graphite']['server'] | 'graphite' | Placeholder string for the graphite server DNS name
 | ['bareos']['plugins']['graphite']['graphite_port'] | '2003' | Default graphite communication port
 | ['bareos']['plugins']['graphite']['graphite_data_prefix'] | 'bareos.' | Default prefix for graphite data
-| ['bareos']['plugins']['graphite']['graphite_plugin_src_url'] | 'https://raw.githubusercontent.com/bareos/bareos-contrib/master/misc/performance/graphite/bareos-graphite-poller.py' | Default URL to the plugin
+| ['bareos']['plugins']['graphite']['graphite_plugin_src_url'] | See attributes file | Default URL to the plugin
 
 ## Recipes
 
@@ -146,21 +145,22 @@ Installs whichever database is desired per attributes (PostgreSQL/MySQL), instal
 Installs necessary Bareos server packages and sets up base configs necessary for server to start. Also creates the config directory (bareos-dir.d) so you can drop whatever outside config files into place and have them get automatically included in your setup.
 
 ### storage
-Installs necessary Bareos storage packages and sets up a default file storage for you to start backing stuff up to right away (configured for ~250GB of volumes by default).
+Installs necessary Bareos storage packages and sets up a default file storage for you to start backing stuff up to right away (configured for ~250GB spread over 25 10GB volumes).
 
 ### autochanger
 This bit will setup an autochanger based on a pretty straight forward has table. Tested with IBM TS3500 Tape Library with 10 Frames and 16 Tape drives.
 
 ### workstation
-Installs bconsole essentially. I plan to create another recipe for bat (Bareos Administration Tool) and the Bareos Web UI but I haven't gotten around to it yet.
+Installs the bconsole utility. There are future plans to create a recipe to install bat (Bareos Administration Tool) and the Bareos Web UI.
 
 ### graphite_plugin
-This was an exciting recent addition to the Bareos contrib GitHub repo. This addition in its current form will be dependent on a pending merge request getting accepted but if it isn't merged it can be easily worked around. Should work out of the gate here pretty soon given you adjust the graphite server string in the attributes for a graphite server location.
+Installs a Bareos graphite plugin, configuration file, necessary python packages, and a cronjob to gather statistics periodically and forward them to an available graphite server.
 
 ## Searchable Roles (Used by default)
 
 ### bareos\_client
 This example shows how the ```bareos_client``` role can both install the Bareos client side software and when searched against via the server recipe, will add itself to the bareos-dir (Bareos director) configuration and setup a default set of jobs for a client.
+
 ```
 {
   "name": "bareos_client",
@@ -181,6 +181,7 @@ This example shows how the ```bareos_client``` role can both install the Bareos 
 
 ### bareos\_storage
 This example shows a ```bareos_storage``` role which will create a Bareos storage-daemon host. It will install the necessary packages and lay down configuration files you can populate with any number of key value hash tables. You should be able to install this independent of the director(s), please file a ticket if this doesn't work as expected.
+
 ```
 {
   "name": "bareos_storage",
@@ -207,6 +208,7 @@ This will also allow clients to populate their filedaemon config via defined sea
 You'll need to run ```chef-client``` on the director after a client gets configured so the director can add and generate the appropriate client related configs.
 
 You can populate the ```['bareos']['clients']['unmanaged']``` hash table space with any number of client related configuration lines if you have hosts you either don't plan to search for or want to do custom configurations for.
+
 ```
 {
   "name": "bareos_director",
@@ -230,9 +232,10 @@ You can populate the ```['bareos']['clients']['unmanaged']``` hash table space w
 
 ## Example customizable key value hash template configurations
 These are the preset default hashes to get a baseline configuration on a new bareos server. You can manipulate these as you see fit via recipe logic or searches or whatever you want. These will at least get you going.
+
 ### clients
 ```
-# Default Client Config when populated via search
+# Default Client Config populated via search
 default['bareos']['clients']['conf'] = {
   'FDPort' => '9102',
   'File Retention' => '30 days',
@@ -241,6 +244,7 @@ default['bareos']['clients']['conf'] = {
   'Maximum Concurrent Jobs' => '20'
 }
 ```
+
 ```
 # Example Unmanaged client if client is unmanaged or custom
 default['bareos']['clients']['unmanaged']['unmanaged-client-fd'] = {
@@ -250,7 +254,8 @@ default['bareos']['clients']['unmanaged']['unmanaged-client-fd'] = {
   'FDPort' => '9102'
 }
 ```
-#### autochanger (if using tape storage)
+
+### autochanger (if using tape storage)
 ```
 # Example/Test Tape Autochanger Configurations
 if node['bareos']['storage']['autochanger_enabled'] == true
@@ -291,11 +296,13 @@ if node['bareos']['storage']['autochanger_enabled'] == true
     'MaximumFileSize' => '10GB'
   }
 ```
-#### dir\_helper
+
+### dir\_helper
 ```
 default['bareos']['director']['conf']['help']['Example Block'] = '# You can put extra configs here.'
 ```
-#### filesets
+
+### filesets
 ```
 # Default Filesets
 default['bareos']['clients']['filesets']['default'] = {
@@ -321,7 +328,8 @@ default['bareos']['clients']['filesets']['default'] = {
   }
 }
 ```
-#### job\_definitions (jobdefs)
+
+### job\_definitions (jobdefs)
 ```
 # Default Job Definitions
 default['bareos']['clients']['job_definitions']['default-def'] = {
@@ -355,14 +363,15 @@ default['bareos']['clients']['job_definitions']['default-restore-def'] = {
   'Where' => '/tmp/bareos-restores'
 }
 ```
-#### jobs
-Director Jobs:
+
+### jobs
 ```
+# Director Jobs, basically the same as client but meant to be more admin related:
 default['bareos']['director']['jobs'] = nil
 ```
-Client Jobs:
+
 ```
-# Example Jobs
+# Example Client Jobs:
 default['bareos']['clients']['jobs']["#{node.default['bareos']['clients']['name']}-job"] = {
   'Client' => "#{node['bareos']['clients']['name']}-fd",
   'Type' => 'Backup',
@@ -376,7 +385,7 @@ default['bareos']['clients']['jobs']["#{node.default['bareos']['clients']['name'
 }
 ```
 
-#### pools
+### pools
 ```
 # Default Pools
 default['bareos']['clients']['pools']['default-file-pool'] = {
@@ -388,7 +397,8 @@ default['bareos']['clients']['pools']['default-file-pool'] = {
   'LabelFormat' => 'FileVolume-'
 }
 ```
-#### schedules
+
+### schedules
 ```
 # Default Schedules
 default['bareos']['clients']['schedules']['monthly'] = {
@@ -405,11 +415,13 @@ default['bareos']['clients']['schedules']['monthly'] = {
   ]
 }
 ```
-#### sd\_helper
+
+### sd\_helper
 ```
 default['bareos']['storage']['conf']['help']['Example Block'] = '# You can put extra configs here.'
 ```
-#### storages
+
+### storages
 ```
 # Default Storages
 default['bareos']['clients']['storages']['default-file-storage'] = {
@@ -420,7 +432,6 @@ default['bareos']['clients']['storages']['default-file-storage'] = {
 ```
 
 # Contributing
-
 1. Fork the repository on Github
 2. Create a named feature branch (like ```add_component_x```)
 3. Write your change
@@ -431,7 +442,6 @@ default['bareos']['clients']['storages']['default-file-storage'] = {
 ## License and Authors
 
 ### License
-
 Copyright (C) 2016 Leonard TAVAE
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -447,7 +457,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 ### Authors
-
 * Leonard TAVAE
 * Ian Smith
 * Gerhard Sulzberger
