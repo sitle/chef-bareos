@@ -3,6 +3,11 @@ CHANGELOG
 Chef-Bareos Cookbook
 --------------------
 
+3.0.4
+-----
+#### Ian Smith
+  * Updating the cronjob resource to only be included if user specifies a desire to enable a cronjob, defaults to off
+
 3.0.3
 -----
 #### Ian Smith
