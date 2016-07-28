@@ -37,5 +37,5 @@ describe file('/usr/sbin/bareos-graphite-poller.py') do
 end
 
 describe cron do
-  it { should have_entry('5 * * * *     /usr/sbin/bareos-graphite-poller.py    -c /etc/bareos/graphite-poller.conf').with_user('bareos') }
+  it { should have_entry('* * * * *     /usr/sbin/bareos-graphite-poller.py    -c /etc/bareos/graphite-poller.conf').with_user('root') }
 end
