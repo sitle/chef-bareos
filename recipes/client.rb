@@ -19,8 +19,8 @@
 
 # Include the OpenSSL library for generating random passwords
 ::Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
-node.normal_unless['bareos']['fd_password'] = random_password(length: 30, mode: :base64)
-node.normal_unless['bareos']['mon_password'] = random_password(length: 30, mode: :base64)
+node.default_unless['bareos']['fd_password'] = random_password(length: 30, mode: :base64)
+node.default_unless['bareos']['mon_password'] = random_password(length: 30, mode: :base64)
 node.save unless Chef::Config[:solo]
 
 # Installation of the BAREOS File Daemon

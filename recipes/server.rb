@@ -22,8 +22,8 @@
 include_recipe 'chef-bareos::client'
 
 # Preparing Random Password for the director and mon, including OpenSSL library from client.rb
-node.normal_unless['bareos']['dir_password'] = random_password(length: 30, mode: :base64)
-node.normal_unless['bareos']['mon_password'] = random_password(length: 30, mode: :base64)
+node.default_unless['bareos']['dir_password'] = random_password(length: 30, mode: :base64)
+node.default_unless['bareos']['mon_password'] = random_password(length: 30, mode: :base64)
 node.save unless Chef::Config[:solo]
 
 # Install BAREOS Server Packages
