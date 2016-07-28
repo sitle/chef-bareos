@@ -15,9 +15,9 @@ describe 'chef-bareos::graphite_plugin' do
       context "on an #{platform.capitalize}-#{version} box" do
         let(:chef_run) do
           runner = ChefSpec::ServerRunner.new(platform: platform, version: version)
-          runner.node.set['bareos']['plugins']['graphite']['config_path'] = '/etc/bareos'
-          runner.node.set['bareos']['plugins']['graphite']['plugin_path'] = '/usr/sbin'
-          runner.node.set['bareos']['plugins']['graphite']['mailto'] = 'bareos'
+          runner.node.default['bareos']['plugins']['graphite']['config_path'] = '/etc/bareos'
+          runner.node.default['bareos']['plugins']['graphite']['plugin_path'] = '/usr/sbin'
+          runner.node.default['bareos']['plugins']['graphite']['mailto'] = 'bareos'
           runner.converge(described_recipe)
         end
         it 'converges successfully' do
