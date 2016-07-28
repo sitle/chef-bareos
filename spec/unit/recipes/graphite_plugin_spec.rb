@@ -18,6 +18,7 @@ describe 'chef-bareos::graphite_plugin' do
           runner.node.default['bareos']['plugins']['graphite']['config_path'] = '/etc/bareos'
           runner.node.default['bareos']['plugins']['graphite']['plugin_path'] = '/usr/sbin'
           runner.node.default['bareos']['plugins']['graphite']['mailto'] = 'bareos'
+          runner.node.default['bareos']['plugins']['graphite']['cron_job'] = true
           runner.converge(described_recipe)
         end
         it 'converges successfully' do
