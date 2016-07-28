@@ -77,8 +77,8 @@ describe 'chef-bareos::graphite_plugin' do
         end
         it 'creates the bareos_graphite_poller cronjob with attributes' do
           expect(chef_run).to create_cron('bareos_graphite_poller').with(
-            minute:               '5',
-            user:                 'bareos',
+            minute:               '*',
+            user:                 'root',
             mailto:               'bareos'
           )
           chef_run

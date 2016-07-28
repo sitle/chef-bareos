@@ -8,11 +8,11 @@ issues_url        'https://github.com/sitle/chef-bareos/issues'
 source_url        'https://github.com/sitle/chef-bareos.git'
 version           '3.0.4'
 
-%w( centos redhat ).each do |os|
+%w(centos redhat).each do |os|
   supports os, '>= 6.0'
 end
 
-%w( debian ubuntu ).each do |os|
+%w(debian ubuntu).each do |os|
   supports os
 end
 
