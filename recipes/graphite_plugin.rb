@@ -48,6 +48,5 @@ cron 'bareos_graphite_poller' do
     -c #{node['bareos']['plugins']['graphite']['config_path']}/graphite-poller.conf
   EOH
   mailto node['bareos']['plugins']['graphite']['mail_to']
-  user 'bareos'
-  minute '5'
+  only_if { node['bareos']['plugins']['graphite']['cron_job'] }
 end

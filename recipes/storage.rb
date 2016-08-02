@@ -20,7 +20,7 @@
 # Include the OpenSSL cookbook library
 # Setup Storage Daemon Random Passwords
 ::Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
-node.set_unless['bareos']['sd_password'] = random_password(length: 30, mode: :base64)
+node.default_unless['bareos']['sd_password'] = random_password(length: 30, mode: :base64)
 node.save unless Chef::Config[:solo]
 
 # Install BAREOS Storage Daemon Packages
@@ -63,7 +63,7 @@ end
 # SD Config
 template '/etc/bareos/bareos-sd.conf' do
   source 'bareos-sd.conf.erb'
-  mode 0640
+  mode '0640'
   owner 'bareos'
   group 'bareos'
   variables(
