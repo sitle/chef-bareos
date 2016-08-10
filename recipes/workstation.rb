@@ -34,11 +34,11 @@ bareos_dir = if Chef::Config[:solo]
 # bconsole config
 template '/etc/bareos/bconsole.conf' do
   source 'bconsole.conf.erb'
-  mode 0640
+  mode '0640'
   owner 'bareos'
   group 'bareos'
   variables(
     bareos_dir: bareos_dir
   )
-  sensitive true
+  sensitive node['bareos']['workstation']['sensitive_configs']
 end

@@ -15,9 +15,10 @@ describe 'chef-bareos::graphite_plugin' do
       context "on an #{platform.capitalize}-#{version} box" do
         let(:chef_run) do
           runner = ChefSpec::ServerRunner.new(platform: platform, version: version)
-          runner.node.set['bareos']['plugins']['graphite']['config_path'] = '/etc/bareos'
-          runner.node.set['bareos']['plugins']['graphite']['plugin_path'] = '/usr/sbin'
-          runner.node.set['bareos']['plugins']['graphite']['mailto'] = 'bareos'
+          runner.node.default['bareos']['plugins']['graphite']['config_path'] = '/etc/bareos'
+          runner.node.default['bareos']['plugins']['graphite']['plugin_path'] = '/usr/sbin'
+          runner.node.default['bareos']['plugins']['graphite']['mailto'] = 'bareos'
+          runner.node.default['bareos']['plugins']['graphite']['cron_job'] = true
           runner.converge(described_recipe)
         end
         it 'converges successfully' do
@@ -77,8 +78,8 @@ describe 'chef-bareos::graphite_plugin' do
         end
         it 'creates the bareos_graphite_poller cronjob with attributes' do
           expect(chef_run).to create_cron('bareos_graphite_poller').with(
-            minute:               '5',
-            user:                 'bareos',
+            minute:               '*',
+            user:                 'root',
             mailto:               'bareos'
           )
           chef_run

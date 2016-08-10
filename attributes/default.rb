@@ -81,6 +81,7 @@ default['bareos']['clients']['bootstrap_file'] = '/var/lib/bareos/%c.bsr'
 default['bareos']['clients']['jobdef_default_messages'] = 'Standard'
 default['bareos']['clients']['jobdef_default_fileset'] = "#{node['fqdn']}-Fileset"
 default['bareos']['clients']['storage'] = 'File'
+default['bareos']['clients']['sensitive_configs'] = true
 
 # Storage Daemon
 default['bareos']['storage']['name'] = node['fqdn']
@@ -91,6 +92,7 @@ default['bareos']['storage']['max_concurrent_jobs'] = 20
 default['bareos']['storage']['sd_mon_enable'] = 'yes'
 default['bareos']['storage']['autochanger_enabled'] = false
 default['bareos']['storage']['conf']['help']['Example Block'] = '# You can put extra configs here.'
+default['bareos']['storage']['sensitive_configs'] = true
 
 # Director
 default['bareos']['director']['name'] = node['fqdn']
@@ -104,6 +106,7 @@ default['bareos']['director']['heartbeat_interval'] = 600
 default['bareos']['director']['catalog_jobdef'] = 'default-catalog-def'
 default['bareos']['director']['conf']['help']['Example Block'] = '# You can put extra configs here.'
 default['bareos']['director']['config_change_notify'] = 'restart'
+default['bareos']['director']['sensitive_configs'] = true
 
 # Subscription Management (Director)
 default['bareos']['director']['dir_subscription'] = nil
@@ -111,6 +114,7 @@ default['bareos']['director']['dir_subs'] = nil
 
 # Workstation
 default['bareos']['workstation']['name'] = node['fqdn']
+default['bareos']['workstation']['sensitive_configs'] = true
 
 # Graphite Plugin Default Attributes
 default['bareos']['plugins']['graphite']['plugin_path'] = '/usr/sbin'
@@ -121,6 +125,7 @@ default['bareos']['plugins']['graphite']['graphite_port'] = '2003'
 default['bareos']['plugins']['graphite']['graphite_data_prefix'] = 'bareos.'
 default['bareos']['plugins']['graphite']['graphite_plugin_src_url'] = 'https://raw.githubusercontent.com/bareos/bareos-contrib/master/misc/performance/graphite/bareos-graphite-poller.py'
 default['bareos']['plugins']['graphite']['mail_to'] = 'bareos'
+default['bareos']['plugins']['graphite']['sensitive_configs'] = true
 
 ##############################
 # Examples -  Default Hashes #

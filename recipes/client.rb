@@ -19,8 +19,8 @@
 
 # Include the OpenSSL library for generating random passwords
 ::Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
-node.set_unless['bareos']['fd_password'] = random_password(length: 30, mode: :base64)
-node.set_unless['bareos']['mon_password'] = random_password(length: 30, mode: :base64)
+node.normal_unless['bareos']['fd_password'] = random_password(length: 30, mode: :base64)
+node.normal_unless['bareos']['mon_password'] = random_password(length: 30, mode: :base64)
 node.save unless Chef::Config[:solo]
 
 # Installation of the BAREOS File Daemon
@@ -44,7 +44,7 @@ template '/etc/bareos/bareos-fd.conf' do
   variables(
     bareos_dir: bareos_dir
   )
-  sensitive true
+  sensitive node['bareos']['clients']['sensitive_configs']
 end
 
 # Allow the restart of the File Daemon with tests upfront, if called

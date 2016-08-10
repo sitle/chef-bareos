@@ -3,6 +3,17 @@ CHANGELOG
 Chef-Bareos Cookbook
 --------------------
 
+3.0.5
+-----
+#### Ian Smith
+  * Adding an attribute for each major config template so admins can enable or disable sensitive resources. Before it was hard coded to be sensitive
+  * Discovered a bug that basically broke bconsole because the password was being regenerated on every chef run which requires a restart not a reload. Changed to node.normal from node.default
+
+3.0.4
+-----
+#### Ian Smith
+  * Updating the cronjob resource to only be included if user specifies a desire to enable a cronjob, defaults to off
+
 3.0.3
 -----
 #### Ian Smith
