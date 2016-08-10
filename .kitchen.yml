@@ -33,4 +33,3 @@ suites:
           conf:
             help:
               test: '# Some String'
-          autochanger_enabled: true
