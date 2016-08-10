@@ -6,7 +6,7 @@ description       'Installs/Configures BAREOS - Backup Archiving REcovery Open S
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 issues_url        'https://github.com/sitle/chef-bareos/issues'
 source_url        'https://github.com/sitle/chef-bareos.git'
-version           '3.0.4'
+version           '3.0.5'
 
 %w(centos redhat).each do |os|
   supports os, '>= 6.0'
