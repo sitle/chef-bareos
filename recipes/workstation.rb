@@ -41,4 +41,5 @@ template '/etc/bareos/bconsole.conf' do
     bareos_dir: bareos_dir
   )
   sensitive node['bareos']['workstation']['sensitive_configs']
+  notifies :restart, 'service[bareos-dir]'
 end
