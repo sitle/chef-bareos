@@ -29,7 +29,7 @@ template "#{node['bareos']['plugins']['graphite']['config_path']}/graphite-polle
   owner 'bareos'
   group 'bareos'
   mode '0740'
-  sensitive true
+  sensitive node['bareos']['plugins']['graphite']['sensitive_configs']
 end
 
 remote_file "#{node['bareos']['plugins']['graphite']['plugin_path']}/bareos-graphite-poller.py" do
@@ -39,7 +39,7 @@ remote_file "#{node['bareos']['plugins']['graphite']['plugin_path']}/bareos-grap
   mode '0740'
   use_last_modified true
   use_conditional_get true
-  sensitive true
+  sensitive node['bareos']['plugins']['graphite']['sensitive_configs']
 end
 
 cron 'bareos_graphite_poller' do
