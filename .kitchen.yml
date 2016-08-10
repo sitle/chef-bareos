@@ -43,4 +43,5 @@ suites:
           sensitive_configs: false
         plugins:
           graphite:
+            cron_job: true
             sensitive_configs: false
