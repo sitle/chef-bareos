@@ -33,6 +33,5 @@ suites:
           conf:
             help:
               test: '# Some String'
-          config_change_notify: 'reload'
         storage:
           autochanger_enabled: true
