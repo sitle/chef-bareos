@@ -33,5 +33,4 @@ suites:
           conf:
             help:
               test: '# Some String'
-        storage:
           autochanger_enabled: true
