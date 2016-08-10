@@ -34,12 +34,5 @@ suites:
             help:
               test: '# Some String'
           config_change_notify: 'reload'
-        server:
-          jobs:
-            unmanaged-host-job:
-              Description: '"Unmanaged Host Test Job"'
-              Client: 'unmanaged-client-fd'
-              JobDefs: 'default-def'
-              Type: 'Backup'
         storage:
           autochanger_enabled: true
