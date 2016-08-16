@@ -68,35 +68,39 @@ Provides resources for the Catalog (Director configuration) and Filedaemon confi
 | ['bareos']['clients']['jobdef_default_messages'] | 'Standard' | Default value for setting the message level in a job definition to override the messages section
 | ['bareos']['clients']['jobdef_default_fileset'] | "#{node['fqdn']}-Fileset" | Default naming convention for filesets
 | ['bareos']['clients']['storage'] | 'File' | Default storage for new clients when added via search
+| ['bareos']['clients']['sensitive_configs'] | true | Enables or disables sensitive resource configuration files
 
 ### Storage Daemon
 Provides for a baseline Storage Daemon Config with configurable options
 
 | Attribute        | Default Value | Description
 |------------------|---------------|------------
-| default['bareos']['storage']['name'] | node['fqdn'] | Uses FQDN for naming storages found via search
-| default['bareos']['storage']['storage_search_query'] | 'roles:bareos_storage' | Default search query string for finding storage servers
-| default['bareos']['storage']['sd_port'] | 9103 | Default Storage communication port
-| default['bareos']['storage']['servers'] | %w(node) | List of storage servers you can use if using solo mode
-| default['bareos']['storage']['max_concurrent_jobs'] | 20 | Default max number of concurrent storage daemon jobs
-| default['bareos']['storage']['autochanger_enabled'] | false | Used to control autochanger support
+| ['bareos']['storage']['name'] | node['fqdn'] | Uses FQDN for naming storages found via search
+| ['bareos']['storage']['storage_search_query'] | 'roles:bareos_storage' | Default search query string for finding storage servers
+| ['bareos']['storage']['sd_port'] | 9103 | Default Storage communication port
+| ['bareos']['storage']['servers'] | %w(node) | List of storage servers you can use if using solo mode
+| ['bareos']['storage']['max_concurrent_jobs'] | 20 | Default max number of concurrent storage daemon jobs
+| ['bareos']['storage']['autochanger_enabled'] | false | Used to control autochanger support
+| ['bareos']['storage']['sensitive_configs'] | true | Enables or disables sensitive resource configuration files
 
 ### Director
 Provides standard variables for a typical Director configuration
 
 | Attribute        | Default Value | Description
 |------------------|---------------|------------
-| default['bareos']['director']['name'] | node['fqdn'] | Uses FQDN for director naming
-| default['bareos']['director']['net_name'] | node['fqdn'] | Uses FQDN for DNS resolution
-| default['bareos']['director']['dir_search_query'] | 'roles:bareos_director' | Default search string to find bareos directors
-| default['bareos']['director']['dir_port'] | 9101 | Default director communication port
-| default['bareos']['director']['dir_max_concurrent_jobs'] | 20 | Default max allowable jobs running
-| default['bareos']['director']['servers'] | %w(node) | List of directors if running in solo mode
-| default['bareos']['director']['console_commandacl'] | 'status, .status' | Default ACL for console commands
-| default['bareos']['director']['heartbeat_interval'] | 600 | Proven useful as a default network timeout for communication to director
-| default['bareos']['director']['catalog_jobdef'] | 'default-catalog-def' | Default name for the Catalog Backup Jobdef name
-| default['bareos']['director']['conf']['help']['Example Block'] | '# You can put extra configs here.' | Area where you can add any number of possible things to expand your configs
-| default['bareos']['director']['config_change_notify'] | 'restart' | Default action when director config changes (restart/reload)
+| ['bareos']['director']['name'] | node['fqdn'] | Uses FQDN for director naming
+| ['bareos']['director']['net_name'] | node['fqdn'] | Uses FQDN for DNS resolution
+| ['bareos']['director']['dir_search_query'] | 'roles:bareos_director' | Default search string to find bareos directors
+| ['bareos']['director']['dir_port'] | 9101 | Default director communication port
+| ['bareos']['director']['dir_max_concurrent_jobs'] | 20 | Default max allowable jobs running
+| ['bareos']['director']['servers'] | %w(node) | List of directors if running in solo mode
+| ['bareos']['director']['console_commandacl'] | 'status, .status' | Default ACL for console commands
+| ['bareos']['director']['heartbeat_interval'] | 600 | Proven useful as a default network timeout for communication to director
+| ['bareos']['director']['catalog_jobdef'] | 'default-catalog-def' | Default name for the Catalog Backup Jobdef name
+| ['bareos']['director']['conf']['help']['Example Block'] | '# You can put extra configs here.' | Area where you can add any number of possible things to expand your configs
+| ['bareos']['director']['config_change_notify'] | 'restart' | Default action when director config changes (restart/reload)
+| ['bareos']['director']['sensitive_configs'] | true | Enables or disables sensitive resource configuration files
+
 
 ### Subscription Management (Director)
 Provides a system counter method if you have a paid service subscription
@@ -112,6 +116,7 @@ Determines if you want to use FQDN or some other way of defining hosts in your m
 | Attribute        | Default Value | Description
 |------------------|---------------|------------
 | ['bareos']['workstation']['name'] | node['fqdn'] | Used to determine header information for bconsole/bat configs
+| ['bareos']['workstation']['sensitive_configs'] | true | Enables or disables sensitive resource configuration files
 
 ### Graphite Plugin
 A new plugin that will send statistics to a graphite server which can then be used in various ways.
@@ -126,6 +131,7 @@ A new plugin that will send statistics to a graphite server which can then be us
 | ['bareos']['plugins']['graphite']['graphite_data_prefix'] | 'bareos.' | Default prefix for graphite data
 | ['bareos']['plugins']['graphite']['graphite_plugin_src_url'] | See attributes file | Default URL to the plugin
 | ['bareos']['plugins']['graphite']['cron_job'] | nil | Activates a general minutely cronjob if defined other than nil
+| ['bareos']['plugins']['sensitive_configs'] | true | Enables or disables sensitive resource configuration files
 
 ## Recipes
 

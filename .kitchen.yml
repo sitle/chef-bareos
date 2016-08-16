@@ -29,17 +29,19 @@ suites:
     attributes:
       bareos:
         test_mode: true
+        client:
+          sensitive_configs: false
+        storage:
+          sensitive_configs: false
+          autochanger_enabled: true
         director:
+          sensitive_configs: false
           conf:
             help:
               test: '# Some String'
-          config_change_notify: 'reload'
-        server:
-          jobs:
-            unmanaged-host-job:
-              Description: '"Unmanaged Host Test Job"'
-              Client: 'unmanaged-client-fd'
-              JobDefs: 'default-def'
-              Type: 'Backup'
-        storage:
-          autochanger_enabled: true
+        workstation:
+          sensitive_configs: false
+        plugins:
+          graphite:
+            cron_job: true
+            sensitive_configs: false

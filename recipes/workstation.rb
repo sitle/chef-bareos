@@ -40,5 +40,5 @@ template '/etc/bareos/bconsole.conf' do
   variables(
     bareos_dir: bareos_dir
   )
-  sensitive true
+  sensitive node['bareos']['workstation']['sensitive_configs']
 end
