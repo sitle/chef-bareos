@@ -8,6 +8,7 @@ Chef-Bareos Cookbook
 #### Ian Smith
   * Validating compatibility with chef-client 12.14.89
   * Updated kitchen config for chef-client 12.14.89
+  * Dropping support for ruby <2.2.0 for TravisCI tests
 
 3.0.5
 -----
