@@ -6,17 +6,14 @@ description       'Installs/Configures BAREOS - Backup Archiving REcovery Open S
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 issues_url        'https://github.com/sitle/chef-bareos/issues'
 source_url        'https://github.com/sitle/chef-bareos.git'
-version           '3.0.6'
-
-%w(centos redhat).each do |os|
-  supports os, '>= 6.0'
-end
-
-%w(debian ubuntu).each do |os|
-  supports os
-end
+version           '3.0.7'
 
 depends 'apt', '>= 2.0'
 depends 'openssl', '>= 4.0'
 depends 'postgresql', '~> 4.0'
 depends 'yum-epel', '>= 0.6'
+
+supports 'debian', '>= 7.8'
+supports 'ubuntu', '>= 12.04'
+supports 'redhat', '>= 6.0'
+supports 'centos', '>= 6.0'
