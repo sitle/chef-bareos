@@ -16,7 +16,8 @@ This cookbook installs and configures backups based on [BAREOS](https://www.bare
 
 ## Supported Chef Versions:
 
- * Chef 11+
+ * chef-client '>= 12.9.38'
+ * chef-server '>= 12.5'
 
 ## Important Notable Attributes
 

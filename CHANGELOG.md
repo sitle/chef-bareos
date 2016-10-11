@@ -3,6 +3,12 @@ CHANGELOG
 Chef-Bareos Cookbook
 --------------------
 
+3.0.6
+-----
+#### Ian Smith
+  * Validating compatibility with chef-client 12.14.89
+  * Updated kitchen config for chef-client 12.14.89
+
 3.0.5
 -----
 #### Ian Smith
