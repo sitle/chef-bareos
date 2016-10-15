@@ -43,10 +43,7 @@ remote_file "#{node['bareos']['plugins']['graphite']['plugin_path']}/bareos-grap
 end
 
 cron 'bareos_graphite_poller' do
-  command <<-EOH
-    #{node['bareos']['plugins']['graphite']['plugin_path']}/bareos-graphite-poller.py\
-    -c #{node['bareos']['plugins']['graphite']['config_path']}/graphite-poller.conf
-  EOH
+  command node['bareos']['plugins']['graphite']['cron_command']
   mailto node['bareos']['plugins']['graphite']['mail_to']
   only_if { node['bareos']['plugins']['graphite']['cron_job'] }
 end

@@ -3,6 +3,20 @@ CHANGELOG
 Chef-Bareos Cookbook
 --------------------
 
+3.0.7
+-----
+#### Ian Smith
+  * Updating the cronjob for the graphite plugin so it is less noisy if something fails by default
+  * Adding a default attribute to control the exact cronjob script the user wants
+  * Fixing up the Chefspec tests for the graphite cronjob resource
+
+3.0.6
+-----
+#### Ian Smith
+  * Validating compatibility with chef-client 12.14.89
+  * Updated kitchen config for chef-client 12.14.89
+  * Dropping support for ruby <2.2.0 for TravisCI tests
+
 3.0.5
 -----
 #### Ian Smith

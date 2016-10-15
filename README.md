@@ -16,7 +16,8 @@ This cookbook installs and configures backups based on [BAREOS](https://www.bare
 
 ## Supported Chef Versions:
 
- * Chef 11+
+ * chef-client '>= 12.9.38'
+ * chef-server '>= 12.5'
 
 ## Important Notable Attributes
 
@@ -131,6 +132,7 @@ A new plugin that will send statistics to a graphite server which can then be us
 | ['bareos']['plugins']['graphite']['graphite_data_prefix'] | 'bareos.' | Default prefix for graphite data
 | ['bareos']['plugins']['graphite']['graphite_plugin_src_url'] | See attributes file | Default URL to the plugin
 | ['bareos']['plugins']['graphite']['cron_job'] | nil | Activates a general minutely cronjob if defined other than nil
+| ['bareos']['plugins']['graphite']['cron_command'] | See attribute file | Default cron script to run for the graphite plugin
 | ['bareos']['plugins']['sensitive_configs'] | true | Enables or disables sensitive resource configuration files
 
 ## Recipes
