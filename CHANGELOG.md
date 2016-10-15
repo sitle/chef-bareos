@@ -3,7 +3,7 @@ CHANGELOG
 Chef-Bareos Cookbook
 --------------------
 
-3.0.7
+3.0.8
 -----
 #### Ian Smith
   * Updating the cronjob for the graphite plugin so it is less noisy if something fails by default
