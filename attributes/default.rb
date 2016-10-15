@@ -124,7 +124,7 @@ default['bareos']['plugins']['graphite']['server'] = 'graphite'
 default['bareos']['plugins']['graphite']['graphite_port'] = '2003'
 default['bareos']['plugins']['graphite']['graphite_data_prefix'] = 'bareos.'
 default['bareos']['plugins']['graphite']['graphite_plugin_src_url'] = 'https://raw.githubusercontent.com/bareos/bareos-contrib/master/misc/performance/graphite/bareos-graphite-poller.py'
-default['bareos']['plugins']['graphite']['mail_to'] = 'bareos'
+default['bareos']['plugins']['graphite']['mail_to'] = ''
 default['bareos']['plugins']['graphite']['sensitive_configs'] = true
 
 ##############################
